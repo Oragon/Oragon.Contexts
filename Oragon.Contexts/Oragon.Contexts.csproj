@@ -1,9 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <RootNamespace>Oragon</RootNamespace>
-  </PropertyGroup>
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <AssemblyName>Oragon.Contexts</AssemblyName>
+        <PackageId>Oragon.Contexts</PackageId>
+        <RootNamespace>Oragon</RootNamespace>
+
+        <PackageProjectUrl>https://github.com/Oragon/Oragon.Contexts</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/Oragon/Oragon.Contexts</RepositoryUrl>
+
+        <Authors>LuizCarlosFaria</Authors>
+        <Company>oragon.io</Company>
+        <Product>Oragon</Product>
+        <Description>Reinventing log strategy with complex and intuitive types</Description>
+
+        <PackageIconUrl>http://gago.io/wp-content/uploads/2014/03/Oragon-Architecture-Penknife.export.png</PackageIconUrl>
+
+        <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+        <Version>1.0.0-alpha</Version>
+        <Copyright>Copyright 2018</Copyright>
+        <PackageTags>Oragon Architecture,  Oragon, Architecture, luiz, carlos, faria, luizcarlosfaria, oragonarchitect</PackageTags>
+    </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Oragon.Spring.Aop" Version="1.1.1" />
