@@ -22,4 +22,14 @@
         <PackageTags>Oragon Architecture,  Oragon, Architecture, luiz, carlos, faria, luizcarlosfaria, oragonarchitect</PackageTags>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="FluentNHibernate" Version="2.1.2" />
+      <PackageReference Include="Oragon.Common" Version="2.1.1" />
+      <PackageReference Include="Oragon.Spring.Aop" Version="1.1.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Oragon.Contexts.NHibernate\Oragon.Contexts.NHibernate.csproj" />
+    </ItemGroup>
+
 </Project>
