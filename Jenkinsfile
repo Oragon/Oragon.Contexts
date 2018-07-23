@@ -39,7 +39,7 @@ pipeline {
 
         stage('Pack') {
 
-            when { expression { sh([returnStdout: true, script: 'echo $TAG_NAME | tr -d \'\n\'']) } }
+            when { buildingTag() }
 
             steps {
 
@@ -80,7 +80,7 @@ pipeline {
 
         stage('Publish') {
 
-            when { expression { sh([returnStdout: true, script: 'echo $TAG_NAME | tr -d \'\n\'']) } }
+            when { buildingTag() }
 
             steps {
                 
