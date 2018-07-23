@@ -3,6 +3,8 @@
 
 Oragon.*/bin/
 Oragon.*/obj/
+Examples/**/Oragon.*/bin/
+Examples/**/Oragon.*/obj/
 
 .vs/*
 

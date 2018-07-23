@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Oragon.Common" Version="2.1.1" />
+    <PackageReference Include="Oragon.Spring.Aop" Version="1.1.3" />
+    <PackageReference Include="Oragon.Spring.Core" Version="1.1.3" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.5.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Architecture\Data\Process\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Oragon.Contexts.ExceptionHandling\Oragon.Contexts.ExceptionHandling.csproj" />
+    <ProjectReference Include="..\..\..\Oragon.Contexts.FluentNHibernate\Oragon.Contexts.FluentNHibernate.csproj" />
+    <ProjectReference Include="..\..\..\Oragon.Contexts.NHibernate\Oragon.Contexts.NHibernate.csproj" />
+    <ProjectReference Include="..\..\..\Oragon.Contexts\Oragon.Contexts.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="AppContext.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
