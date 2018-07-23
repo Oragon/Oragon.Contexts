@@ -4,7 +4,6 @@ using System.Xml.Linq;
 
 namespace Oragon.Contexts.NHibernate
 {
-    //TODO: Falta suporte a DB2
     public class NHConfigFileConnectionStringDiscoverer : IConfigurationResolver
     {
         #region Public Properties
@@ -40,21 +39,7 @@ namespace Oragon.Contexts.NHibernate
             return valueDic;
         }
 
-        private string GetProviderName(string driver_class)
-        {
-            if (driver_class.ToLower() == "nhibernate.driver.sqlclientdriver")
-            {
-                return "System.Data.SqlClient";
-            }
-            else if (driver_class.ToLower() == "nhibernate.driver.mysqldatadriver")
-            {
-                return "MySql.Data.MySqlClient";
-            }
-            else
-            {
-                return string.Empty;
-            }
-        }
+        
 
         #endregion Private Methods
     }
