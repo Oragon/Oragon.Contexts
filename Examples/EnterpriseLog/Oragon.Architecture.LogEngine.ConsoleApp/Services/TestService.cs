@@ -1,6 +1,8 @@
 ﻿using Oragon.Architecture.LogEngine.Business.Entity;
 using Oragon.Architecture.LogEngine.Data.Process;
 using Oragon.Contexts.NHibernate;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Oragon.Architecture.LogEngine.ConsoleApp.Services
 {
@@ -11,14 +13,48 @@ namespace Oragon.Architecture.LogEngine.ConsoleApp.Services
         internal AlunoDataProcess AlunoDataProcess { get; set; }
 
 
+
         [NHContext("APP_DB_PRINCIPAL_CONTEXT", true)]
-        public void Test()
+        public void Test1Create()
         {
-            //this.WriteDataProcess.Save(new Aluno() { Nome = "Luiz Carlos Faria", Descricao = "Tete" });
+            Aluno aluno1 = new Aluno() { Nome = "Luiz Carlos Faria 1", Descricao = "1" };
+            Aluno aluno2 = new Aluno() { Nome = "Luiz Carlos Faria 2", Descricao = "2" };
 
-            //this.WriteDataProcess.SaveOrUpdate(new Aluno() { IdAluno=1, Nome = "Luiz Carlos Faria", Descricao = "Teste" });
+            TipoTurma tipoTurmaManha = new TipoTurma() { IdTipoTurma = 1, Nome = "Diurna", Descricao = "1" };
+            TipoTurma tipoTurmaNoite = new TipoTurma() { IdTipoTurma = 2, Nome = "Noturna", Descricao = "2" };
 
-            //this.WriteDataProcess.Delete(new Aluno() { IdAluno = 1, Nome = "a" });
+            Turma turma1 = new Turma() { Nome = "Turma 1", Descricao = "1", TipoTurma = tipoTurmaManha };
+            Turma turma2 = new Turma() { Nome = "Turma 2", Descricao = "2", TipoTurma = tipoTurmaNoite };
+
+            EntityBase[] entitiesToSave = new EntityBase[] { aluno1, aluno2, tipoTurmaManha, tipoTurmaNoite, turma1, turma2 };
+
+            foreach (EntityBase entity in entitiesToSave)
+            {
+                this.WriteDataProcess.Save(entity);
+            }
+
+            aluno1.Turmas = new List<Turma>() { turma1 };
+
+            turma2.Alunos = new List<Aluno>() { aluno2 };
+
+
+            this.WriteDataProcess.Save(aluno1);
+            this.WriteDataProcess.Save(turma2);
+
+        }
+
+        [NHContext("APP_DB_PRINCIPAL_CONTEXT", true)]
+        public void Test2Compare()
+        {
+            if (AlunoDataProcess.GetListBy(it => it.Descricao == "1").Single().Nome != "Luiz Carlos Faria 1")
+            {
+                throw new System.Exception();
+            }
+
+            if (AlunoDataProcess.GetListBy(it => it.Descricao == "2").Single().Nome != "Luiz Carlos Faria 2")
+            {
+                throw new System.Exception();
+            }
         }
     }
 }

@@ -12,7 +12,9 @@ namespace Oragon.Architecture.LogEngine.ConsoleApp
 
             var service = context.GetObject<ITestService>();
 
-            service.Test();
+            service.Test1Create();
+
+            service.Test2Compare();
 
             Console.WriteLine("Hello World!");
         }

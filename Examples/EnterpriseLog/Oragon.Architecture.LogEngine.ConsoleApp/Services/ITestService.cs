@@ -2,6 +2,7 @@
 {
     public interface ITestService
     {
-        void Test();
+        void Test1Create();
+        void Test2Compare();
     }
 }
