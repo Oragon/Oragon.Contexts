@@ -5,6 +5,8 @@ Oragon.*/bin/
 Oragon.*/obj/
 Examples/**/Oragon.*/bin/
 Examples/**/Oragon.*/obj/
+Examples/EnterpriseLog/obj/
+Examples/EnterpriseLog/.vs/
 
 .vs/*
 

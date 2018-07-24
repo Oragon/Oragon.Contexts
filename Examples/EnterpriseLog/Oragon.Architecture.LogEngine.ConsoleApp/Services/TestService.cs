@@ -11,6 +11,8 @@ namespace Oragon.Architecture.LogEngine.ConsoleApp.Services
         internal PersistenceDataProcess WriteDataProcess { get; set; }
 
         internal AlunoDataProcess AlunoDataProcess { get; set; }
+        internal TipoTurmaDataProcess TipoTurmaDataProcess { get; set; }
+        internal TurmaDataProcess TurmaDataProcess { get; set; }
 
 
 
@@ -46,15 +48,56 @@ namespace Oragon.Architecture.LogEngine.ConsoleApp.Services
         [NHContext("APP_DB_PRINCIPAL_CONTEXT", true)]
         public void Test2Compare()
         {
-            if (AlunoDataProcess.GetListBy(it => it.Descricao == "1").Single().Nome != "Luiz Carlos Faria 1")
+            if (this.AlunoDataProcess.GetListBy(it => it.Descricao == "1").Single().Nome != "Luiz Carlos Faria 1")
             {
                 throw new System.Exception();
             }
 
-            if (AlunoDataProcess.GetListBy(it => it.Descricao == "2").Single().Nome != "Luiz Carlos Faria 2")
+            if (this.AlunoDataProcess.GetListBy(it => it.Descricao == "2").Single().Nome != "Luiz Carlos Faria 2")
             {
                 throw new System.Exception();
             }
+        }
+
+        [NHContext("APP_DB_PRINCIPAL_CONTEXT", true)]
+        public void Test3Change()
+        {
+            Aluno aluno1 = this.AlunoDataProcess.GetListBy(it => it.Descricao == "1").Single();
+
+            aluno1.Nome = "Não é Luiz Carlos Faria";
+
+            this.WriteDataProcess.Update(aluno1);
+        }
+
+        [NHContext("APP_DB_PRINCIPAL_CONTEXT", true)]
+        public void Test4Compare()
+        {
+            if (this.AlunoDataProcess.GetListBy(it => it.Descricao == "1").Single().Nome != "Não é Luiz Carlos Faria")
+            {
+                throw new System.Exception();
+            }
+            
+        }
+
+
+        [NHContext("APP_DB_PRINCIPAL_CONTEXT", true)]
+        public void Test5Delete()
+        {
+            this.AlunoDataProcess.GetListBy().ToList().ForEach(it =>
+            {
+                this.WriteDataProcess.Delete(it);
+            });
+
+            this.TurmaDataProcess.GetListBy().ToList().ForEach(it =>
+            {
+                this.WriteDataProcess.Delete(it);
+            });
+
+            this.TipoTurmaDataProcess.GetListBy().ToList().ForEach(it =>
+            {
+                this.WriteDataProcess.Delete(it);
+            });
+
         }
     }
 }

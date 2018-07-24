@@ -16,6 +16,12 @@ namespace Oragon.Architecture.LogEngine.ConsoleApp
 
             service.Test2Compare();
 
+            service.Test3Change();
+
+            service.Test4Compare();
+
+            service.Test5Delete();
+
             Console.WriteLine("Hello World!");
         }
     }

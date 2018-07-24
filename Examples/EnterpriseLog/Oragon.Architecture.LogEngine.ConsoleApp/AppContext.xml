@@ -13,6 +13,12 @@
         <property name="AlunoDataProcess">
             <object type="Oragon.Architecture.LogEngine.Data.Process.AlunoDataProcess, Oragon.Architecture.LogEngine.ConsoleApp" parent="APP_DB_PRINCIPAL_CONTEXT"></object>
         </property>
+        <property name="TipoTurmaDataProcess">
+            <object type="Oragon.Architecture.LogEngine.Data.Process.TipoTurmaDataProcess, Oragon.Architecture.LogEngine.ConsoleApp" parent="APP_DB_PRINCIPAL_CONTEXT"></object>
+        </property>
+        <property name="TurmaDataProcess">
+            <object type="Oragon.Architecture.LogEngine.Data.Process.TurmaDataProcess, Oragon.Architecture.LogEngine.ConsoleApp" parent="APP_DB_PRINCIPAL_CONTEXT"></object>
+        </property>       
     </object>
 
 
