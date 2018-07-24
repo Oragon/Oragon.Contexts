@@ -10,6 +10,10 @@ namespace Oragon.Architecture.LogEngine.ConsoleApp
         {
             var context = new XmlApplicationContext(@".\AppContext.xml");
 
+            var machineName = System.Environment.MachineName;
+
+            var os = System.Environment.OSVersion.ToString();
+
             var service = context.GetObject<ITestService>();
 
             service.Test1Create();

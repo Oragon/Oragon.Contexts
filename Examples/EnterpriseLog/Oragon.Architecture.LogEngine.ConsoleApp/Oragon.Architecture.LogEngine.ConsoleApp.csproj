@@ -1,32 +1,43 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
-  </PropertyGroup>
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp2.1</TargetFramework>
+        <Configurations>Debug;Release;DebugWithProjRefs</Configurations>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Oragon.Common" Version="2.1.1" />
-    <PackageReference Include="Oragon.Spring.Aop" Version="1.1.3" />
-    <PackageReference Include="Oragon.Spring.Core" Version="1.1.3" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.5.1" />
-  </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Architecture\Data\Process\" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Oragon.Common" Version="2.1.1" />
+        
+        <PackageReference Include="Oragon.Spring.Aop" Version="1.1.3" />
+        <PackageReference Include="Oragon.Spring.Core" Version="1.1.3" />
+        <PackageReference Include="System.Data.SqlClient" Version="4.5.1" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Oragon.Contexts.ExceptionHandling\Oragon.Contexts.ExceptionHandling.csproj" />
-    <ProjectReference Include="..\..\..\Oragon.Contexts.FluentNHibernate\Oragon.Contexts.FluentNHibernate.csproj" />
-    <ProjectReference Include="..\..\..\Oragon.Contexts.NHibernate\Oragon.Contexts.NHibernate.csproj" />
-    <ProjectReference Include="..\..\..\Oragon.Contexts\Oragon.Contexts.csproj" />
-  </ItemGroup>
+    <ItemGroup Condition="'$(Configuration)|$(Platform)'!='DebugWithProjRefs|AnyCPU'">
+        <PackageReference Include="Oragon.Contexts" Version="1.1.6" />
+        <PackageReference Include="Oragon.Contexts.ExceptionHandling" Version="1.1.6" />
+        <PackageReference Include="Oragon.Contexts.FluentNHibernate" Version="1.1.6" />
+        <PackageReference Include="Oragon.Contexts.NHibernate" Version="1.1.6" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <None Update="AppContext.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+
+
+
+    <ItemGroup Condition="'$(Configuration)|$(Platform)'=='DebugWithProjRefs|AnyCPU'">
+        <ProjectReference Include="..\..\..\Oragon.Contexts.ExceptionHandling\Oragon.Contexts.ExceptionHandling.csproj" />
+        <ProjectReference Include="..\..\..\Oragon.Contexts.FluentNHibernate\Oragon.Contexts.FluentNHibernate.csproj" />
+        <ProjectReference Include="..\..\..\Oragon.Contexts.NHibernate\Oragon.Contexts.NHibernate.csproj" />
+        <ProjectReference Include="..\..\..\Oragon.Contexts\Oragon.Contexts.csproj" />
+    </ItemGroup>
+
+    
+
+    <ItemGroup>
+        <None Update="AppContext.xml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
 
 </Project>

@@ -57,7 +57,7 @@
         </property>
         <property name="ConnectionStringDiscoverer">
             <object type="Oragon.Configuration.StaticConfigurationResolver, Oragon.Common">
-                <property name="Configuration" value="Data Source=127.0.0.1;User ID=LogEngine;Password=LogEngine;Database=LogEngine;Application Name=ConsoleTest" />
+                <property name="Configuration" value="Data Source=192.168.1.88;User ID=LogEngine;Password=LogEngine;Database=LogEngine;Application Name=ConsoleTest" />
             </object>
         </property>
     </object>

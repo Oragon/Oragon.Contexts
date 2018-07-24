@@ -14,11 +14,12 @@ namespace Oragon.Architecture.LogEngine.ConsoleApp.Services
         internal TipoTurmaDataProcess TipoTurmaDataProcess { get; set; }
         internal TurmaDataProcess TurmaDataProcess { get; set; }
 
-
-
+        
         [NHContext("APP_DB_PRINCIPAL_CONTEXT", true)]
         public void Test1Create()
-        {
+        {            
+
+
             Aluno aluno1 = new Aluno() { Nome = "Luiz Carlos Faria 1", Descricao = "1" };
             Aluno aluno2 = new Aluno() { Nome = "Luiz Carlos Faria 2", Descricao = "2" };
 
@@ -76,7 +77,7 @@ namespace Oragon.Architecture.LogEngine.ConsoleApp.Services
             {
                 throw new System.Exception();
             }
-            
+
         }
 
 
