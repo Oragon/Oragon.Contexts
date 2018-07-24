@@ -6,6 +6,11 @@
         <Configurations>Debug;Release;DebugWithProjRefs</Configurations>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugWithProjRefs|AnyCPU'">
+      <DefineConstants>DEBUG;TRACE;DEBUGWITHPROJREFS;NETCOREAPP;NETCOREAPP2_1</DefineConstants>
+      <Optimize>false</Optimize>
+    </PropertyGroup>
+
 
     <ItemGroup>
         <PackageReference Include="Oragon.Common" Version="2.1.1" />
