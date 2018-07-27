@@ -14,7 +14,11 @@ namespace Oragon.Architecture.LogEngine.ConsoleApp
 
             var os = System.Environment.OSVersion.ToString();
 
+
+
             var service = context.GetObject<ITestService>();
+
+            service.Test5Delete();
 
             service.Test1Create();
 

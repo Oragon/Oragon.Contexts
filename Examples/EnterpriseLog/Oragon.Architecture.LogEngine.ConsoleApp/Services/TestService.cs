@@ -49,12 +49,12 @@ namespace Oragon.Architecture.LogEngine.ConsoleApp.Services
         [NHContext("APP_DB_PRINCIPAL_CONTEXT", true)]
         public void Test2Compare()
         {
-            if (this.AlunoDataProcess.GetListBy(it => it.Descricao == "1").Single().Nome != "Luiz Carlos Faria 1")
+            if (this.AlunoDataProcess.GetFirstBy(it => it.Descricao == "1").Nome != "Luiz Carlos Faria 1")
             {
                 throw new System.Exception();
             }
 
-            if (this.AlunoDataProcess.GetListBy(it => it.Descricao == "2").Single().Nome != "Luiz Carlos Faria 2")
+            if (this.AlunoDataProcess.GetFirstBy(it => it.Descricao == "2").Nome != "Luiz Carlos Faria 2")
             {
                 throw new System.Exception();
             }
@@ -63,7 +63,7 @@ namespace Oragon.Architecture.LogEngine.ConsoleApp.Services
         [NHContext("APP_DB_PRINCIPAL_CONTEXT", true)]
         public void Test3Change()
         {
-            Aluno aluno1 = this.AlunoDataProcess.GetListBy(it => it.Descricao == "1").Single();
+            Aluno aluno1 = this.AlunoDataProcess.GetFirstBy(it => it.Descricao == "1");
 
             aluno1.Nome = "Não é Luiz Carlos Faria";
 
@@ -73,7 +73,7 @@ namespace Oragon.Architecture.LogEngine.ConsoleApp.Services
         [NHContext("APP_DB_PRINCIPAL_CONTEXT", true)]
         public void Test4Compare()
         {
-            if (this.AlunoDataProcess.GetListBy(it => it.Descricao == "1").Single().Nome != "Não é Luiz Carlos Faria")
+            if (this.AlunoDataProcess.GetFirstBy(it => it.Descricao == "1").Nome != "Não é Luiz Carlos Faria")
             {
                 throw new System.Exception();
             }
