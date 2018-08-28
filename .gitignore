@@ -15,3 +15,6 @@ Examples/EnterpriseLog/.vs/
 *.user
 *.userosscache
 *.sln.docstates
+tests/Oragon.Context.Tests/obj/
+packages/
+tests/Oragon.Context.Tests/bin/
