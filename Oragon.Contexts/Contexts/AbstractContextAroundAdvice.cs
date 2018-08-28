@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Oragon.Contexts
 {
-	public abstract class AbstractContextAroundAdvice<AttributeType, ContextType> : IMethodInterceptor
+	public abstract class AbstractContextAroundAdvice<ContextType, AttributeType> : IMethodInterceptor
 		where AttributeType : AbstractContextAttribute
 		where ContextType : AbstractContext<AttributeType>
 	{
@@ -13,7 +13,9 @@ namespace Oragon.Contexts
 
 		protected abstract Func<AttributeType, bool> AttributeQueryFilter { get; }
 
-		protected Stack<AbstractContext<AttributeType>> ContextStack
+        protected abstract string ContextStackListKey { get; }
+
+        protected Stack<AbstractContext<AttributeType>> ContextStack
 		{
 			get
 			{
@@ -26,8 +28,6 @@ namespace Oragon.Contexts
 				return contextStack;
 			}
 		}
-
-		protected abstract string ContextStackListKey { get; }
 
 		#endregion Protected Properties
 

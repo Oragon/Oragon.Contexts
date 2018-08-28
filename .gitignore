@@ -18,3 +18,4 @@ Examples/EnterpriseLog/.vs/
 tests/Oragon.Context.Tests/obj/
 packages/
 tests/Oragon.Context.Tests/bin/
+TestResults/

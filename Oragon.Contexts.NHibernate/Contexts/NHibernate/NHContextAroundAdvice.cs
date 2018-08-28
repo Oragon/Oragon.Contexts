@@ -7,7 +7,7 @@ using NH = NHibernate;
 
 namespace Oragon.Contexts.NHibernate
 {
-	public class NHContextAroundAdvice : AbstractContextAroundAdvice<NHContextAttribute, NHContext>
+	public class NHContextAroundAdvice : AbstractContextAroundAdvice<NHContext, NHContextAttribute>
 	{
 		#region Dependence Injection
 
