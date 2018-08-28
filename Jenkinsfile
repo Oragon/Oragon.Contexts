@@ -1,9 +1,9 @@
 pipeline {
     agent {
-        docker { 
-            alwaysPull false
-            image 'microsoft/dotnet:2.1-sdk'
-            reuseNode false
+        dockerfile {
+            // alwaysPull false
+            // image 'microsoft/dotnet:2.1-sdk'
+            // reuseNode false
             args '-u root:root'
         }
     }
@@ -12,8 +12,6 @@ pipeline {
         stage('Build') {
 
             steps {
-
-                // git branch: 'master', credentialsId: 'GITHUB_USERNAME', url: 'https://github.com/Oragon/Oragon.AspNetCore.Hosting.AMQP.git'
                 
                 echo sh(script: 'env|sort', returnStdout: true)
 
@@ -27,12 +25,20 @@ pipeline {
 
             steps {
 
-                // sh 'dotnet test ./Oragon.Spring.Core.Tests/Oragon.Spring.Core.Tests.csproj --configuration Debug --output ../output--core-tests'
+                 withCredentials([usernamePassword(credentialsId: 'SonarQube', passwordVariable: 'SONARQUBE_KEY', usernameVariable: 'DUMMY' )]) {
 
-                // sh 'dotnet test ./Oragon.Spring.Aop.Tests/Oragon.Spring.Aop.Tests.csproj --configuration Debug --output ../output-aop-tests'
+                    sh  '''
+                        export PATH="$PATH:/root/.dotnet/tools"
 
-                echo 'Disabled at this time'
+                        dotnet test ./tests/Oragon.Context.Tests/Oragon.Context.Tests.csproj --configuration Debug --output ../output-tests  /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput='/output-coverage/coverage.xml' /p:ExcludeByFile="**/tests/**,**/Examples/**"
 
+                        dotnet sonarscanner begin /k:"Oragon-Context" /d:sonar.host.url="http://sonar.oragon.io" /d:sonar.login="$SONARQUBE_KEY" /d:sonar.exclusions=tests/** /d:sonar.cs.opencover.reportsPaths="/output-coverage/coverage.xml" /d:sonar.test.exclusions="**/tests/**,**/Examples/**"
+                        dotnet build ./Oragon.AspNetCore.Hosting.AMQP.sln
+                        dotnet sonarscanner end /d:sonar.login="$SONARQUBE_KEY"
+                        '''
+
+                }
+                
             }
 
         }
@@ -87,15 +93,15 @@ pipeline {
                 script {
                     
                     def publishOnNuGet = ( env.BRANCH_NAME.endsWith("-alpha") == false );
-
-                    withCredentials([usernamePassword(credentialsId: 'myget-oragon', passwordVariable: 'MYGET_KEY', usernameVariable: 'DUMMY' )]) {
                         
+                        withCredentials([usernamePassword(credentialsId: 'myget-oragon', passwordVariable: 'MYGET_KEY', usernameVariable: 'DUMMY' )]) {
+
                         sh 'for pkg in ./output-packages/*.nupkg ; do dotnet nuget push "$pkg" -k "$MYGET_KEY" -s https://www.myget.org/F/oragon/api/v3/index.json ; done'
 
-                    }
+                        }
 
                     if (publishOnNuGet) {
-                        
+
                         withCredentials([usernamePassword(credentialsId: 'nuget-luizcarlosfaria', passwordVariable: 'NUGET_KEY', usernameVariable: 'DUMMY')]) {
 
                             sh 'for pkg in ./output-packages/*.nupkg ; do dotnet nuget push "$pkg" -k "$NUGET_KEY" -s https://api.nuget.org/v3/index.json ; done'
