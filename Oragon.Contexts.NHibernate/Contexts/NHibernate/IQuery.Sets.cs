@@ -79,17 +79,6 @@ namespace Oragon.Extensions
 			}
 		}
 
-		public static IQuery SetDateTime2(this IQuery query, string name, DateTime? val)
-		{
-			if (val.HasValue)
-			{
-				return query.SetDateTime2(name, val.Value);
-			}
-			else
-			{
-				return query.SetParameter(name, null, NHibernateUtil.DateTime2);
-			}
-		}
 
 		public static IQuery SetDateTimeOffset(this IQuery query, string name, DateTimeOffset? val)
 		{
