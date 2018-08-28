@@ -24,6 +24,11 @@ namespace Oragon.Contexts.NHibernate
                                .IsolationLevel(this.DefaultIsolationLevel);
             if (this.EnabledDiagnostics)
                 configSqlClient = configSqlClient.ShowSql().FormatSql();
+
+            if (!string.IsNullOrWhiteSpace(this.DefaultSchema))
+                configSqlClient.DefaultSchema(this.DefaultSchema);
+
+
             FluentNH.Cfg.Db.IPersistenceConfigurer returnValue = configSqlClient;
             return returnValue;
         }

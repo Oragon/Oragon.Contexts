@@ -33,6 +33,9 @@ namespace Oragon.Contexts.NHibernate
 		[Required]
 		public IConfigurationResolver ConnectionStringDiscoverer { get; set; }
 
+        /// <summary>
+        ///     Define a estratégia de flush para conexões não transacionadas
+        /// </summary>
 		[Required]
 		public NH.FlushMode DefaultFlushMode { get; set; }
 
@@ -57,6 +60,9 @@ namespace Oragon.Contexts.NHibernate
 		[Required]
 		public string ObjectContextKey { get; set; }
 
+        /// <summary>
+        ///     Define a estratégia de flush para conexões transacionadas
+        /// </summary>
 		[Required]
 		public NH.FlushMode TransactionFlushMode { get; set; }
 
@@ -64,10 +70,16 @@ namespace Oragon.Contexts.NHibernate
 		public System.Data.IsolationLevel TransactionIsolationLevel { get; set; }
 
 		/// <summary>
-		///     Identifica tipos contidos em
+		///     Identifica tipos contidos para mapeamento
 		/// </summary>
 		[Required]
 		public List<string> TypeNames { get; set; }
+
+
+        /// <summary>
+		///     Identifica tipos contidos para mapeamento
+		/// </summary>
+        public string DefaultSchema { get; set; }
 
 		#endregion Injeção de Dependência
 
