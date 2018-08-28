@@ -33,7 +33,7 @@ pipeline {
                         dotnet test ./tests/Oragon.Context.Tests/Oragon.Context.Tests.csproj --configuration Debug --output ../output-tests  /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput='/output-coverage/coverage.xml' /p:ExcludeByFile='tests/**'
 
                         dotnet sonarscanner begin /k:"Oragon-Context" /d:sonar.host.url="http://sonar.oragon.io" /d:sonar.login="$SONARQUBE_KEY" /d:sonar.exclusions="tests/**" /d:sonar.cs.opencover.reportsPaths="/output-coverage/coverage.xml" /d:sonar.test.exclusions='tests/**'
-                        dotnet build ./Oragon.AspNetCore.Hosting.AMQP.sln
+                        dotnet build ./Oragon.Context.sln
                         dotnet sonarscanner end /d:sonar.login="$SONARQUBE_KEY"
                         '''
 
