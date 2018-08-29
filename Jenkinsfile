@@ -30,9 +30,23 @@ pipeline {
                     sh  '''
                         export PATH="$PATH:/root/.dotnet/tools"
 
-                        dotnet test ./tests/Oragon.Context.Tests/Oragon.Context.Tests.csproj --configuration Debug --output ../output-tests  /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput='/output-coverage/coverage.xml' /p:Exclude="[Oragon.*.Tests]*"
+                        dotnet test ./tests/Oragon.Context.Tests/Oragon.Context.Tests.csproj \
+                            --configuration Debug \
+                            --output ../output-tests  \
+                            /p:CollectCoverage=true \
+                            /p:CoverletOutputFormat=opencover \
+                            /p:CoverletOutput='/output-coverage/coverage.xml' \
+                            /p:Exclude="[Oragon.*.Tests]*"
 
-                        dotnet sonarscanner begin /k:"Oragon-Context" /d:sonar.host.url="http://sonar.oragon.io" /d:sonar.login="$SONARQUBE_KEY" /d:sonar.cs.opencover.reportsPaths="/output-coverage/coverage.xml" /d:sonar.coverage.exclusions="**/tests/**,**/Examples/**" /d:sonar.exclusions="**/tests/**,**/Examples/**" /d:sonar.test.exclusions="**/tests/**,**/Examples/**"
+                        dotnet sonarscanner begin /k:"Oragon-Context" \
+                            /d:sonar.host.url="http://sonar.oragon.io" \
+                            /d:sonar.login="$SONARQUBE_KEY" \
+                            /d:sonar.cs.opencover.reportsPaths="/output-coverage/coverage.xml" \
+                            /d:sonar.coverage.exclusions="**/tests/**,**/Examples/**,**/*.CodeGen.cs" \
+                                     /d:sonar.exclusions="**/tests/**,**/Examples/**,**/*.CodeGen.cs" \
+                                /d:sonar.test.exclusions="**/tests/**,**/Examples/**,**/*.CodeGen.cs" \
+                            /d:sonar.coverage.exclusions="**/tests/**,**/Examples/**,**/*.CodeGen.cs"
+                        
                         dotnet build ./Oragon.Context.sln
                         dotnet sonarscanner end /d:sonar.login="$SONARQUBE_KEY"
                         '''
