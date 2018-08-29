@@ -43,9 +43,8 @@ pipeline {
                             /d:sonar.login="$SONARQUBE_KEY" \
                             /d:sonar.cs.opencover.reportsPaths="/output-coverage/coverage.xml" \
                             /d:sonar.coverage.exclusions="**/tests/**,**/Examples/**,**/*.CodeGen.cs" \
-                                     /d:sonar.exclusions="**/tests/**,**/Examples/**,**/*.CodeGen.cs" \
                                 /d:sonar.test.exclusions="**/tests/**,**/Examples/**,**/*.CodeGen.cs" \
-                            /d:sonar.coverage.exclusions="**/tests/**,**/Examples/**,**/*.CodeGen.cs"
+                                     /d:sonar.exclusions="**/tests/**,**/Examples/**,**/*.CodeGen.cs"
                         
                         dotnet build ./Oragon.Context.sln
                         dotnet sonarscanner end /d:sonar.login="$SONARQUBE_KEY"
