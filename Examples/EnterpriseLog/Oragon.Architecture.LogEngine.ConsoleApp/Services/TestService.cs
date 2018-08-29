@@ -51,12 +51,12 @@ namespace Oragon.Architecture.LogEngine.ConsoleApp.Services
         {
             if (this.AlunoDataProcess.GetFirstBy(it => it.Descricao == "1").Nome != "Luiz Carlos Faria 1")
             {
-                throw new System.Exception();
+                throw new System.ApplicationException();
             }
 
             if (this.AlunoDataProcess.GetFirstBy(it => it.Descricao == "2").Nome != "Luiz Carlos Faria 2")
             {
-                throw new System.Exception();
+                throw new System.ApplicationException();
             }
         }
 
@@ -75,7 +75,7 @@ namespace Oragon.Architecture.LogEngine.ConsoleApp.Services
         {
             if (this.AlunoDataProcess.GetFirstBy(it => it.Descricao == "1").Nome != "Não é Luiz Carlos Faria")
             {
-                throw new System.Exception();
+                throw new System.ApplicationException();
             }
 
         }

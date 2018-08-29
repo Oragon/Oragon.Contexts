@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+Ôªøusing System.Collections.Generic;
 using NH = NHibernate;
 
 namespace Oragon.Contexts.NHibernate
@@ -88,7 +88,7 @@ namespace Oragon.Contexts.NHibernate
 
         protected override void DisposeContext()
         {
-            //TODO: Adicionado tratamento para a transaction. Na vers„o anterior n„o havia sido codificado, no entanto tambÈm n„o h· nenhum bug conhecido a respeito da falta desse cÛdigo.
+            //TODO: Adicionado tratamento para a transaction. Na vers√£o anterior n√£o havia sido codificado, no entanto tamb√©m n√£o h√° nenhum bug conhecido a respeito da falta desse c√≥digo.
             if (this.Transaction != null)
                 this.Transaction.Dispose();
 

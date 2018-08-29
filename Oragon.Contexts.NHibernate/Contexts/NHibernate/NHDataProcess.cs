@@ -1,4 +1,4 @@
-using NHibernate.Linq;
+ï»¿using NHibernate.Linq;
 using NH = NHibernate;
 
 namespace Oragon.Contexts.NHibernate
@@ -32,7 +32,7 @@ namespace Oragon.Contexts.NHibernate
 		#region Protected Methods
 
 		/// <summary>
-		///     Obtém um IQueryOver pronto para realizar consultas usando lambda expressions
+		///     ObtÃ©m IQueryOver pronto para realizar consultas usando lambda expressions
 		/// </summary>
 		/// <returns></returns>
 		protected virtual System.Linq.IQueryable<T> Query<T>()
@@ -43,7 +43,7 @@ namespace Oragon.Contexts.NHibernate
 		}
 
 		/// <summary>
-		///     Obtém um IQueryOver (ICriteria API) para que possa ser utilizado em consultas com lambda expressions
+		///     ObtÃ©m IQueryOver (ICriteria API) para que possa ser utilizado em consultas com lambda expressions
 		/// </summary>
 		/// <returns></returns>
 		protected virtual NH.IQueryOver<T, T> QueryOver<T>()

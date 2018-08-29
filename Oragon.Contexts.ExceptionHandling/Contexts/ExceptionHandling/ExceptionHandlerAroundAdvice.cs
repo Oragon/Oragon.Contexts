@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-//using System.ServiceModel;
 using Oragon.Business;
 using Common.Logging;
 using Oragon.Logging;
@@ -13,13 +12,13 @@ namespace Oragon.Contexts.ExceptionHandling
 {
 	public class ExceptionHandlerAroundAdvice : IMethodInterceptor
 	{
-		private List<Type> BusinessExceptionTypes { get; set; }
+		protected List<Type> BusinessExceptionTypes { get; set; }
 
-		private ILogger Logger { get; set; }
+        protected ILogger Logger { get; set; }
 
-		private string GenericErrorMessage { get; set; }
+        protected string GenericErrorMessage { get; set; }
 
-		private bool EnableDebug { get; set; }
+        protected bool EnableDebug { get; set; }
 
 		public object Invoke(IMethodInvocation invocation)
 		{
@@ -47,10 +46,6 @@ namespace Oragon.Contexts.ExceptionHandling
 				{
 					throw;
 				}
-				//catch (FaultException)
-				//{
-				//	throw;
-				//}
 				catch (Exception ex)
 				{
 					Type exceptionType = ex.GetType();
@@ -74,39 +69,17 @@ namespace Oragon.Contexts.ExceptionHandling
 						if (isBusinessException) //BusinessException - Warn
 						{
 							logException(LogLevel.Warn);
-							//if (System.ServiceModel.OperationContext.Current == null)
 								throw;
-							//else
-							//	throw this.CreateFault(ex, ex.Message);
 						} else //Outras exceptions - Fatal
 						{
 							logException(LogLevel.Fatal);
-							//if (System.ServiceModel.OperationContext.Current == null)
 								throw new UndefinedException(this.GenericErrorMessage);
-							//else
-							//	throw this.CreateFault(ex, this.GenericErrorMessage);
 						}
 					}
 				}
 			}
 			return returnValue;
 		}
-
-
-
-
-		//private FaultException CreateFault(Exception innerException, string reason, FaultCode code = null)
-		//{
-		//	FaultException fault = null;
-		//	if (code != null)
-		//		fault = new FaultException(reason, code);
-		//	else
-		//		fault = new FaultException(reason);
-		//	FieldInfo _innerExceptionFieldOfFault = typeof(FaultException).GetField("_innerException", System.Reflection.BindingFlags.GetField | System.Reflection.BindingFlags.NonPublic);
-		//	Spring.Reflection.Dynamic.SafeField safeInnerExceptionFieldOfFault = new Spring.Reflection.Dynamic.SafeField(_innerExceptionFieldOfFault);
-		//	safeInnerExceptionFieldOfFault.SetValue(fault, innerException);
-		//	return fault;
-		//}
 
 		private ExceptionHandlingAttribute GetAttribute(IMethodInvocation invocation)
 		{

@@ -1,4 +1,4 @@
-using AopAlliance.Intercept;
+Ôªøusing AopAlliance.Intercept;
 using Oragon.Spring.Objects.Factory.Attributes;
 using System;
 using System.Collections.Generic;
@@ -68,9 +68,9 @@ namespace Oragon.Contexts.NHibernate
 
 		private object InvokeUsingContext(IMethodInvocation invocation, Stack<NHContextAttribute> contextAttributesStack)
 		{
-			//Este mÈtodo È chamado recursivamente, removendo o item do Stack sempre que houver um. AtÈ que n„o haja nenhum. Quando n„o houver nenhum item mais, ele efetivamente
-			//manda executar a chamada ao mÈtodo de destino.
-			//Esse controle È necess·rio pois as os "Usings" de Contexto, Sess„o e TransaÁ„o precisam ser encadeados
+			//Este m√©todo √© chamado recursivamente, removendo o item do Stack sempre que houver um. At√© que n√£o haja nenhum. Quando n√£o houver nenhum item mais, ele efetivamente
+			//manda executar a chamada ao m√©todo de destino.
+			//Esse controle √© necess√°rio pois as os "Usings" de Contexto, Sess√£o e Transa√ß√£o precisam ser encadeados
 			object returnValue = null;
 			if (contextAttributesStack.Count == 0)
 			{
@@ -78,7 +78,7 @@ namespace Oragon.Contexts.NHibernate
 			}
 			else
 			{
-				//Obtendo o primeiro primeiro ˙ltimo RequiredPersistenceContextAttribute da stack, removendo-o.
+				//Obtendo o primeiro primeiro √∫ltimo RequiredPersistenceContextAttribute da stack, removendo-o.
 				NHContextAttribute currentContextAttribute = contextAttributesStack.Pop();
 				//Criando o contexto
 				using (NHContext currentContext = new NHContext(currentContextAttribute, this.Interceptor, this.ContextStack))
