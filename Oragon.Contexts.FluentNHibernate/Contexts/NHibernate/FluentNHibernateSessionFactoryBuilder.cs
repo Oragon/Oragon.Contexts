@@ -30,6 +30,17 @@ namespace Oragon.Contexts.NHibernate
         {
             FluentNH.Cfg.Db.IPersistenceConfigurer databaseConfiguration = this.BuildPersistenceConfigurer();
 
+            Func<NH.Cfg.Configuration, NH.Cfg.Configuration> configureWithRawProperties = (config) => {
+                if (this.NHibernateRawConfigurationValues != null && this.NHibernateRawConfigurationValues.Count > 0)
+                {
+                    foreach (var rawConfigurationValue in this.NHibernateRawConfigurationValues)
+                    {
+                        config.SetProperty(rawConfigurationValue.Key, rawConfigurationValue.Value);
+                    }
+                }
+                return config;
+            };
+
             FluentNH.Cfg.FluentConfiguration configuration = FluentNH.Cfg.Fluently
                 .Configure()
                 .Database(databaseConfiguration)
@@ -42,9 +53,11 @@ namespace Oragon.Contexts.NHibernate
                     .OutputToConsole()
                 )
                 .ExposeConfiguration(it =>
-                    it
-                    .SetProperty("command_timeout", this.CommandTimeout.ToString(CultureInfo.InvariantCulture))
-                    .SetProperty("adonet.batch_size", this.BatchSize.ToString(CultureInfo.InvariantCulture))
+                    configureWithRawProperties(
+                        it
+                        .SetProperty("command_timeout", this.CommandTimeout.ToString(CultureInfo.InvariantCulture))
+                        .SetProperty("adonet.batch_size", this.BatchSize.ToString(CultureInfo.InvariantCulture))
+                    )
                 );
 
             foreach (string typeName in this.TypeNames)

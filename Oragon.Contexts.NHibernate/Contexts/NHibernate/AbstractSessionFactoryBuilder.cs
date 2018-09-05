@@ -75,6 +75,8 @@ namespace Oragon.Contexts.NHibernate
 		[Required]
 		public List<string> TypeNames { get; set; }
 
+        public Dictionary<string, string> NHibernateRawConfigurationValues { get; set; }
+
 
         /// <summary>
 		///     Identifica tipos contidos para mapeamento
