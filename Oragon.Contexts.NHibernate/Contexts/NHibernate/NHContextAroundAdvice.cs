@@ -11,12 +11,12 @@ namespace Oragon.Contexts.NHibernate
 	{
 		#region Dependence Injection
 
-		private bool ElevateToSystemTransactionsIfRequired { get; set; }
+		protected bool ElevateToSystemTransactionsIfRequired { get; set; }
 
-		private NH.IInterceptor Interceptor { get; set; }
+        protected NH.IInterceptor Interceptor { get; set; }
 
 		[Required]
-		private List<ISessionFactoryBuilder> SessionFactoryBuilders { get; set; }
+        protected List<ISessionFactoryBuilder> SessionFactoryBuilders { get; set; }
 
 		#endregion Dependence Injection
 

@@ -87,7 +87,7 @@ namespace Oragon.Contexts.NHibernate
 
 		#region Instance State
 
-		private Semaphore semaphore = new Semaphore(1);
+		private readonly Semaphore semaphore = new Semaphore(1);
 		private volatile NH.ISessionFactory sessionFactory;
 
 		#endregion Instance State
