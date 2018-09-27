@@ -21,5 +21,7 @@ namespace Oragon.Context.Tests.Schema
                 return invocation.Proceed();
             }
         }
+
+        public Stack<AbstractContext<FakeAttribute>> GetContextStack() => this.ContextStack;
     }
 }

@@ -1,10 +1,13 @@
+using Moq;
+using Oragon.Context.Tests.Schema;
 using Oragon.Context.Tests.Schema.Targets;
+using Oragon.Contexts;
 using System;
 using Xunit;
 
 namespace Oragon.Context.Tests
 {
-    
+
     public class AbstractContextTests
     {
         private Oragon.Spring.Context.IApplicationContext GetContext(string caseName) => new Oragon.Spring.Context.Support.XmlApplicationContext($"assembly://Oragon.Context.Tests/Oragon.Context.Tests/{nameof(AbstractContextTests)}.{caseName}.xml");
@@ -12,9 +15,9 @@ namespace Oragon.Context.Tests
         [Fact]
         public void IsolationTest()
         {
-            using (var context = this.GetContext("Case1"))
+            using (var springContext = this.GetContext("Case1"))
             {
-                var service = context.GetObject<IContextTargetService>("Service");
+                var service = springContext.GetObject<IContextTargetService>("Service");
                 service.Test(dp1 =>
                 {
 
@@ -42,9 +45,9 @@ namespace Oragon.Context.Tests
         [Fact]
         public void ServiceTest()
         {
-            using (var context = this.GetContext("Case1"))
+            using (var springContext = this.GetContext("Case1"))
             {
-                var service = context.GetObject<IContextTargetService>("Service");
+                var service = springContext.GetObject<IContextTargetService>("Service");
                 service.FakeDataProcess = service.FakeDataProcess;
             }
         }
@@ -54,8 +57,8 @@ namespace Oragon.Context.Tests
         {
             using (var context = this.GetContext("Case1"))
             {
-                var service = context.GetObject<IContextTargetService>("Service");
-                service.Test(dp1 =>
+                var springContext = context.GetObject<IContextTargetService>("Service");
+                springContext.Test(dp1 =>
                 {
                     dp1.Add(2);
                     dp1.Add(5);
@@ -66,14 +69,15 @@ namespace Oragon.Context.Tests
         }
 
 
-        [Fact]        
+        [Fact]
         public void ContextAccess2()
         {
-            Assert.Throws<InvalidOperationException>(() => {
+            Assert.Throws<InvalidOperationException>(() =>
+            {
 
-                using (var context = this.GetContext("Case1"))
+                using (var springContext = this.GetContext("Case1"))
                 {
-                    var service = context.GetObject<IContextTargetService>("Service");
+                    var service = springContext.GetObject<IContextTargetService>("Service");
                     service.Test(dp1 =>
                     {
                         Assert.Equal("123456", dp1.MyContextKey);
@@ -84,9 +88,38 @@ namespace Oragon.Context.Tests
 
             });
 
-            
         }
 
+
+
+        [Fact]
+        public void CascadeContext()
+        {
+#pragma warning disable xUnit2013 // Do not use equality check to check for collection size.
+            using (var springContext = this.GetContext("Case1"))
+            {
+                var advice = springContext.GetObject<FakeAroundAdvice>("FakeAroundAdvice");
+                var service = springContext.GetObject<IContextTargetService>("Service");
+
+                Assert.Equal(0, advice.GetContextStack().Count);
+
+                service.Test(a =>
+                {
+                    Assert.Equal(1, advice.GetContextStack().Count);
+                    service.Test(b =>
+                    {
+                        Assert.Equal(2, advice.GetContextStack().Count);
+                    });
+                    Assert.Equal(1, advice.GetContextStack().Count);
+                    GC.Collect();
+
+                });
+                Assert.Equal(0, advice.GetContextStack().Count);
+                
+
+            }
+#pragma warning restore xUnit2013 // Do not use equality check to check for collection size.
+        }
 
     }
 }
