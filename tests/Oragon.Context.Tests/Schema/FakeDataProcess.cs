@@ -20,7 +20,7 @@ namespace Oragon.Context.Tests.Schema
 
         public int Sum()
         {
-            return this.ObjectContext.ContextData.Sum();
+            return this.ObjectContext.ContextData.Any() ? this.ObjectContext.ContextData.Sum() : 0;
         }
 
         public List<int> Get()

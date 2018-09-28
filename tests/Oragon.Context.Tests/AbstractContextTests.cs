@@ -3,6 +3,7 @@ using Oragon.Context.Tests.Schema;
 using Oragon.Context.Tests.Schema.Targets;
 using Oragon.Contexts;
 using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace Oragon.Context.Tests
@@ -20,14 +21,14 @@ namespace Oragon.Context.Tests
                 var service = springContext.GetObject<IContextTargetService>("Service");
                 service.Test(dp1 =>
                 {
-
+                    Assert.Equal(0, dp1.Sum());
                     dp1.Add(0);
                     Assert.Equal(0, dp1.Sum());
                     dp1.Add(5);
+                    Assert.Equal(5, dp1.Sum());
 
                     service.Test(dp2 =>
                     {
-                        dp2.Add(0);
                         Assert.Equal(0, dp2.Sum());
 
                         dp2.Add(5);
@@ -93,6 +94,37 @@ namespace Oragon.Context.Tests
 
 
         [Fact]
+        public void ForceError()
+        {
+            Assert.Throws<InvalidOperationException>(() =>
+            {
+                using (var springContext = this.GetContext("Case1"))
+                {
+                    var advice = springContext.GetObject<FakeAroundAdvice>("FakeAroundAdvice");
+                    var service = springContext.GetObject<IContextTargetService>("Service");
+                    service.Test(a =>
+                    {
+                        service.Test(b =>
+                        {
+                            advice.GetContextStack().Pop();
+                        });
+                    });
+                }
+            });
+        }
+
+        [Fact]
+        public void DisposeTest()
+        {
+            var attr = new FakeAttribute() { ContextKey = "A" };
+            var contextStack = new Stack<AbstractContext<FakeAttribute>>();
+            var mockContext = new Mock<FakeContext>(attr, contextStack);
+            var disposableAnalyser = new DisposableDecorator(mockContext.Object);
+            GC.Collect();
+            mockContext.Verify(it => it.Dispose(), Times.Never());
+        }
+
+        [Fact]
         public void CascadeContext()
         {
 #pragma warning disable xUnit2013 // Do not use equality check to check for collection size.
@@ -115,7 +147,7 @@ namespace Oragon.Context.Tests
 
                 });
                 Assert.Equal(0, advice.GetContextStack().Count);
-                
+
 
             }
 #pragma warning restore xUnit2013 // Do not use equality check to check for collection size.

@@ -42,7 +42,7 @@ namespace Oragon.Contexts
 			Dispose(false);
 		}
 
-		public void Dispose()
+		public virtual void Dispose()
 		{
 			Dispose(true);
 			GC.SuppressFinalize(this);
