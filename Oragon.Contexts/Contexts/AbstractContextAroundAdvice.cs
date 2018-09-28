@@ -35,13 +35,9 @@ namespace Oragon.Contexts
 
 		public object Invoke(IMethodInvocation invocation)
 		{
-			object returnValue = null;
 			IEnumerable<AttributeType> contextAttributes = this.GetContextAttributes(invocation);
-			if (contextAttributes.Any())
-				returnValue = this.Invoke(invocation, contextAttributes);
-			else
-				returnValue = invocation.Proceed();
-			return returnValue;
+            object returnValue = contextAttributes.Any() ? this.Invoke(invocation, contextAttributes) : invocation.Proceed();
+            return returnValue;
 		}
 
 		#endregion Public Methods

@@ -26,7 +26,7 @@ namespace Oragon.Contexts.NHibernate
         private Dictionary<string, string> BuildDic()
         {
             Dictionary<string, string> valueDic = new Dictionary<string, string>();
-            string nameSpace = "urn:nhibernate-configuration-2.2";
+            const string nameSpace = "urn:nhibernate-configuration-2.2";
             XDocument xDoc = XDocument.Load(FileName);
             XElement hibernateConfiguration = xDoc.Element(XName.Get("hibernate-configuration", nameSpace));
             XElement sessionFactory = hibernateConfiguration.Element(XName.Get("session-factory", nameSpace));
@@ -39,7 +39,7 @@ namespace Oragon.Contexts.NHibernate
             return valueDic;
         }
 
-        
+
 
         #endregion Private Methods
     }

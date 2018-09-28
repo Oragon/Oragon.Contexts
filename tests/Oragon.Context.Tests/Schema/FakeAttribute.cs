@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Oragon.Context.Tests.Schema
 {
-    public class FakeAttribute: AbstractContextAttribute
+    public sealed class FakeAttribute : AbstractContextAttribute
     {
     }
 }

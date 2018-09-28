@@ -216,11 +216,11 @@ namespace Oragon.Extensions
 		{
 			if (val.HasValue)
 			{
-				return query.SetTimestamp(name, val.Value);
+				return query.SetDateTime(name, val.Value);
 			}
 			else
 			{
-				return query.SetParameter(name, null, NHibernateUtil.Timestamp);
+				return query.SetParameter(name, null, NHibernateUtil.DateTime);
 			}
 		}
 

@@ -34,7 +34,7 @@ namespace Oragon.Contexts
 
 		#region Dispose Methods
 
-		private bool disposed = false;
+		private bool disposed;
 
 		~AbstractContext()
 		{

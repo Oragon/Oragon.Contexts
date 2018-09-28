@@ -6,7 +6,9 @@ namespace Oragon.Contexts.ExceptionHandling
 {
 	public class LogContext : IDisposable
 	{
-		protected Dictionary<string, object> LogTags { get; private set; }
+        const string LogContextKey = nameof(LogContext);
+
+        protected Dictionary<string, object> LogTags { get; private set; }
 
 		public LogContext Parent { get; private set; }
 
@@ -14,19 +16,21 @@ namespace Oragon.Contexts.ExceptionHandling
 
 		public LogContext(bool enlist = false)
 		{
-			this.LogTags = new Dictionary<string, object>();
-			this.LogTags.Add("LogContextID", Guid.NewGuid().ToString("D"));
-			this.LogTags.Add("ParentLogContextID", string.Empty);
+            this.LogTags = new Dictionary<string, object>
+            {
+                { "LogContextID", Guid.NewGuid().ToString("D") },
+                { "ParentLogContextID", string.Empty }
+            };
 
-			this.Enlist = enlist;
+            this.Enlist = enlist;
 			if (this.Enlist)
 			{
-				this.Parent = Spring.Threading.LogicalThreadContext.GetData("LogContext") as LogContext;
+				this.Parent = Spring.Threading.LogicalThreadContext.GetData(LogContextKey) as LogContext;
 				if (this.Parent != null)
 				{
 					this.LogTags["ParentLogContextID"] = this.Parent.LogTags["LogContextID"];
 				}
-				Spring.Threading.LogicalThreadContext.SetData("LogContext", this);
+				Spring.Threading.LogicalThreadContext.SetData(LogContextKey, this);
 			}
 		}
 
@@ -52,18 +56,17 @@ namespace Oragon.Contexts.ExceptionHandling
 		{
 			if (this.Enlist)
 			{
-				LogContext itemToSet = (this.Parent != null) ? this.Parent : null;
-				Spring.Threading.LogicalThreadContext.SetData("LogContext", itemToSet);
+				LogContext itemToSet = this.Parent ?? null;
+				Spring.Threading.LogicalThreadContext.SetData(LogContextKey, itemToSet);
 			}
+            GC.SuppressFinalize(this);
 		}
 
 		public static LogContext Current
 		{
 			get
 			{
-				LogContext logContext = Spring.Threading.LogicalThreadContext.GetData("LogContext") as LogContext;
-				if (logContext == null)
-					logContext = new LogContext(false);
+				LogContext logContext = Spring.Threading.LogicalThreadContext.GetData(LogContextKey) as LogContext ?? new LogContext(false);
 				return logContext;
 			}
 		}

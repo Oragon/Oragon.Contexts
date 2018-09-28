@@ -11,12 +11,12 @@ namespace Oragon.Context.Tests
 
     public class AbstractContextTests
     {
-        private Oragon.Spring.Context.IApplicationContext GetContext(string caseName) => new Oragon.Spring.Context.Support.XmlApplicationContext($"assembly://Oragon.Context.Tests/Oragon.Context.Tests/{nameof(AbstractContextTests)}.{caseName}.xml");
+        private static Oragon.Spring.Context.IApplicationContext GetContext(string caseName) => new Oragon.Spring.Context.Support.XmlApplicationContext($"assembly://Oragon.Context.Tests/Oragon.Context.Tests/{nameof(AbstractContextTests)}.{caseName}.xml");
 
         [Fact]
         public void IsolationTest()
         {
-            using (var springContext = this.GetContext("Case1"))
+            using (var springContext = GetContext("Case1"))
             {
                 var service = springContext.GetObject<IContextTargetService>("Service");
                 service.Test(dp1 =>
@@ -46,7 +46,7 @@ namespace Oragon.Context.Tests
         [Fact]
         public void ServiceTest()
         {
-            using (var springContext = this.GetContext("Case1"))
+            using (var springContext = GetContext("Case1"))
             {
                 var service = springContext.GetObject<IContextTargetService>("Service");
                 service.FakeDataProcess = service.FakeDataProcess;
@@ -56,7 +56,7 @@ namespace Oragon.Context.Tests
         [Fact]
         public void ContextAccess1()
         {
-            using (var context = this.GetContext("Case1"))
+            using (var context = GetContext("Case1"))
             {
                 var springContext = context.GetObject<IContextTargetService>("Service");
                 springContext.Test(dp1 =>
@@ -76,7 +76,7 @@ namespace Oragon.Context.Tests
             Assert.Throws<InvalidOperationException>(() =>
             {
 
-                using (var springContext = this.GetContext("Case1"))
+                using (var springContext = GetContext("Case1"))
                 {
                     var service = springContext.GetObject<IContextTargetService>("Service");
                     service.Test(dp1 =>
@@ -98,9 +98,9 @@ namespace Oragon.Context.Tests
         {
             Assert.Throws<InvalidOperationException>(() =>
             {
-                using (var springContext = this.GetContext("Case1"))
+                using (var springContext = GetContext("Case1"))
                 {
-                    var advice = springContext.GetObject<FakeAroundAdvice>("FakeAroundAdvice");
+                    var advice = springContext.GetObject<FakeAroundAdvice>(nameof(FakeAroundAdvice));
                     var service = springContext.GetObject<IContextTargetService>("Service");
                     service.Test(a =>
                     {
@@ -116,10 +116,12 @@ namespace Oragon.Context.Tests
         [Fact]
         public void DisposeTest()
         {
-            var attr = new FakeAttribute() { ContextKey = "A" };
+            var attr = new FakeAttribute { ContextKey = "A" };
             var contextStack = new Stack<AbstractContext<FakeAttribute>>();
             var mockContext = new Mock<FakeContext>(attr, contextStack);
+#pragma warning disable CC0022 // Should dispose object
             var disposableAnalyser = new DisposableDecorator(mockContext.Object);
+#pragma warning restore CC0022 // Should dispose object
             GC.Collect();
             mockContext.Verify(it => it.Dispose(), Times.Never());
         }
@@ -128,9 +130,9 @@ namespace Oragon.Context.Tests
         public void CascadeContext()
         {
 #pragma warning disable xUnit2013 // Do not use equality check to check for collection size.
-            using (var springContext = this.GetContext("Case1"))
+            using (var springContext = GetContext("Case1"))
             {
-                var advice = springContext.GetObject<FakeAroundAdvice>("FakeAroundAdvice");
+                var advice = springContext.GetObject<FakeAroundAdvice>(nameof(FakeAroundAdvice));
                 var service = springContext.GetObject<IContextTargetService>("Service");
 
                 Assert.Equal(0, advice.GetContextStack().Count);

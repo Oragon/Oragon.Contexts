@@ -2,22 +2,22 @@
 
 namespace Oragon.Contexts.ExceptionHandling
 {
-	[AttributeUsage(AttributeTargets.Method)]
-	public class ExceptionHandlingAttribute : Attribute
-	{
-		#region Public Constructors
+    [AttributeUsage(AttributeTargets.Method)]
+    public sealed class ExceptionHandlingAttribute : Attribute
+    {
+        #region Public Constructors
 
-		public ExceptionHandlingAttribute(ExceptionHandlingStrategy strategy)
-		{
-			this.Strategy = strategy;
-		}
+        public ExceptionHandlingAttribute(ExceptionHandlingStrategy strategy)
+        {
+            this.Strategy = strategy;
+        }
 
-		#endregion Public Constructors
+        #endregion Public Constructors
 
-		#region Public Properties
+        #region Public Properties
 
-		public ExceptionHandlingStrategy Strategy { get; set; }
+        public ExceptionHandlingStrategy Strategy { get; set; }
 
-		#endregion Public Properties
-	}
+        #endregion Public Properties
+    }
 }

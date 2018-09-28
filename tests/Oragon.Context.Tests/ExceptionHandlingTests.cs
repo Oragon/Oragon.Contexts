@@ -13,14 +13,14 @@ namespace Oragon.Context.Tests
 {
     public class ExceptionHandlingTests
     {
-        private Oragon.Spring.Context.IApplicationContext GetContext(string caseName) => new Oragon.Spring.Context.Support.XmlApplicationContext($"assembly://Oragon.Context.Tests/Oragon.Context.Tests/{nameof(ExceptionHandlingTests)}.{caseName}.xml");
+        private static Oragon.Spring.Context.IApplicationContext GetContext(string caseName) => new Oragon.Spring.Context.Support.XmlApplicationContext($"assembly://Oragon.Context.Tests/Oragon.Context.Tests/{nameof(ExceptionHandlingTests)}.{caseName}.xml");
 
         [Fact]
         public void Log2Times()
         {
-            using (var springContext = this.GetContext("Case1"))
+            using (var springContext = GetContext("Case1"))
             {
-                var advice = springContext.GetObject<ExceptionHandlerAroundAdvice>("ExceptionHandlerAroundAdvice");
+                var advice = springContext.GetObject<ExceptionHandlerAroundAdvice>(nameof(ExceptionHandlerAroundAdvice));
 
                 var mock = new Mock<ILogger>();
                 advice.EnableDebug = true;
@@ -44,9 +44,9 @@ namespace Oragon.Context.Tests
         [Fact]
         public void Log0Times()
         {
-            using (var springContext = this.GetContext("Case1"))
+            using (var springContext = GetContext("Case1"))
             {
-                var advice = springContext.GetObject<ExceptionHandlerAroundAdvice>("ExceptionHandlerAroundAdvice");
+                var advice = springContext.GetObject<ExceptionHandlerAroundAdvice>(nameof(ExceptionHandlerAroundAdvice));
 
                 var mock = new Mock<ILogger>();
                 advice.EnableDebug = false;
@@ -84,9 +84,9 @@ namespace Oragon.Context.Tests
         [Fact]
         public void LogExceptionAsWarning()
         {
-            using (var springContext = this.GetContext("Case1"))
+            using (var springContext = GetContext("Case1"))
             {
-                var advice = springContext.GetObject<ExceptionHandlerAroundAdvice>("ExceptionHandlerAroundAdvice");
+                var advice = springContext.GetObject<ExceptionHandlerAroundAdvice>(nameof(ExceptionHandlerAroundAdvice));
 
                 var mock = new Mock<ILogger>();
                 advice.EnableDebug = false;
@@ -101,10 +101,12 @@ namespace Oragon.Context.Tests
                         throw new NewException();
                     });
                 }
+#pragma warning disable CC0004 // Catch block cannot be empty
                 catch (Exception)
                 {
 
                 }
+#pragma warning restore CC0004 // Catch block cannot be empty
 
                 mock.Verify(it => it.Log(
                     It.IsAny<string>(),
@@ -133,9 +135,9 @@ namespace Oragon.Context.Tests
         [Fact]
         public void LogExceptionAsError()
         {
-            using (var springContext = this.GetContext("Case1"))
+            using (var springContext = GetContext("Case1"))
             {
-                var advice = springContext.GetObject<ExceptionHandlerAroundAdvice>("ExceptionHandlerAroundAdvice");
+                var advice = springContext.GetObject<ExceptionHandlerAroundAdvice>(nameof(ExceptionHandlerAroundAdvice));
 
                 var mock = new Mock<ILogger>();
                 advice.EnableDebug = false;
@@ -150,10 +152,12 @@ namespace Oragon.Context.Tests
                         throw new NullReferenceException();
                     });
                 }
+#pragma warning disable CC0004 // Catch block cannot be empty
                 catch (Exception)
                 {
 
                 }
+#pragma warning restore CC0004 // Catch block cannot be empty
 
                 mock.Verify(it => it.Log(
                     It.IsAny<string>(),
@@ -182,9 +186,9 @@ namespace Oragon.Context.Tests
         [Fact]
         public void CannotUseForThisMethod()
         {
-            using (var springContext = this.GetContext("Case1"))
+            using (var springContext = GetContext("Case1"))
             {
-                var advice = springContext.GetObject<ExceptionHandlerAroundAdvice>("ExceptionHandlerAroundAdvice");
+                var advice = springContext.GetObject<ExceptionHandlerAroundAdvice>(nameof(ExceptionHandlerAroundAdvice));
 
                 var mock = new Mock<ILogger>();
                 advice.EnableDebug = false;
@@ -207,9 +211,9 @@ namespace Oragon.Context.Tests
         [Fact]
         public void SuppressException()
         {
-            using (var springContext = this.GetContext("Case1"))
+            using (var springContext = GetContext("Case1"))
             {
-                var advice = springContext.GetObject<ExceptionHandlerAroundAdvice>("ExceptionHandlerAroundAdvice");
+                var advice = springContext.GetObject<ExceptionHandlerAroundAdvice>(nameof(ExceptionHandlerAroundAdvice));
 
                 var mock = new Mock<ILogger>();
                 advice.EnableDebug = false;
@@ -255,9 +259,9 @@ namespace Oragon.Context.Tests
         [Fact]
         public void UseUndefinedException()
         {
-            using (var springContext = this.GetContext("Case1"))
+            using (var springContext = GetContext("Case1"))
             {
-                var advice = springContext.GetObject<ExceptionHandlerAroundAdvice>("ExceptionHandlerAroundAdvice");
+                var advice = springContext.GetObject<ExceptionHandlerAroundAdvice>(nameof(ExceptionHandlerAroundAdvice));
 
                 var mock = new Mock<ILogger>();
                 advice.EnableDebug = false;

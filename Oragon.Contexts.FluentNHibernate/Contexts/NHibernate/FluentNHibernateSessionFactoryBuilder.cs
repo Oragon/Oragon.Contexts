@@ -79,6 +79,6 @@ namespace Oragon.Contexts.NHibernate
         protected abstract FluentNH.Cfg.Db.IPersistenceConfigurer BuildPersistenceConfigurer();
 
         #endregion Protected Methods
-        
+
     }
 }

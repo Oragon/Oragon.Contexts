@@ -26,6 +26,11 @@
       <LangVersion>latest</LangVersion>
       <DebugType>full</DebugType>
       <DebugSymbols>true</DebugSymbols>
+      <CodeAnalysisRuleSet>Oragon.Contexts.ExceptionHandling.ruleset</CodeAnalysisRuleSet>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+      <CodeAnalysisRuleSet>Oragon.Contexts.ExceptionHandling.ruleset</CodeAnalysisRuleSet>
     </PropertyGroup>
 
     <ItemGroup>

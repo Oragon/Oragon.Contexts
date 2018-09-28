@@ -35,6 +35,6 @@ namespace Oragon.Context.Tests.Schema.Targets
         }
 
         [Fake(ContextKey = "123456")]
-        public void Test(Action<FakeDataProcess> action) => action(this.FakeDataProcess);
+        public void Test(Action<FakeDataProcess> action) => action?.Invoke(this.FakeDataProcess);
     }
 }

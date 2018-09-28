@@ -22,7 +22,7 @@ namespace Oragon.Contexts.ExceptionHandling
 
         public object Invoke(IMethodInvocation invocation)
         {
-            ExceptionHandlingAttribute currentAttribute = this.GetAttribute(invocation);
+            ExceptionHandlingAttribute currentAttribute = GetAttribute(invocation);
             string targetTypeFullName = string.Concat(invocation.TargetType.Namespace, ".", invocation.TargetType.Name);
             string targetMethod = string.Concat(targetTypeFullName, ".", invocation.Method);
 
@@ -83,7 +83,7 @@ namespace Oragon.Contexts.ExceptionHandling
             return returnValue;
         }
 
-        private ExceptionHandlingAttribute GetAttribute(IMethodInvocation invocation)
+        private static ExceptionHandlingAttribute GetAttribute(IMethodInvocation invocation)
         {
             ExceptionHandlingAttribute attribute = invocation.GetAttibutes<ExceptionHandlingAttribute>().FirstOrDefault();
             if (attribute == null)
