@@ -10,90 +10,92 @@ using LogLevel = Oragon.Logging.LogLevel;
 
 namespace Oragon.Contexts.ExceptionHandling
 {
-	public class ExceptionHandlerAroundAdvice : IMethodInterceptor
-	{
-		protected List<Type> BusinessExceptionTypes { get; set; }
+    public class ExceptionHandlerAroundAdvice : IMethodInterceptor
+    {
+        public List<Type> BusinessExceptionTypes { get; set; }
 
-        protected ILogger Logger { get; set; }
+        public ILogger Logger { get; set; }
 
-        protected string GenericErrorMessage { get; set; }
+        public string GenericErrorMessage { get; set; }
 
-        protected bool EnableDebug { get; set; }
+        public bool EnableDebug { get; set; }
 
-		public object Invoke(IMethodInvocation invocation)
-		{
-			ExceptionHandlingAttribute currentAttribute = this.GetAttribute(invocation);
-			string targetTypeFullName = string.Concat(invocation.TargetType.Namespace, ".", invocation.TargetType.Name);
-			string targetMethod = string.Concat(targetTypeFullName, ".", invocation.Method);
+        public object Invoke(IMethodInvocation invocation)
+        {
+            ExceptionHandlingAttribute currentAttribute = this.GetAttribute(invocation);
+            string targetTypeFullName = string.Concat(invocation.TargetType.Namespace, ".", invocation.TargetType.Name);
+            string targetMethod = string.Concat(targetTypeFullName, ".", invocation.Method);
 
-			object returnValue = null;
-			using (LogContext logContext = new LogContext(enlist: true))
-			{
-				logContext.SetValue("Type", targetTypeFullName);
-				logContext.SetValue("Method", targetMethod);
+            object returnValue = null;
+            using (LogContext logContext = new LogContext(enlist: true))
+            {
+                logContext.SetValue("Type", targetTypeFullName);
+                logContext.SetValue("Method", targetMethod);
 
-				try
-				{
-					if (this.EnableDebug)
-						this.Logger.Log(targetTypeFullName, string.Concat("Begin ", targetMethod), LogLevel.Debug, logContext.GetDictionary());
+                try
+                {
+                    if (this.EnableDebug)
+                        this.Logger.Log(targetTypeFullName, string.Concat("Begin ", targetMethod), LogLevel.Debug, logContext.GetDictionary());
 
-					returnValue = invocation.Proceed();
+                    returnValue = invocation.Proceed();
 
-					if (this.EnableDebug)
-						this.Logger.Log(targetTypeFullName, string.Concat("End ", targetMethod), LogLevel.Debug, logContext.GetDictionary());
-				}
-				catch (UndefinedException)
-				{
-					throw;
-				}
-				catch (Exception ex)
-				{
-					Type exceptionType = ex.GetType();
+                    if (this.EnableDebug)
+                        this.Logger.Log(targetTypeFullName, string.Concat("End ", targetMethod), LogLevel.Debug, logContext.GetDictionary());
+                }
+                catch (UndefinedException)
+                {
+                    throw;
+                }
+                catch (Exception ex)
+                {
+                    Type exceptionType = ex.GetType();
 
-					bool isBusinessException = (this.BusinessExceptionTypes.Any(it => it.IsAssignableFrom(exceptionType)));
+                    bool isBusinessException = (this.BusinessExceptionTypes.Any(it => it.IsAssignableFrom(exceptionType)));
 
-					string exceptionTypeKey = isBusinessException ? "BusinessException" : "ApplicationException";
+                    string exceptionTypeKey = isBusinessException ? "BusinessException" : "ApplicationException";
 
-					logContext.SetValue(exceptionTypeKey, string.Concat(exceptionType.Namespace, ".", exceptionType.Name));
+                    logContext.SetValue(exceptionTypeKey, string.Concat(exceptionType.Namespace, ".", exceptionType.Name));
 
-					Action<LogLevel> logException = logLevel =>
-					{
-						this.Logger.Log(targetTypeFullName, ex.ToString(), logLevel, logContext.GetDictionary());
-					};
+                    Action<LogLevel> logException = logLevel =>
+                    {
+                        this.Logger.Log(targetTypeFullName, ex.ToString(), logLevel, logContext.GetDictionary());
+                    };
 
-					if (currentAttribute.Strategy.HasFlag(ExceptionHandlingStrategy.ContinueRunning)) //Supressão da Exception - Error
-					{
-						logException(LogLevel.Error);
-					} else if (currentAttribute.Strategy.HasFlag(ExceptionHandlingStrategy.BreakOnException))
-					{
-						if (isBusinessException) //BusinessException - Warn
-						{
-							logException(LogLevel.Warn);
-								throw;
-						} else //Outras exceptions - Fatal
-						{
-							logException(LogLevel.Fatal);
-								throw new UndefinedException(this.GenericErrorMessage);
-						}
-					}
-				}
-			}
-			return returnValue;
-		}
+                    if (currentAttribute.Strategy.HasFlag(ExceptionHandlingStrategy.ContinueRunning)) //Supressão da Exception - Error
+                    {
+                        logException(LogLevel.Error);
+                    }
+                    else if (currentAttribute.Strategy.HasFlag(ExceptionHandlingStrategy.BreakOnException))
+                    {
+                        if (isBusinessException) //BusinessException - Warn
+                        {
+                            logException(LogLevel.Warn);
+                            throw;
+                        }
+                        else //Outras exceptions - Fatal
+                        {
+                            logException(LogLevel.Fatal);
+                            throw new UndefinedException(this.GenericErrorMessage);
+                        }
+                    }
+                }
+            }
+            return returnValue;
+        }
 
-		private ExceptionHandlingAttribute GetAttribute(IMethodInvocation invocation)
-		{
-			ExceptionHandlingAttribute attribute = invocation.GetAttibutes<ExceptionHandlingAttribute>().FirstOrDefault();
-			if (attribute == null)
-			{
-				attribute = new ExceptionHandlingAttribute(ExceptionHandlingStrategy.BreakOnException);
-			}
+        private ExceptionHandlingAttribute GetAttribute(IMethodInvocation invocation)
+        {
+            ExceptionHandlingAttribute attribute = invocation.GetAttibutes<ExceptionHandlingAttribute>().FirstOrDefault();
+            if (attribute == null)
+            {
+                attribute = new ExceptionHandlingAttribute(ExceptionHandlingStrategy.BreakOnException);
+            }
 
-			if (attribute.Strategy.HasFlag(ExceptionHandlingStrategy.ContinueRunning) && (invocation.Method.ReturnType != typeof(void)))
-			{
-				throw new InvalidOperationException("Somente métodos com retorno void podem usar a estratégia de supressão de exceptions.");
-			}
-			return attribute;
-		}
-	}
+            if (attribute.Strategy.HasFlag(ExceptionHandlingStrategy.ContinueRunning) && (invocation.Method.ReturnType != typeof(void)))
+            {
+                throw new InvalidOperationException("Somente métodos com retorno void podem usar a estratégia de supressão de exceptions.");
+            }
+            return attribute;
+        }
+    }
 }

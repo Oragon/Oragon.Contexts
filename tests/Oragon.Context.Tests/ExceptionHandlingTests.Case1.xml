@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<objects
+    xmlns="http://www.springframework.net"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.net/aop"
+>
+
+    <object name="AllServiceOperations" type="Oragon.Spring.Aop.Support.SdkRegularExpressionMethodPointcut, Oragon.Spring.Aop">
+        <property name="Patterns">
+            <list>
+                <value>Oragon.Context.Tests.Schema.Targets.*Service</value>
+            </list>
+        </property>
+    </object>
+
+    <object name="ExceptionHandlerAroundAdvice" type="Oragon.Contexts.ExceptionHandling.ExceptionHandlerAroundAdvice, Oragon.Contexts.ExceptionHandling" singleton="true">
+        <property name="BusinessExceptionTypes" >        
+            <list element-type="System.Type">
+            </list>
+        </property>
+        <!--<property name="Logger" />-->
+        <property name="GenericErrorMessage" value="Mensagem Generica" />
+        <property name="EnableDebug" value="true" />
+    </object>
+
+    <aop:config>
+        <aop:advisor pointcut-ref="AllServiceOperations" advice-ref="ExceptionHandlerAroundAdvice" />
+    </aop:config>
+
+
+
+    <object name="Service" type="Oragon.Context.Tests.Schema.Targets.ContextTargetService, Oragon.Context.Tests">
+        <property name="FakeDataProcess" ref="FakeDataProcess" />
+    </object>
+    <object name="FakeDataProcess" type="Oragon.Context.Tests.Schema.FakeDataProcess, Oragon.Context.Tests">
+        <property name="ObjectContextKey" value="123456" />
+    </object>
+
+</objects>
