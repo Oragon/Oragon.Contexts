@@ -4,7 +4,7 @@ using System.Globalization;
 
 namespace Oragon.Contexts
 {
-	public abstract class AbstractDataProcess<ContextType, AttributeType>
+	public abstract class AbstractDataProcess<ContextType, AttributeType>: IDisposable
 		where ContextType : AbstractContext<AttributeType>
 		where AttributeType : AbstractContextAttribute
 	{
@@ -24,6 +24,11 @@ namespace Oragon.Contexts
 		[Required]
 		protected string ObjectContextKey { get; set; }
 
-		#endregion Protected Properties
-	}
+        public void Dispose()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion Protected Properties
+    }
 }
