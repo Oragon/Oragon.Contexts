@@ -73,7 +73,6 @@ namespace Oragon.Contexts.NHibernate
             }
 
             NH.ISessionFactory sessionFactory = configuration.BuildSessionFactory();
-
             return sessionFactory;
         }
 
