@@ -58,46 +58,46 @@ namespace Oragon.Contexts.NHibernate
                     .OutputToConsole()
                 )
                 .ExposeConfiguration(it => {
-                    configureWithRawProperties(
-                        it
+                    var config = configureWithRawProperties(
+                            it
                         .SetProperty("command_timeout", this.CommandTimeout.ToString(CultureInfo.InvariantCulture))
                         .SetProperty("adonet.batch_size", this.BatchSize.ToString(CultureInfo.InvariantCulture))
                     );
 
-                    if (this.LoadEventListeners != null && this.LoadEventListeners.Any()) it.EventListeners.LoadEventListeners = this.LoadEventListeners;
-                    if (this.SaveOrUpdateEventListeners != null && this.SaveOrUpdateEventListeners.Any()) it.EventListeners.SaveOrUpdateEventListeners = this.SaveOrUpdateEventListeners;
-                    if (this.MergeEventListeners != null && this.MergeEventListeners.Any()) it.EventListeners.MergeEventListeners = this.MergeEventListeners;
-                    if (this.PersistEventListeners != null && this.PersistEventListeners.Any()) it.EventListeners.PersistEventListeners = this.PersistEventListeners;
-                    if (this.PersistOnFlushEventListeners != null && this.PersistOnFlushEventListeners.Any()) it.EventListeners.PersistOnFlushEventListeners = this.PersistOnFlushEventListeners;
-                    if (this.ReplicateEventListeners != null && this.ReplicateEventListeners.Any()) it.EventListeners.ReplicateEventListeners = this.ReplicateEventListeners;
-                    if (this.DeleteEventListeners != null && this.DeleteEventListeners.Any()) it.EventListeners.DeleteEventListeners = this.DeleteEventListeners;
-                    if (this.AutoFlushEventListeners != null && this.AutoFlushEventListeners.Any()) it.EventListeners.AutoFlushEventListeners = this.AutoFlushEventListeners;
-                    if (this.DirtyCheckEventListeners != null && this.DirtyCheckEventListeners.Any()) it.EventListeners.DirtyCheckEventListeners = this.DirtyCheckEventListeners;
-                    if (this.FlushEventListeners != null && this.FlushEventListeners.Any()) it.EventListeners.FlushEventListeners = this.FlushEventListeners;
-                    if (this.EvictEventListeners != null && this.EvictEventListeners.Any()) it.EventListeners.EvictEventListeners = this.EvictEventListeners;
-                    if (this.LockEventListeners != null && this.LockEventListeners.Any()) it.EventListeners.LockEventListeners = this.LockEventListeners;
-                    if (this.RefreshEventListeners != null && this.RefreshEventListeners.Any()) it.EventListeners.RefreshEventListeners = this.RefreshEventListeners;
-                    if (this.FlushEntityEventListeners != null && this.FlushEntityEventListeners.Any()) it.EventListeners.FlushEntityEventListeners = this.FlushEntityEventListeners;
-                    if (this.InitializeCollectionEventListeners != null && this.InitializeCollectionEventListeners.Any()) it.EventListeners.InitializeCollectionEventListeners = this.InitializeCollectionEventListeners;
-                    if (this.PostLoadEventListeners != null && this.PostLoadEventListeners.Any()) it.EventListeners.PostLoadEventListeners = this.PostLoadEventListeners;
-                    if (this.PreLoadEventListeners != null && this.PreLoadEventListeners.Any()) it.EventListeners.PreLoadEventListeners = this.PreLoadEventListeners;
-                    if (this.PreDeleteEventListeners != null && this.PreDeleteEventListeners.Any()) it.EventListeners.PreDeleteEventListeners = this.PreDeleteEventListeners;
-                    if (this.PreUpdateEventListeners != null && this.PreUpdateEventListeners.Any()) it.EventListeners.PreUpdateEventListeners = this.PreUpdateEventListeners;
-                    if (this.PreInsertEventListeners != null && this.PreInsertEventListeners.Any()) it.EventListeners.PreInsertEventListeners = this.PreInsertEventListeners;
-                    if (this.PostDeleteEventListeners != null && this.PostDeleteEventListeners.Any()) it.EventListeners.PostDeleteEventListeners = this.PostDeleteEventListeners;
-                    if (this.PostUpdateEventListeners != null && this.PostUpdateEventListeners.Any()) it.EventListeners.PostUpdateEventListeners = this.PostUpdateEventListeners;
-                    if (this.PostInsertEventListeners != null && this.PostInsertEventListeners.Any()) it.EventListeners.PostInsertEventListeners = this.PostInsertEventListeners;
-                    if (this.PostCommitDeleteEventListeners != null && this.PostCommitDeleteEventListeners.Any()) it.EventListeners.PostCommitDeleteEventListeners = this.PostCommitDeleteEventListeners;
-                    if (this.PostCommitUpdateEventListeners != null && this.PostCommitUpdateEventListeners.Any()) it.EventListeners.PostCommitUpdateEventListeners = this.PostCommitUpdateEventListeners;
-                    if (this.PostCommitInsertEventListeners != null && this.PostCommitInsertEventListeners.Any()) it.EventListeners.PostCommitInsertEventListeners = this.PostCommitInsertEventListeners;
-                    if (this.SaveEventListeners != null && this.SaveEventListeners.Any()) it.EventListeners.SaveEventListeners = this.SaveEventListeners;
-                    if (this.UpdateEventListeners != null && this.UpdateEventListeners.Any()) it.EventListeners.UpdateEventListeners = this.UpdateEventListeners;
-                    if (this.PreCollectionRecreateEventListeners != null && this.PreCollectionRecreateEventListeners.Any()) it.EventListeners.PreCollectionRecreateEventListeners = this.PreCollectionRecreateEventListeners;
-                    if (this.PostCollectionRecreateEventListeners != null && this.PostCollectionRecreateEventListeners.Any()) it.EventListeners.PostCollectionRecreateEventListeners = this.PostCollectionRecreateEventListeners;
-                    if (this.PreCollectionRemoveEventListeners != null && this.PreCollectionRemoveEventListeners.Any()) it.EventListeners.PreCollectionRemoveEventListeners = this.PreCollectionRemoveEventListeners;
-                    if (this.PostCollectionRemoveEventListeners != null && this.PostCollectionRemoveEventListeners.Any()) it.EventListeners.PostCollectionRemoveEventListeners = this.PostCollectionRemoveEventListeners;
-                    if (this.PreCollectionUpdateEventListeners != null && this.PreCollectionUpdateEventListeners.Any()) it.EventListeners.PreCollectionUpdateEventListeners = this.PreCollectionUpdateEventListeners;
-                    if (this.PostCollectionUpdateEventListeners != null && this.PostCollectionUpdateEventListeners.Any()) it.EventListeners.PostCollectionUpdateEventListeners = this.PostCollectionUpdateEventListeners;
+                    if (this.LoadEventListeners != null && this.LoadEventListeners.Any()) config.EventListeners.LoadEventListeners = this.LoadEventListeners;
+                    if (this.SaveOrUpdateEventListeners != null && this.SaveOrUpdateEventListeners.Any()) config.EventListeners.SaveOrUpdateEventListeners = this.SaveOrUpdateEventListeners;
+                    if (this.MergeEventListeners != null && this.MergeEventListeners.Any()) config.EventListeners.MergeEventListeners = this.MergeEventListeners;
+                    if (this.PersistEventListeners != null && this.PersistEventListeners.Any()) config.EventListeners.PersistEventListeners = this.PersistEventListeners;
+                    if (this.PersistOnFlushEventListeners != null && this.PersistOnFlushEventListeners.Any()) config.EventListeners.PersistOnFlushEventListeners = this.PersistOnFlushEventListeners;
+                    if (this.ReplicateEventListeners != null && this.ReplicateEventListeners.Any()) config.EventListeners.ReplicateEventListeners = this.ReplicateEventListeners;
+                    if (this.DeleteEventListeners != null && this.DeleteEventListeners.Any()) config.EventListeners.DeleteEventListeners = this.DeleteEventListeners;
+                    if (this.AutoFlushEventListeners != null && this.AutoFlushEventListeners.Any()) config.EventListeners.AutoFlushEventListeners = this.AutoFlushEventListeners;
+                    if (this.DirtyCheckEventListeners != null && this.DirtyCheckEventListeners.Any()) config.EventListeners.DirtyCheckEventListeners = this.DirtyCheckEventListeners;
+                    if (this.FlushEventListeners != null && this.FlushEventListeners.Any()) config.EventListeners.FlushEventListeners = this.FlushEventListeners;
+                    if (this.EvictEventListeners != null && this.EvictEventListeners.Any()) config.EventListeners.EvictEventListeners = this.EvictEventListeners;
+                    if (this.LockEventListeners != null && this.LockEventListeners.Any()) config.EventListeners.LockEventListeners = this.LockEventListeners;
+                    if (this.RefreshEventListeners != null && this.RefreshEventListeners.Any()) config.EventListeners.RefreshEventListeners = this.RefreshEventListeners;
+                    if (this.FlushEntityEventListeners != null && this.FlushEntityEventListeners.Any()) config.EventListeners.FlushEntityEventListeners = this.FlushEntityEventListeners;
+                    if (this.InitializeCollectionEventListeners != null && this.InitializeCollectionEventListeners.Any()) config.EventListeners.InitializeCollectionEventListeners = this.InitializeCollectionEventListeners;
+                    if (this.PostLoadEventListeners != null && this.PostLoadEventListeners.Any()) config.EventListeners.PostLoadEventListeners = this.PostLoadEventListeners;
+                    if (this.PreLoadEventListeners != null && this.PreLoadEventListeners.Any()) config.EventListeners.PreLoadEventListeners = this.PreLoadEventListeners;
+                    if (this.PreDeleteEventListeners != null && this.PreDeleteEventListeners.Any()) config.EventListeners.PreDeleteEventListeners = this.PreDeleteEventListeners;
+                    if (this.PreUpdateEventListeners != null && this.PreUpdateEventListeners.Any()) config.EventListeners.PreUpdateEventListeners = this.PreUpdateEventListeners;
+                    if (this.PreInsertEventListeners != null && this.PreInsertEventListeners.Any()) config.EventListeners.PreInsertEventListeners = this.PreInsertEventListeners;
+                    if (this.PostDeleteEventListeners != null && this.PostDeleteEventListeners.Any()) config.EventListeners.PostDeleteEventListeners = this.PostDeleteEventListeners;
+                    if (this.PostUpdateEventListeners != null && this.PostUpdateEventListeners.Any()) config.EventListeners.PostUpdateEventListeners = this.PostUpdateEventListeners;
+                    if (this.PostInsertEventListeners != null && this.PostInsertEventListeners.Any()) config.EventListeners.PostInsertEventListeners = this.PostInsertEventListeners;
+                    if (this.PostCommitDeleteEventListeners != null && this.PostCommitDeleteEventListeners.Any()) config.EventListeners.PostCommitDeleteEventListeners = this.PostCommitDeleteEventListeners;
+                    if (this.PostCommitUpdateEventListeners != null && this.PostCommitUpdateEventListeners.Any()) config.EventListeners.PostCommitUpdateEventListeners = this.PostCommitUpdateEventListeners;
+                    if (this.PostCommitInsertEventListeners != null && this.PostCommitInsertEventListeners.Any()) config.EventListeners.PostCommitInsertEventListeners = this.PostCommitInsertEventListeners;
+                    if (this.SaveEventListeners != null && this.SaveEventListeners.Any()) config.EventListeners.SaveEventListeners = this.SaveEventListeners;
+                    if (this.UpdateEventListeners != null && this.UpdateEventListeners.Any()) config.EventListeners.UpdateEventListeners = this.UpdateEventListeners;
+                    if (this.PreCollectionRecreateEventListeners != null && this.PreCollectionRecreateEventListeners.Any()) config.EventListeners.PreCollectionRecreateEventListeners = this.PreCollectionRecreateEventListeners;
+                    if (this.PostCollectionRecreateEventListeners != null && this.PostCollectionRecreateEventListeners.Any()) config.EventListeners.PostCollectionRecreateEventListeners = this.PostCollectionRecreateEventListeners;
+                    if (this.PreCollectionRemoveEventListeners != null && this.PreCollectionRemoveEventListeners.Any()) config.EventListeners.PreCollectionRemoveEventListeners = this.PreCollectionRemoveEventListeners;
+                    if (this.PostCollectionRemoveEventListeners != null && this.PostCollectionRemoveEventListeners.Any()) config.EventListeners.PostCollectionRemoveEventListeners = this.PostCollectionRemoveEventListeners;
+                    if (this.PreCollectionUpdateEventListeners != null && this.PreCollectionUpdateEventListeners.Any()) config.EventListeners.PreCollectionUpdateEventListeners = this.PreCollectionUpdateEventListeners;
+                    if (this.PostCollectionUpdateEventListeners != null && this.PostCollectionUpdateEventListeners.Any()) config.EventListeners.PostCollectionUpdateEventListeners = this.PostCollectionUpdateEventListeners;
 
 
 
