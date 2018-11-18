@@ -29,7 +29,7 @@ pipeline {
         }
         
         stage('Setup databases') {
-
+            agent any
             steps {
 
                     sh  '''
@@ -153,7 +153,7 @@ pipeline {
                     args '-u root:root'
                 }
             }
-            
+
             when { buildingTag() }
 
             steps {
