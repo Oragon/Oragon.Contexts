@@ -3,7 +3,6 @@ version: '3.4'
 services:
 
   sqlserver:
-    container_name: mssql
     image: luizcarlosfaria/mssql-server-linux:latest
     ports:
       - "22550:1433"
