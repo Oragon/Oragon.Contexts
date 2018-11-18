@@ -15,11 +15,25 @@
     <ItemGroup>
         <None Remove="AbstractContextTests.Case1.xml" />
         <None Remove="ExceptionHandlingTests.Case1.xml" />
+        <None Remove="Integrated\Config\custom.db.db2.xml" />
+        <None Remove="Integrated\Config\custom.db.mysql.xml" />
+        <None Remove="Integrated\Config\custom.db.oracle.xml" />
+        <None Remove="Integrated\Config\custom.db.postgresql.xml" />
+        <None Remove="Integrated\Config\custom.db.sqlite.xml" />
+        <None Remove="Integrated\Config\custom.db.sqlserver.xml" />
+        <None Remove="Integrated\Config\general.xml" />
     </ItemGroup>
 
     <ItemGroup>
         <EmbeddedResource Include="ExceptionHandlingTests.Case1.xml" />
         <EmbeddedResource Include="AbstractContextTests.Case1.xml" />
+        <EmbeddedResource Include="Integrated\Config\custom.db.db2.xml" />
+        <EmbeddedResource Include="Integrated\Config\custom.db.mysql.xml" />
+        <EmbeddedResource Include="Integrated\Config\custom.db.oracle.xml" />
+        <EmbeddedResource Include="Integrated\Config\custom.db.postgresql.xml" />
+        <EmbeddedResource Include="Integrated\Config\custom.db.sqlite.xml" />
+        <EmbeddedResource Include="Integrated\Config\custom.db.sqlserver.xml" />
+        <EmbeddedResource Include="Integrated\Config\general.xml" />
     </ItemGroup>
 
     <ItemGroup>
@@ -42,6 +56,11 @@
         <ProjectReference Include="..\..\Oragon.Contexts.FluentNHibernate\Oragon.Contexts.FluentNHibernate.csproj" />
         <ProjectReference Include="..\..\Oragon.Contexts.NHibernate\Oragon.Contexts.NHibernate.csproj" />
         <ProjectReference Include="..\..\Oragon.Contexts\Oragon.Contexts.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Integrated\Data\" />
+      <Folder Include="Integrated\Domain\" />
+      <Folder Include="Integrated\Services\" />
     </ItemGroup>
 
 </Project>
