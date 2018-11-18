@@ -1,15 +1,22 @@
 pipeline {
-    agent {
-        dockerfile {
-            // alwaysPull false
-            // image 'microsoft/dotnet:2.1-sdk'
-            // reuseNode false
-            args '-u root:root'
-        }
+    
+    agent none
+
+    environment {
+        COMPOSE_PROJECT_NAME = "${env.JOB_NAME}-${env.BUILD_ID}"
     }
     stages {
       
         stage('Build') {
+
+            agent {
+                dockerfile {
+                    // alwaysPull false
+                    // image 'microsoft/dotnet:2.1-sdk'
+                    // reuseNode false
+                    args '-u root:root'
+                }
+            }
 
             steps {
                 
@@ -20,14 +27,44 @@ pipeline {
             }
 
         }
+        
+        stage('Setup databases') {
+
+            steps {
+
+                    sh  '''
+
+                        docker-compose up -d
+
+                        sleep 60
+
+                        '''
+            }
+
+        }
+
 
         stage('Test') {
+
+            agent {
+                dockerfile {
+                    // alwaysPull false
+                    // image 'microsoft/dotnet:2.1-sdk'
+                    // reuseNode false
+                    args '-u root:root'
+                }
+            }
 
             steps {
 
                  withCredentials([usernamePassword(credentialsId: 'SonarQube', passwordVariable: 'SONARQUBE_KEY', usernameVariable: 'DUMMY' )]) {
 
                     sh  '''
+
+                        docker-compose up -d
+
+                        sleep 60
+
                         export PATH="$PATH:/root/.dotnet/tools"
 
                         dotnet test ./tests/Oragon.Context.Tests/Oragon.Context.Tests.csproj \
@@ -57,6 +94,15 @@ pipeline {
         }
 
         stage('Pack') {
+
+            agent {
+                dockerfile {
+                    // alwaysPull false
+                    // image 'microsoft/dotnet:2.1-sdk'
+                    // reuseNode false
+                    args '-u root:root'
+                }
+            }
 
             when { buildingTag() }
 
@@ -99,6 +145,15 @@ pipeline {
 
         stage('Publish') {
 
+            agent {
+                dockerfile {
+                    // alwaysPull false
+                    // image 'microsoft/dotnet:2.1-sdk'
+                    // reuseNode false
+                    args '-u root:root'
+                }
+            }
+            
             when { buildingTag() }
 
             steps {
@@ -124,6 +179,11 @@ pipeline {
                     }                    
 				}
             }
+        }
+    }
+    post {
+        always {
+            sh "docker-compose down -v"
         }
     }
 }

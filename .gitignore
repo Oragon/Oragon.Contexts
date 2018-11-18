@@ -19,3 +19,5 @@ tests/Oragon.Context.Tests/obj/
 packages/
 tests/Oragon.Context.Tests/bin/
 TestResults/
+tests/Oragon.Context.IntegratedTests/obj/
+tests/Oragon.Context.IntegratedTests/bin/

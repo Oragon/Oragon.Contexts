@@ -1,0 +1,35 @@
+version: '3.4'
+
+services:
+
+  sqlserver:
+    container_name: mssql
+    image: luizcarlosfaria/mssql-server-linux:latest
+    ports:
+      - "22550:1433"
+    volumes:
+      - ./environments/sqlserver/:/docker-entrypoint-initdb.d/
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=PbfSeBmdy34KvTGwWUTHdxht
+      - MSSQL_DATABASE=DBExemplo
+      - MSSQL_DATABASE_COLLATE=SQL_Latin1_General_CP1_CS_AS
+      - MSSQL_USER=OragonDemoUser
+      - MSSQL_PASSWORD=OragonDemoPwd
+
+  oracle:
+    image: ebixla/oracle-database:11.2.0.2-xe
+    volumes:
+      - oradata:/opt/oracle/oradata # persistent oracle database data.
+      - ./environments/oracle/:/u01/app/oracle/scripts/setup
+      - ./environments/empty/:/u01/app/oracle/scripts/startup
+    environment:       
+      - ORACLE_PDB=ORCLPDB1
+      - ORACLE_PWD=PbfSeBmdy34KvTGwWUTHdxht
+    ports:
+      - 22552:1521
+    shm_size: 6gb
+
+
+volumes: 
+  oradata:
