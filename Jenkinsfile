@@ -29,7 +29,9 @@ pipeline {
         }
         
         stage('Setup databases') {
+            
             agent any
+            
             steps {
 
                     sh  '''
@@ -182,8 +184,13 @@ pipeline {
         }
     }
     post {
+
         always {
-            sh "docker-compose down -v"
+            node('master'){
+                
+                sh "docker-compose down -v"
+                
+            }
         }
     }
 }
