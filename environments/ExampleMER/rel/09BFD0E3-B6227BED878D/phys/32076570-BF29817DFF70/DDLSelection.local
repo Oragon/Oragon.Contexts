@@ -1,0 +1,8 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<oracle.dbtools.crest.model.design.storage.oracle.v11g.StorageDesignOraclev11g>
+   <object objectID="570BFD88-F1F3-842A-2871-738DC8C8B2A7" markedGenerate="false"/>
+   <object objectID="35E464C0-D486-DF0C-ACED-FF13ECE496D1" markedGenerate="false"/>
+   <object objectID="MDSYS" markedGenerate="false"/>
+   <object objectID="F25F6FFB-BB95-CE37-586B-349AED6023C5" markedGenerate="false"/>
+   <object objectID="PUBLIC" markedGenerate="false"/>
+</oracle.dbtools.crest.model.design.storage.oracle.v11g.StorageDesignOraclev11g>

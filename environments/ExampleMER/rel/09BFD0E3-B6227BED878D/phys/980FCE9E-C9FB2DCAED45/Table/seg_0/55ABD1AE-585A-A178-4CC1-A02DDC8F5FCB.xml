@@ -1,0 +1,27 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<TableProxySqlServerv2k5 class="oracle.dbtools.crest.model.design.storage.sqlserver.v2k5.TableProxySqlServerv2k5" name="LANGUAGE" directorySegmentName="seg_0" id="55ABD1AE-585A-A178-4CC1-A02DDC8F5FCB">
+<createdBy>luizc</createdBy>
+<createdTime>2018-11-18 09:46:01 UTC</createdTime>
+<ownerDesignName>ExampleMER</ownerDesignName>
+<database>DB_NULLELEMENT</database>
+<columnProxies>
+<ColumnProxy class="oracle.dbtools.crest.model.design.storage.sqlserver.v2k12.ColumnProxySqlServerv2k12" name="LANGUAGE_ID" id="58E67FD3-031B-9720-699A-1FD9D7CC15FC">
+<createdBy>luizc</createdBy>
+<createdTime>2018-11-18 09:47:07 UTC</createdTime>
+<ownerDesignName>ExampleMER</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy class="oracle.dbtools.crest.model.design.storage.sqlserver.v2k12.ColumnProxySqlServerv2k12" name="LANGUAGE_NAME" id="BD1804F3-0154-BCC2-5708-CAF446D9FDBD">
+<createdBy>luizc</createdBy>
+<createdTime>2018-11-18 09:47:20 UTC</createdTime>
+<ownerDesignName>ExampleMER</ownerDesignName>
+</ColumnProxy>
+</columnProxies>
+<primaryKeys>
+<PrimaryKey class="oracle.dbtools.crest.model.design.storage.sqlserver.v2k5.PKProxySqlServerv2k5" name="LANGUAGE_PK" id="4A6D9F1F-A70E-586C-488A-C4CCFFBECA7A">
+<createdBy>luizc</createdBy>
+<createdTime>2018-11-18 09:47:07 UTC</createdTime>
+<ownerDesignName>ExampleMER</ownerDesignName>
+<clustered>true</clustered>
+</PrimaryKey>
+</primaryKeys>
+</TableProxySqlServerv2k5>

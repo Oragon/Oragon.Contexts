@@ -1,0 +1,23 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<TableProxySqlServerv2k5 class="oracle.dbtools.crest.model.design.storage.sqlserver.v2k5.TableProxySqlServerv2k5" name="CLASSROOM" directorySegmentName="seg_0" id="AACFEDA3-14A2-FD65-4491-C11F8FE0C375">
+<createdBy>luizc</createdBy>
+<createdTime>2018-11-18 09:42:56 UTC</createdTime>
+<ownerDesignName>ExampleMER</ownerDesignName>
+<database>DB_NULLELEMENT</database>
+<columnProxies>
+<ColumnProxy class="oracle.dbtools.crest.model.design.storage.sqlserver.v2k12.ColumnProxySqlServerv2k12" name="CLASSROOM_ID" id="F78D376B-0601-EC3F-14B7-600864885394">
+<createdBy>luizc</createdBy>
+<createdTime>2018-11-18 09:42:56 UTC</createdTime>
+<ownerDesignName>ExampleMER</ownerDesignName>
+<asIdentity>true</asIdentity>
+</ColumnProxy>
+</columnProxies>
+<primaryKeys>
+<PrimaryKey class="oracle.dbtools.crest.model.design.storage.sqlserver.v2k5.PKProxySqlServerv2k5" name="CLASSROOM_PK" id="DF845D0C-984F-9332-E7E2-22C78D4413C0">
+<createdBy>luizc</createdBy>
+<createdTime>2018-11-18 09:42:56 UTC</createdTime>
+<ownerDesignName>ExampleMER</ownerDesignName>
+<clustered>true</clustered>
+</PrimaryKey>
+</primaryKeys>
+</TableProxySqlServerv2k5>

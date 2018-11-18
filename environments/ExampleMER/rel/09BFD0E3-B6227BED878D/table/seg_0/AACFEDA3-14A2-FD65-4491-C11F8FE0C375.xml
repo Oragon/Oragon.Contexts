@@ -1,0 +1,49 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="AACFEDA3-14A2-FD65-4491-C11F8FE0C375" name="CLASSROOM">
+<createdBy>luizc</createdBy>
+<createdTime>2018-11-18 09:38:14 UTC</createdTime>
+<ownerDesignName>ExampleMER</ownerDesignName>
+<ordsAlias>table_2</ordsAlias>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="CLASSROOM_ID" id="F78D376B-0601-EC3F-14B7-600864885394">
+<createdBy>luizc</createdBy>
+<createdTime>2018-11-18 09:40:44 UTC</createdTime>
+<ownerDesignName>ExampleMER</ownerDesignName>
+<use>0</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<domain>A0D380D7-5343-FEEB-D150-A336414A428D</domain>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementColumn>true</autoIncrementColumn>
+<identityColumn>true</identityColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<autoIncrementSequenceName>CLASSROOM_SEQ</autoIncrementSequenceName>
+<autoIncrementTriggerName>CLASSROOM_TRG</autoIncrementTriggerName>
+</Column>
+<Column name="NAME" id="386F9FC9-7D3E-7CC2-1D0B-103634A4AC6F">
+<createdBy>luizc</createdBy>
+<createdTime>2018-11-18 10:51:19 UTC</createdTime>
+<ownerDesignName>ExampleMER</ownerDesignName>
+<use>0</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<domain>96E360A1-AF25-7B90-1E1F-5912AD4B2634</domain>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="DF845D0C-984F-9332-E7E2-22C78D4413C0" name="CLASSROOM_PK">
+<createdBy>luizc</createdBy>
+<createdTime>2018-11-18 09:41:18 UTC</createdTime>
+<ownerDesignName>ExampleMER</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="F78D376B-0601-EC3F-14B7-600864885394"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

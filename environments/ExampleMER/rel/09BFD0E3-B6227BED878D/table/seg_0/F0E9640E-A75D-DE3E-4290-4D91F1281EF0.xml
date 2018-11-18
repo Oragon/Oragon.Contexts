@@ -1,0 +1,74 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="F0E9640E-A75D-DE3E-4290-4D91F1281EF0" name="STUDENT_CLASSROOM">
+<createdBy>luizc</createdBy>
+<createdTime>2018-11-18 09:38:31 UTC</createdTime>
+<ownerDesignName>ExampleMER</ownerDesignName>
+<ordsAlias>table_3</ordsAlias>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="STUDENT_STUDENT_ID" id="FC1CA7B7-1A93-9E4F-4741-5E8BE2157A81">
+<createdBy>luizc</createdBy>
+<createdTime>2018-11-18 09:41:23 UTC</createdTime>
+<ownerDesignName>ExampleMER</ownerDesignName>
+<use>0</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<domain>A0D380D7-5343-FEEB-D150-A336414A428D</domain>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="B3E0A679-48CD-2007-22C3-647CF07112CC" referredColumn="F53DCFA0-A049-2659-A9D6-0E59AB95CCD6"/>
+</associations>
+</Column>
+<Column name="CLASSROOM_CLASSROOM_ID" id="DFA5EDE2-FF81-CC5A-BBD3-FC228C4E04C8">
+<createdBy>luizc</createdBy>
+<createdTime>2018-11-18 09:41:28 UTC</createdTime>
+<ownerDesignName>ExampleMER</ownerDesignName>
+<use>0</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<domain>A0D380D7-5343-FEEB-D150-A336414A428D</domain>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="68F49E12-6674-519D-4365-7A33B2B238A8" referredColumn="F78D376B-0601-EC3F-14B7-600864885394"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="7F89B17A-21AA-645E-F048-424097CDB44D" name="STUDENT_CLASSROOM_PK">
+<createdBy>luizc</createdBy>
+<createdTime>2018-11-18 09:41:41 UTC</createdTime>
+<ownerDesignName>ExampleMER</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="FC1CA7B7-1A93-9E4F-4741-5E8BE2157A81"/>
+<colUsage columnID="DFA5EDE2-FF81-CC5A-BBD3-FC228C4E04C8"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="5CFD18EE-2337-7E3B-A60D-CE88CDC1B294" name="STUDENT_CLASSROOM_STUDENT_FK">
+<createdBy>luizc</createdBy>
+<createdTime>2018-11-18 09:41:23 UTC</createdTime>
+<ownerDesignName>ExampleMER</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="FC1CA7B7-1A93-9E4F-4741-5E8BE2157A81"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="4AF59E6E-9123-E3E3-DD95-8EA07CB2C3B3" name="STUDENT_CLASSROOM_CLASSROOM_FK">
+<createdBy>luizc</createdBy>
+<createdTime>2018-11-18 09:41:28 UTC</createdTime>
+<ownerDesignName>ExampleMER</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="DFA5EDE2-FF81-CC5A-BBD3-FC228C4E04C8"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>
