@@ -4,6 +4,7 @@ using Oragon.Context.Tests.Schema.Targets;
 using Oragon.Contexts;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Oragon.Context.Tests
@@ -39,6 +40,19 @@ namespace Oragon.Context.Tests
                     dp1.Add(2);
                     Assert.Equal(7, dp1.Sum());
                 });
+
+            }
+        }
+
+        [Fact]
+        public void IsolationAsyncTest()
+        {
+            using (var springContext = GetContext("Case1"))
+            {
+                var service = springContext.GetObject<IContextTargetService>("Service");
+                Task.Run(() => service.Test1Async(service))
+                .GetAwaiter()
+                .GetResult();
 
             }
         }
