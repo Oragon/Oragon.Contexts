@@ -35,7 +35,7 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Oragon.Spring.Aop" Version="1.1.4" />
+        <PackageReference Include="Oragon.Spring.Aop" Version="1.2.1" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\Oragon.Contexts.ExceptionHandling\Oragon.Contexts.ExceptionHandling.csproj" />
