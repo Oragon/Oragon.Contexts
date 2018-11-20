@@ -18,7 +18,7 @@ namespace Oragon.Contexts.NHibernate
         {
             get
             {
-                if (!this.InMemory && (string.IsNullOrWhiteSpace(this.FileName) || (!System.IO.File.Exists(this.FileName))))
+                if (!this.InMemory && string.IsNullOrWhiteSpace(this.FileName) )
                 {
                     throw new InvalidOperationException("FluentNHibernateSessionFactoryBuilderForSQLite require or InMemory (set property InMemory=true) or set a valid FileName ");
                 }

@@ -20,9 +20,9 @@ namespace Oragon.Context.Tests
         {
             using (var springContext = GetContext("Case1"))
             {
-                var advice = springContext.GetObject<ExceptionHandlerAroundAdvice>(nameof(ExceptionHandlerAroundAdvice));
-
                 var mock = new Mock<ILogger>();
+
+                var advice = springContext.GetObject<ExceptionHandlerAroundAdvice>(nameof(ExceptionHandlerAroundAdvice));
                 advice.EnableDebug = true;
                 advice.Logger = mock.Object;
 

@@ -65,7 +65,7 @@ pipeline {
 
                         #docker-compose up -d
 
-                        sleep 190
+                        #sleep 190
 
                         export PATH="$PATH:/root/.dotnet/tools"
 

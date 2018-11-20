@@ -1,9 +1,6 @@
 ﻿using FluentNHibernate.Cfg.Db;
 using System;
-using System.Configuration;
-using System.Globalization;
 using FluentNH = FluentNHibernate;
-using NH = NHibernate;
 
 namespace Oragon.Contexts.NHibernate
 {
@@ -18,16 +15,24 @@ namespace Oragon.Contexts.NHibernate
 
         protected override IPersistenceConfigurer BuildPersistenceConfigurer()
         {
-            var configSqlClient = this.BaseConfiguration
+            if (this.ConnectionStringDiscoverer == null)
+            {
+                throw new NullReferenceException("ConnectionStringDiscoverer is not set");
+            }
+
+            TThisConfiguration configSqlClient = this.BaseConfiguration
                                .ConnectionString(this.ConnectionStringDiscoverer.GetConfiguration())
                                .MaxFetchDepth(this.MaxFetchDepth)
                                .IsolationLevel(this.DefaultIsolationLevel);
             if (this.EnabledDiagnostics)
+            {
                 configSqlClient = configSqlClient.ShowSql().FormatSql();
+            }
 
             if (!string.IsNullOrWhiteSpace(this.DefaultSchema))
+            {
                 configSqlClient = configSqlClient.DefaultSchema(this.DefaultSchema);
-
+            }
 
             FluentNH.Cfg.Db.IPersistenceConfigurer returnValue = configSqlClient;
             return returnValue;

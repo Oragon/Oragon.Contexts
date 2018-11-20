@@ -1,5 +1,4 @@
-﻿using FluentNHibernate.Cfg.Db;
-using System;
+﻿using System;
 using System.Configuration;
 using System.Globalization;
 using System.Linq;
@@ -30,7 +29,7 @@ namespace Oragon.Contexts.NHibernate
         protected override NH.ISessionFactory BuildSessionFactoryInternal()
         {
             FluentNH.Cfg.Db.IPersistenceConfigurer databaseConfiguration = this.BuildPersistenceConfigurer();
-           
+
             FluentNH.Cfg.FluentConfiguration configuration = FluentNH.Cfg.Fluently
                 .Configure()
                 .Database(databaseConfiguration)
@@ -44,13 +43,13 @@ namespace Oragon.Contexts.NHibernate
                 )
                 .ExposeConfiguration(it =>
                 {
-                    var config = it
+                    NH.Cfg.Configuration config = it
                         .SetProperty("command_timeout", this.CommandTimeout.ToString(CultureInfo.InvariantCulture))
                         .SetProperty("adonet.batch_size", this.BatchSize.ToString(CultureInfo.InvariantCulture));
 
                     if (this.NHibernateRawConfigurationValues != null && this.NHibernateRawConfigurationValues.Count > 0)
                     {
-                        foreach (var rawConfigurationValue in this.NHibernateRawConfigurationValues)
+                        foreach (System.Collections.Generic.KeyValuePair<string, string> rawConfigurationValue in this.NHibernateRawConfigurationValues)
                         {
                             config.SetProperty(rawConfigurationValue.Key, rawConfigurationValue.Value);
                         }
@@ -60,11 +59,19 @@ namespace Oragon.Contexts.NHibernate
 
                 });
 
+            if (this.TypeNames == null)
+            {
+                throw new NullReferenceException("TypeNames is not set");
+            }
+
             foreach (string typeName in this.TypeNames)
             {
                 Type typeInfo = Type.GetType(typeName);
                 if (typeInfo == null)
+                {
                     throw new ConfigurationErrorsException(string.Format(CultureInfo.InvariantCulture, "Cannot load the Type '{0}', defined in TypeNames property of FluentNHibernateSessionFactoryBuilder", typeName));
+                }
+
                 configuration.Mappings(it =>
                 {
                     it.FluentMappings.AddFromAssembly(typeInfo.Assembly);
