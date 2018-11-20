@@ -36,9 +36,9 @@ pipeline {
 
                     sh  '''
 
-                        docker-compose up -d
+                        #docker-compose up -d
 
-                        sleep 60
+                        #sleep 60
 
                         '''
             }
@@ -63,9 +63,9 @@ pipeline {
 
                     sh  '''
 
-                        docker-compose up -d
+                        #docker-compose up -d
 
-                        sleep 60
+                        sleep 190
 
                         export PATH="$PATH:/root/.dotnet/tools"
 
@@ -188,8 +188,13 @@ pipeline {
         always {
             node('master'){
                 
-                sh "docker-compose down -v"
+                sh  '''
                 
+                #docker-compose down -v
+
+                '''
+
+
             }
         }
     }

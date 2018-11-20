@@ -22,6 +22,7 @@
         <None Remove="Integrated\Config\custom.db.sqlite.xml" />
         <None Remove="Integrated\Config\custom.db.sqlserver.xml" />
         <None Remove="Integrated\Config\general.xml" />
+        <None Remove="Integrated\DatabaseIntegrationTests.docker.xml" />
     </ItemGroup>
 
     <ItemGroup>
@@ -34,9 +35,11 @@
         <EmbeddedResource Include="Integrated\Config\custom.db.sqlite.xml" />
         <EmbeddedResource Include="Integrated\Config\custom.db.sqlserver.xml" />
         <EmbeddedResource Include="Integrated\Config\general.xml" />
+        <EmbeddedResource Include="Integrated\DatabaseIntegrationTests.docker.xml" />
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="Docker.DotNet" Version="3.125.2" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
         <PackageReference Include="coverlet.msbuild" Version="2.3.1">
           <PrivateAssets>all</PrivateAssets>
@@ -44,12 +47,16 @@
         </PackageReference>
         <PackageReference Include="Moq" Version="4.10.0" />
         <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
+        <PackageReference Include="MySql.Data" Version="8.0.13" />
+        <PackageReference Include="Npgsql" Version="4.0.3" />
+        <PackageReference Include="System.Data.SqlClient" Version="4.5.1" />
         <PackageReference Include="xunit" Version="2.4.1" />
         <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Oragon.Spring.Aop" Version="1.2.1" />
+        <PackageReference Include="Xunit.SkippableFact" Version="1.3.12" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\Oragon.Contexts.ExceptionHandling\Oragon.Contexts.ExceptionHandling.csproj" />

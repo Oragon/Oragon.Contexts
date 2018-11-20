@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<objects
+    xmlns="http://www.springframework.net"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.net/aop"
+>
+
+    <object name="sqlserver.CreateContainerParameters" type="Docker.DotNet.Models.CreateContainerParameters, Docker.DotNet">
+        <property name="Image" value="luizcarlosfaria/mssql-server-linux:latest" />
+        <property name="Env">
+            <list element-type="String">
+                <value><![CDATA[ACCEPT_EULA=Y]]></value>
+                <value><![CDATA[SA_PASSWORD=PbfSeBmdy34KvTGwWUTHdxht]]></value>
+                <value><![CDATA[MSSQL_DATABASE=DBExemplo]]></value>
+                <value><![CDATA[MSSQL_DATABASE_COLLATE=SQL_Latin1_General_CP1_CS_AS]]></value>
+                <value><![CDATA[MSSQL_USER=OragonDemoUser]]></value>
+                <value><![CDATA[MSSQL_PASSWORD=OragonDemoPwd]]></value>
+            </list>
+        </property>
+        <property name="HostConfig">
+            <object type="Docker.DotNet.Models.HostConfig, Docker.DotNet">
+                <property name="PortBindings" >
+                    <dictionary key-type="string" value-type="System.Collections.Generic.IList&lt;Docker.DotNet.Models.PortBinding&gt;">
+                        <entry key="1433/tcp">
+                            <list element-type="Docker.DotNet.Models.PortBinding, Docker.DotNet">
+                                <object type="Docker.DotNet.Models.PortBinding, Docker.DotNet">
+                                    <property name="HostPort" value="1433" />
+                                </object>
+                            </list>
+                        </entry>
+                    </dictionary>
+                </property>
+            </object>
+        </property>
+    </object>
+
+    <object name="sqlserver.ExpectedText" type="string" factory-method="Copy">
+        <constructor-arg index="0" value="/usr/local/bin/docker-entrypoint-initdb.sh: SQL Server Database ready"/>
+    </object>
+
+    <object name="sqlserver.Connection" type="System.Data.SqlClient.SqlConnection, System.Data.SqlClient">
+        <constructor-arg name="connectionString" value=""/>
+    </object>
+
+    
+    <object name="ContainerStartParameters" type="Docker.DotNet.Models.ContainerStartParameters, Docker.DotNet"></object>
+
+    <object name="ContainerLogsParameters" type="Docker.DotNet.Models.ContainerLogsParameters, Docker.DotNet">
+        <property name="Tail" value="50" />
+        <property name="ShowStdout" value="true" />
+        <property name="ShowStderr" value="true" />
+    </object>
+
+    <object name="GetLogsWaitTime" type="System.TimeSpan">
+        <constructor-arg name="hours" value="0" />
+        <constructor-arg name="minutes" value="0" />
+        <constructor-arg name="seconds" value="30" />
+    </object>
+
+    <object name="GetLogsRetryCount" type="System.Int32" factory-method="Parse">
+        <constructor-arg index="0" value="20" />
+    </object>
+
+    <object name="Docker.DefaultTimeout" type="System.TimeSpan">
+        <constructor-arg name="hours" value="0" />
+        <constructor-arg name="minutes" value="0" />
+        <constructor-arg name="seconds" value="40" />
+    </object>
+
+</objects>
+
+
+
+
+

@@ -14,7 +14,7 @@ namespace Oragon.Contexts.ExceptionHandling
 
 		public bool Enlist { get; private set; }
 
-		public LogContext(bool enlist = false)
+		public LogContext(bool enlist = true)
 		{
             this.LogTags = new Dictionary<string, object>
             {
@@ -49,7 +49,7 @@ namespace Oragon.Contexts.ExceptionHandling
 			Dictionary<string, object> returnValue = new Dictionary<string, object>();
 			foreach (var item in this.LogTags)
 				returnValue.Add(item.Key, item.Value);
-			return returnValue;
+            return returnValue;
 		}
 
 		public void Dispose()
@@ -66,7 +66,7 @@ namespace Oragon.Contexts.ExceptionHandling
 		{
 			get
 			{
-				LogContext logContext = Spring.Threading.LogicalThreadContext.GetData(LogContextKey) as LogContext ?? new LogContext(false);
+				LogContext logContext = Spring.Threading.LogicalThreadContext.GetData(LogContextKey) as LogContext ?? new LogContext();
 				return logContext;
 			}
 		}
