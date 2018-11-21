@@ -15,15 +15,17 @@ namespace Oragon.Contexts.NHibernate
 
         protected override IPersistenceConfigurer BuildPersistenceConfigurer()
         {
-            if (this.ConnectionStringDiscoverer == null)
-            {
-                throw new NullReferenceException("ConnectionStringDiscoverer is not set");
-            }
+            
 
             TThisConfiguration configSqlClient = this.BaseConfiguration
-                               .ConnectionString(this.ConnectionStringDiscoverer.GetConfiguration())
                                .MaxFetchDepth(this.MaxFetchDepth)
                                .IsolationLevel(this.DefaultIsolationLevel);
+
+            if (this.ConnectionStringDiscoverer != null)
+            {
+                configSqlClient = configSqlClient.ConnectionString(this.ConnectionStringDiscoverer.GetConfiguration());
+            }
+
             if (this.EnabledDiagnostics)
             {
                 configSqlClient = configSqlClient.ShowSql().FormatSql();
