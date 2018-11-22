@@ -278,14 +278,14 @@ namespace Oragon.Contexts.NHibernate
 
         public NH.ISessionFactory BuildSessionFactory()
         {
-			if (this.sessionFactory == null)
+            if (this.sessionFactory == null)
             {
-                semaphore.Acquire();
-				if (this.sessionFactory == null)//Reteste.. outra thread pode ter feito o preenchimento do campo antes da liberação do semáfoto.
+                this.semaphore.Acquire();
+                if (this.sessionFactory == null)//Reteste.. outra thread pode ter feito o preenchimento do campo antes da liberação do semáfoto.
                 {
                     try
                     {
-						this.sessionFactory = this.BuildSessionFactoryInternal();
+                        this.sessionFactory = this.BuildSessionFactoryInternal();
                     }
                     catch (Exception)
                     {
@@ -293,13 +293,15 @@ namespace Oragon.Contexts.NHibernate
                     }
                     finally
                     {
-                        semaphore.Release();
+                        this.semaphore.Release();
                     }
                 }
                 else
-                    semaphore.Release();
+                {
+                    this.semaphore.Release();
                 }
-			return this.sessionFactory;
+            }
+            return this.sessionFactory;
         }
 
         #endregion Métodos Públicos
@@ -312,6 +314,6 @@ namespace Oragon.Contexts.NHibernate
         /// <returns></returns>
         protected abstract NH.ISessionFactory BuildSessionFactoryInternal();
 
-		#endregion Métodos Privados
-	}
+        #endregion Métodos Privados
+    }
 }
