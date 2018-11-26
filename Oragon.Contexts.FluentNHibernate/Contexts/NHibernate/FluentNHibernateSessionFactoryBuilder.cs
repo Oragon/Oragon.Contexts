@@ -40,24 +40,8 @@ namespace Oragon.Contexts.NHibernate
                 .Diagnostics(it =>
                     it.Enable(this.EnabledDiagnostics)
                     .OutputToConsole()
-                )
-                .ExposeConfiguration(it =>
-                {
-                    NH.Cfg.Configuration config = it
-                        .SetProperty("command_timeout", this.CommandTimeout.ToString(CultureInfo.InvariantCulture))
-                        .SetProperty("adonet.batch_size", this.BatchSize.ToString(CultureInfo.InvariantCulture));
-
-                    if (this.NHibernateRawConfigurationValues != null && this.NHibernateRawConfigurationValues.Count > 0)
-                    {
-                        foreach (System.Collections.Generic.KeyValuePair<string, string> rawConfigurationValue in this.NHibernateRawConfigurationValues)
-                        {
-                            config.SetProperty(rawConfigurationValue.Key, rawConfigurationValue.Value);
-                        }
-                    }
-
-                    this.AddEventListeners(config);
-
-                });
+                );
+                
 
             if (this.TypeNames == null)
             {
@@ -78,6 +62,25 @@ namespace Oragon.Contexts.NHibernate
                     it.HbmMappings.AddFromAssembly(typeInfo.Assembly);
                 });
             }
+
+            configuration = configuration.ExposeConfiguration(it =>
+             {
+                 NH.Cfg.Configuration config = it
+                     .SetProperty("command_timeout", this.CommandTimeout.ToString(CultureInfo.InvariantCulture))
+                     .SetProperty("adonet.batch_size", this.BatchSize.ToString(CultureInfo.InvariantCulture));
+
+                 if (this.NHibernateRawConfigurationValues != null && this.NHibernateRawConfigurationValues.Count > 0)
+                 {
+                     foreach (System.Collections.Generic.KeyValuePair<string, string> rawConfigurationValue in this.NHibernateRawConfigurationValues)
+                     {
+                         config.SetProperty(rawConfigurationValue.Key, rawConfigurationValue.Value);
+                     }
+                 }
+
+                 this.AddEventListeners(config);
+
+                 this.OnExposeConfiguration?.Invoke(this, it);
+             });
 
             NH.ISessionFactory sessionFactory = configuration.BuildSessionFactory();
             return sessionFactory;
@@ -122,6 +125,8 @@ namespace Oragon.Contexts.NHibernate
         }
 
         protected abstract FluentNH.Cfg.Db.IPersistenceConfigurer BuildPersistenceConfigurer();
+
+        public event EventHandler<NH.Cfg.Configuration> OnExposeConfiguration;
 
         #endregion Protected Methods
 
