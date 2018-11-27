@@ -88,11 +88,17 @@ namespace Oragon.Context.Tests.Integrated
                                 dbHostname = containerInfo.Name.Substring(1);//Every container has a dash (/) on start.
                             }
 
-                            this.DatabaseIntegratedTestInternal(dbTechnology, dbHostname, dbPort);
-
-                            if (jenkinsTestContainer != null)
+                            try
                             {
-                                network.Disconnect(jenkinsTestContainer);
+                                this.DatabaseIntegratedTestInternal(dbTechnology, dbHostname, dbPort);
+                            }
+                            finally
+                            {
+                                if (jenkinsTestContainer != null)
+                                {
+                                    network.Disconnect(jenkinsTestContainer);
+                                }
+
                             }
 
                         }
