@@ -128,6 +128,10 @@ namespace Oragon.Context.Tests.Integrated
             Console.WriteLine($"   TO: {constr.Configuration}");
 
 
+            Console.WriteLine("Sleep 10 minutes...");
+            System.Threading.Thread.Sleep(TimeSpan.FromMinutes(10));
+
+
             Console.WriteLine("Start database object creation...");
             //Code First
             Contexts.NHibernate.FluentNHibernateSessionFactoryBuilder sfb = context.GetObject<Oragon.Contexts.NHibernate.FluentNHibernateSessionFactoryBuilder>("SessionFactoryBuilder");
