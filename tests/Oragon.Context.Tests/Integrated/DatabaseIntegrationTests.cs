@@ -126,7 +126,11 @@ namespace Oragon.Context.Tests.Integrated
 
             };
             sfb.OnExposeConfiguration += onExposeConfiguration;
-            sfb.BuildSessionFactory();
+            using (NHibernate.ISessionFactory sf = sfb.BuildSessionFactory())
+            {
+                Console.WriteLine("NH Statistics ConnectCount {sf.Statistics.ConnectCount}!");
+                
+            }
             sfb.OnExposeConfiguration -= onExposeConfiguration;
 
             Console.WriteLine("Objects created on database!");
