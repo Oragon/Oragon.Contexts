@@ -103,7 +103,7 @@ namespace Oragon.Context.Tests.Integrated.DockerSupport
 
                 Console.WriteLine($"Removing Container {this.CreateResponse.ID}");
 
-                this.Docker.Containers.RemoveContainerAsync(this.CreateResponse.ID, new ContainerRemoveParameters() { Force = true, RemoveLinks = true, RemoveVolumes = true }).GetAwaiter().GetResult();
+                this.Docker.Containers.RemoveContainerAsync(this.CreateResponse.ID, new ContainerRemoveParameters() { Force = true, RemoveVolumes = true }).GetAwaiter().GetResult();
 
                 Console.WriteLine($"Container Removed {this.CreateResponse.ID}");
 

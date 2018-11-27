@@ -107,7 +107,7 @@ namespace Oragon.Context.Tests.Integrated
             }
         }
 
-        private void DatabaseIntegratedTestInternal(string dbTechnology, string dbHostname, string dbPort)
+        internal virtual void DatabaseIntegratedTestInternal(string dbTechnology, string dbHostname, string dbPort)
         {
             Oragon.Spring.Context.Support.XmlApplicationContext context = new Oragon.Spring.Context.Support.XmlApplicationContext(
                 $"assembly://Oragon.Context.Tests/Oragon.Context.Tests.Integrated.AppSym.Config/custom.db.{dbTechnology}.xml",

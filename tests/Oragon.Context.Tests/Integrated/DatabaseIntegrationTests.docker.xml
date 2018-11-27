@@ -46,9 +46,6 @@
         <constructor-arg index="0" value="SQL Server Database ready"/>
     </object>
 
-    <object name="sqlserver.Connection" type="System.Data.SqlClient.SqlConnection, System.Data.SqlClient">
-        <constructor-arg name="connectionString" value=""/>
-    </object>
 
     
     <object name="sqlserver.ContainerStartParameters" type="Docker.DotNet.Models.ContainerStartParameters, Docker.DotNet"></object>
@@ -71,7 +68,7 @@
 
     <object name="Docker.DefaultTimeout" type="System.TimeSpan">
         <constructor-arg name="hours" value="0" />
-        <constructor-arg name="minutes" value="2" />
+        <constructor-arg name="minutes" value="3" />
         <constructor-arg name="seconds" value="0" />
     </object>
 
