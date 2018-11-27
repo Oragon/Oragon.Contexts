@@ -13,7 +13,7 @@
         <property name="DefaultFlushMode" value="Never" />
         <property name="TransactionFlushMode" value="Commit" />
         <property name="MaxFetchDepth" value="3" />
-        <property name="EnabledDiagnostics" value="false" />
+        <property name="EnabledDiagnostics" value="true" />
         <property name="CommandTimeout" value="20000" />
         <property name="BatchSize" value="50" />
         <property name="TypeNames">

@@ -105,5 +105,17 @@ namespace Oragon.Context.Tests.Integrated.DockerSupport
             return null;
 
         }
+
+
+        public void Connect() 
+        {
+        
+        }
+
+        public void Disconnect() 
+        { 
+        
+        }
+
     }
 }
