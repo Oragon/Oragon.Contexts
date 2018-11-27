@@ -23,7 +23,7 @@ namespace Oragon.Context.Tests.Integrated.DockerSupport
             Console.WriteLine($"Network {name} created as {this.CreateNetworkResponse.ID}");
         }
 
-        public void Connect(ContainerManager container)
+        public void Connect(ContainerManager container, string alias)
         {
             string name = container.Inspect().Name;
 
@@ -34,8 +34,8 @@ namespace Oragon.Context.Tests.Integrated.DockerSupport
                     Container = container.CreateResponse.ID,
                     EndpointConfig = new EndpointSettings()
                     {
-                        Aliases = new List<string>() { 
-                            name
+                        Aliases = new List<string>() {
+                            alias
                         }
                     }
                 }).GetAwaiter().GetResult();

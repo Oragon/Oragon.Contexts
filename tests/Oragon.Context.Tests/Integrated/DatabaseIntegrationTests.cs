@@ -61,7 +61,7 @@ namespace Oragon.Context.Tests.Integrated
                         if (container.Start(containerStartParameters))
                         {
 
-                            network.Connect(container);
+                            network.Connect(container, dbTechnology);
 
                             container.WaitUntilTextFoundInLog(containerLogsParameters, textTofound, 10, getLogsWaitTime);
 
@@ -81,7 +81,7 @@ namespace Oragon.Context.Tests.Integrated
                             {
                                 jenkinsTestContainer = ContainerManager.GetCurrent(docker) ?? throw new InvalidOperationException("ContainerManager.GetCurrent result nothing");
 
-                                network.Connect(jenkinsTestContainer);
+                                network.Connect(jenkinsTestContainer, "jenkins_worker");
 
                                 dbPort = portKey.Split('/', StringSplitOptions.RemoveEmptyEntries).First();
 
