@@ -9,8 +9,11 @@ namespace Oragon.Context.Tests.Integrated.AppSym.Services
     {
         [NHContext("OragonSamples", true)]
         public void Test()
-        { 
-            
+        {
+            Console.WriteLine("TestService.Test() Init");
+
+
+            Console.WriteLine("TestService.Test() End");
         }
     }
 }
