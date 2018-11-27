@@ -28,18 +28,18 @@ namespace Oragon.Context.Tests.Integrated.DockerSupport
         {
             this.Docker.Networks.ConnectNetworkAsync(this.CreateNetworkResponse.ID, new NetworkConnectParameters() { Container = container.CreateResponse.ID }).GetAwaiter().GetResult();
 
-            this.ConnectedContainers.Insert(0, container);
+            //this.ConnectedContainers.Insert(0, container);
 
             Console.WriteLine($"Container {container.CreateResponse.ID} was connected to {this.CreateNetworkResponse.ID}");
         }
 
-        private List<ContainerManager> ConnectedContainers { get; set; } = new List<ContainerManager>();
+        //private List<ContainerManager> ConnectedContainers { get; set; } = new List<ContainerManager>();
 
         public void Disconnect(ContainerManager container)
         {
             this.Docker.Networks.DisconnectNetworkAsync(this.CreateNetworkResponse.ID, new NetworkDisconnectParameters() { Container = container.CreateResponse.ID, Force = true }).GetAwaiter().GetResult();
 
-            this.ConnectedContainers.Remove(container);
+            //this.ConnectedContainers.Remove(container);
 
             Console.WriteLine($"Container {container.CreateResponse.ID} was disconected from {this.CreateNetworkResponse.ID}");
         }
@@ -53,10 +53,10 @@ namespace Oragon.Context.Tests.Integrated.DockerSupport
             if (this.CreateNetworkResponse != null)
             {
 
-                while (this.ConnectedContainers.Any())
-                {
-                    this.Disconnect(this.ConnectedContainers[0]);
-                }
+                //while (this.ConnectedContainers.Any())
+                //{
+                //    this.Disconnect(this.ConnectedContainers[0]);
+                //}
 
                 Console.WriteLine($"Removing Network {this.CreateNetworkResponse.ID}");
 

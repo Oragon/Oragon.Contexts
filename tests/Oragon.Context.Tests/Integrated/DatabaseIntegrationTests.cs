@@ -119,19 +119,14 @@ namespace Oragon.Context.Tests.Integrated
             //Code First
             Contexts.NHibernate.FluentNHibernateSessionFactoryBuilder sfb = context.GetObject<Oragon.Contexts.NHibernate.FluentNHibernateSessionFactoryBuilder>("SessionFactoryBuilder");
 
-            EventHandler<NHibernate.Cfg.Configuration> onExposeConfiguration = (sender, config) =>
-            {
-                NHibernate.Tool.hbm2ddl.SchemaUpdate update = new NHibernate.Tool.hbm2ddl.SchemaUpdate(config);
-                update.Execute(true, true);
-
-            };
-            sfb.OnExposeConfiguration += onExposeConfiguration;
+          
+            sfb.OnExposeConfiguration += this.Sfb_OnExposeConfiguration;
             using (NHibernate.ISessionFactory sf = sfb.BuildSessionFactory())
             {
                 Console.WriteLine("NH Statistics ConnectCount {sf.Statistics.ConnectCount}!");
                 
             }
-            sfb.OnExposeConfiguration -= onExposeConfiguration;
+            sfb.OnExposeConfiguration -= this.Sfb_OnExposeConfiguration;
 
             Console.WriteLine("Objects created on database!");
 
@@ -142,6 +137,16 @@ namespace Oragon.Context.Tests.Integrated
 
             Console.WriteLine("End of functional tests ITestService.Test()");
 
+        }
+
+        private void Sfb_OnExposeConfiguration(object sender, NHibernate.Cfg.Configuration config)
+        {
+            Console.WriteLine("Updating schema");
+
+            NHibernate.Tool.hbm2ddl.SchemaUpdate update = new NHibernate.Tool.hbm2ddl.SchemaUpdate(config);
+            update.Execute(true, true);
+
+            Console.WriteLine("Updating finished!");
         }
 
         private Uri GetEndpoint()
