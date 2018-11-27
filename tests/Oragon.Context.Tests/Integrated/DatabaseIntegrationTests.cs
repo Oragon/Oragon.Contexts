@@ -20,7 +20,7 @@ namespace Oragon.Context.Tests.Integrated
         public void DatabaseIntegratedTest(string dbTechnology)
         {
             bool isUnderContainer = (System.Environment.OSVersion.Platform == PlatformID.Unix);
-            
+
 
             //this.DatabaseIntegratedTestInternal(dbTechnology); return;
 
@@ -54,6 +54,16 @@ namespace Oragon.Context.Tests.Integrated
 
                         network.Create(buildTag);
 
+                        if (!isUnderContainer)
+                        {
+                            ContainerManager jenkinsTestContainer = ContainerManager.GetCurrent(docker);
+                            if (jenkinsTestContainer == null)
+                            {
+                                throw new InvalidOperationException("ContainerManager.GetCurrent result nothing");
+                            }
+                            network.Connect(jenkinsTestContainer);
+                        }
+
                         container.Create(createContainerParameters);
 
                         if (container.Start(containerStartParameters))
@@ -75,16 +85,8 @@ namespace Oragon.Context.Tests.Integrated
                             }
                             else
                             {
-                                ContainerManager jenkinsTestContainer = ContainerManager.GetCurrent(docker);
-                                if (jenkinsTestContainer == null)
-                                {
-                                    throw new InvalidOperationException("ContainerManager.GetCurrent result nothing");
-                                }
-
-                                network.Connect(jenkinsTestContainer);
-
                                 dbPort = portKey.Split('/', StringSplitOptions.RemoveEmptyEntries).First();
-                                dbHostname = containerInfo.Name;
+                                dbHostname = containerInfo.Name.Substring(1);
                             }
 
                             this.DatabaseIntegratedTestInternal(dbTechnology, dbHostname, dbPort);
@@ -118,11 +120,11 @@ namespace Oragon.Context.Tests.Integrated
             Console.WriteLine($"   TO: {constr.Configuration}");
 
             //Code First
-            var sfb = context.GetObject<Oragon.Contexts.NHibernate.FluentNHibernateSessionFactoryBuilder>("SessionFactoryBuilder");
+            Contexts.NHibernate.FluentNHibernateSessionFactoryBuilder sfb = context.GetObject<Oragon.Contexts.NHibernate.FluentNHibernateSessionFactoryBuilder>("SessionFactoryBuilder");
 
             EventHandler<NHibernate.Cfg.Configuration> onExposeConfiguration = (sender, config) =>
             {
-                var update = new NHibernate.Tool.hbm2ddl.SchemaUpdate(config);
+                NHibernate.Tool.hbm2ddl.SchemaUpdate update = new NHibernate.Tool.hbm2ddl.SchemaUpdate(config);
                 update.Execute(true, true);
 
             };
