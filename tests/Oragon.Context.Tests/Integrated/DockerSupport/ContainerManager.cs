@@ -14,7 +14,7 @@ namespace Oragon.Context.Tests.Integrated.DockerSupport
         }
 
         private ContainerManager(DockerClient docker, string id) : this(docker)
-        {            
+        {
             this.CreateResponse = new CreateContainerResponse() { ID = id };
         }
 
@@ -37,7 +37,7 @@ namespace Oragon.Context.Tests.Integrated.DockerSupport
 
         public bool Start(ContainerStartParameters startRequest)
         {
-            var returnValue = this.Docker.Containers.StartContainerAsync(this.CreateResponse.ID, startRequest).GetAwaiter().GetResult();
+            bool returnValue = this.Docker.Containers.StartContainerAsync(this.CreateResponse.ID, startRequest).GetAwaiter().GetResult();
 
             Console.WriteLine($"Container Started {this.CreateResponse.ID}");
 
@@ -94,19 +94,20 @@ namespace Oragon.Context.Tests.Integrated.DockerSupport
             {
 
                 Console.WriteLine($"Stopping Container {this.CreateResponse.ID}");
-                
+
                 this.Docker.Containers.StopContainerAsync(this.CreateResponse.ID, new ContainerStopParameters() { WaitBeforeKillSeconds = 30 }).GetAwaiter().GetResult();
-                
+
                 Console.WriteLine($"Container Stopped {this.CreateResponse.ID}");
 
                 System.Threading.Thread.Sleep(TimeSpan.FromSeconds(30));
 
                 Console.WriteLine($"Removing Container {this.CreateResponse.ID}");
-                
-                this.Docker.Containers.RemoveContainerAsync(this.CreateResponse.ID, new ContainerRemoveParameters() { Force = true, RemoveVolumes = true }).GetAwaiter().GetResult();
-                
+
+                this.Docker.Containers.RemoveContainerAsync(this.CreateResponse.ID, new ContainerRemoveParameters() { Force = true, RemoveLinks = true, RemoveVolumes = true }).GetAwaiter().GetResult();
+
                 Console.WriteLine($"Container Removed {this.CreateResponse.ID}");
 
+                System.Threading.Thread.Sleep(TimeSpan.FromSeconds(10));
             }
 
             Console.WriteLine($"Container Disposed {this.CreateResponse.ID}");
@@ -120,7 +121,7 @@ namespace Oragon.Context.Tests.Integrated.DockerSupport
         internal static ContainerManager GetCurrent(DockerClient docker)
         {
             string machineName = System.Environment.MachineName;
-            
+
             System.Collections.Generic.IList<ContainerListResponse> containers = docker.Containers.ListContainersAsync(new ContainersListParameters() { All = true }).GetAwaiter().GetResult();
 
             ContainerListResponse container = containers.SingleOrDefault(it => it.ID.StartsWith(machineName) || it.ID.EndsWith(machineName));

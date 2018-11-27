@@ -79,12 +79,15 @@ namespace Oragon.Contexts.NHibernate
 
                  this.AddEventListeners(config);
 
-                 this.OnExposeConfiguration?.Invoke(this, it);
+                 if(this.OnExposeConfiguration!= null)
+                    this.OnExposeConfiguration(it);
              });
 
             NH.ISessionFactory sessionFactory = configuration.BuildSessionFactory();
             return sessionFactory;
         }
+
+
 
         private void AddEventListeners(NH.Cfg.Configuration config)
         {
@@ -126,7 +129,7 @@ namespace Oragon.Contexts.NHibernate
 
         protected abstract FluentNH.Cfg.Db.IPersistenceConfigurer BuildPersistenceConfigurer();
 
-        public event EventHandler<NH.Cfg.Configuration> OnExposeConfiguration;
+        public Action<NH.Cfg.Configuration> OnExposeConfiguration;
 
         #endregion Protected Methods
 

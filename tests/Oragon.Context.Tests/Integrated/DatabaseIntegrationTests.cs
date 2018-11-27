@@ -120,13 +120,13 @@ namespace Oragon.Context.Tests.Integrated
             Contexts.NHibernate.FluentNHibernateSessionFactoryBuilder sfb = context.GetObject<Oragon.Contexts.NHibernate.FluentNHibernateSessionFactoryBuilder>("SessionFactoryBuilder");
 
           
-            sfb.OnExposeConfiguration += this.Sfb_OnExposeConfiguration;
+            sfb.OnExposeConfiguration = this.Sfb_OnExposeConfiguration;
             using (NHibernate.ISessionFactory sf = sfb.BuildSessionFactory())
             {
                 Console.WriteLine("NH Statistics ConnectCount {sf.Statistics.ConnectCount}!");
                 
             }
-            sfb.OnExposeConfiguration -= this.Sfb_OnExposeConfiguration;
+            sfb.OnExposeConfiguration = null;
 
             Console.WriteLine("Objects created on database!");
 
@@ -139,7 +139,7 @@ namespace Oragon.Context.Tests.Integrated
 
         }
 
-        private void Sfb_OnExposeConfiguration(object sender, NHibernate.Cfg.Configuration config)
+        private void Sfb_OnExposeConfiguration(NHibernate.Cfg.Configuration config)
         {
             Console.WriteLine("Updating schema");
 
