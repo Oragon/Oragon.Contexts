@@ -2,7 +2,6 @@
 using Docker.DotNet.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Oragon.Context.Tests.Integrated.DockerSupport
 {
@@ -26,7 +25,20 @@ namespace Oragon.Context.Tests.Integrated.DockerSupport
 
         public void Connect(ContainerManager container)
         {
-            this.Docker.Networks.ConnectNetworkAsync(this.CreateNetworkResponse.ID, new NetworkConnectParameters() { Container = container.CreateResponse.ID }).GetAwaiter().GetResult();
+            string name = container.Inspect().Name;
+
+            this.Docker.Networks.ConnectNetworkAsync(
+                this.CreateNetworkResponse.ID,
+                new NetworkConnectParameters()
+                {
+                    Container = container.CreateResponse.ID,
+                    EndpointConfig = new EndpointSettings()
+                    {
+                        Aliases = new List<string>() { 
+                            name
+                        }
+                    }
+                }).GetAwaiter().GetResult();
 
             //this.ConnectedContainers.Insert(0, container);
 

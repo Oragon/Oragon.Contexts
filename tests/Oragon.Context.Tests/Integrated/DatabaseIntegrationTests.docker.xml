@@ -24,6 +24,19 @@
                 </entry>
             </dictionary>
         </property>
+        <!--<property name="NetworkingConfig">
+            <object type="Docker.DotNet.Models.NetworkingConfig, Docker.DotNet">
+                <property name="EndpointsConfig">
+                    <dictionary key-type="string" value-type="Docker.DotNet.Models.EndpointSettings, Docker.DotNet">
+                        <entry key="app">
+                            <object type="Docker.DotNet.Models.EndpointSettings, Docker.DotNet">
+                                <property name="" value="sqlserver" />
+                            </object>
+                        </entry>
+                    </dictionary>
+                </property>
+            </object>
+        </property>-->
         <property name="HostConfig">
             <object type="Docker.DotNet.Models.HostConfig, Docker.DotNet">
                 <property name="PublishAllPorts" value="true" />
