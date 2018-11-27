@@ -85,7 +85,7 @@ namespace Oragon.Context.Tests.Integrated
 
                                 dbPort = portKey.Split('/', StringSplitOptions.RemoveEmptyEntries).First();
 
-                                dbHostname = containerInfo.Name.Substring(1);//Every container has a dash (/) on start.
+                                dbHostname = dbTechnology;
                             }
 
                             try
@@ -128,8 +128,8 @@ namespace Oragon.Context.Tests.Integrated
             Console.WriteLine($"   TO: {constr.Configuration}");
 
 
-            Console.WriteLine("Sleep 10 minutes...");
-            System.Threading.Thread.Sleep(TimeSpan.FromMinutes(10));
+            //Console.WriteLine("Sleep 10 minutes...");
+            //System.Threading.Thread.Sleep(TimeSpan.FromMinutes(10));
 
 
             Console.WriteLine("Start database object creation...");
