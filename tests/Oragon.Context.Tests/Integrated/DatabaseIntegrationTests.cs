@@ -21,48 +21,40 @@ namespace Oragon.Context.Tests.Integrated
         {
             bool isUnderContainer = (System.Environment.OSVersion.Platform == PlatformID.Unix);
 
-
-            //this.DatabaseIntegratedTestInternal(dbTechnology); return;
-
             string buildTag = Environment.GetEnvironmentVariable("BUILD_TAG") ?? "jenkins-oragon-oragon-github-Oragon.Contexts-LOCAL-1";
 
             Oragon.Spring.Context.Support.XmlApplicationContext context = new Oragon.Spring.Context.Support.XmlApplicationContext("assembly://Oragon.Context.Tests/Oragon.Context.Tests.Integrated/DatabaseIntegrationTests.docker.xml");
 
             Skip.IfNot(context.ContainsObject($"{dbTechnology}.CreateContainerParameters"), "Has no configuration about " + dbTechnology);
 
-
             TimeSpan dockerDefaultTimeout = context.GetObject<TimeSpan>("Docker.DefaultTimeout");
 
             int getLogsRetryCount = context.GetObject<int>($"{dbTechnology}.GetLogsRetryCount");
+
             string textTofound = context.GetObject<string>($"{dbTechnology}.ExpectedText");
+
             TimeSpan getLogsWaitTime = context.GetObject<TimeSpan>($"{dbTechnology}.GetLogsWaitTime");
+
             CreateContainerParameters createContainerParameters = context.GetObject<CreateContainerParameters>($"{dbTechnology}.CreateContainerParameters");
-            createContainerParameters.HostConfig.PublishAllPorts = !isUnderContainer;
 
             ContainerStartParameters containerStartParameters = context.GetObject<ContainerStartParameters>($"{dbTechnology}.ContainerStartParameters");
+
             ContainerLogsParameters containerLogsParameters = context.GetObject<ContainerLogsParameters>($"{dbTechnology}.ContainerLogsParameters");
+
+            //Convention - If runnig outside docker, need expose port to perform the test
+            createContainerParameters.HostConfig.PublishAllPorts = !isUnderContainer;
 
             using (DockerClient docker = new DockerClientConfiguration(this.GetEndpoint()).CreateClient())
             {
                 //testing connectivity
                 docker.DefaultTimeout = dockerDefaultTimeout;
 
-                using (ContainerManager container = new ContainerManager(docker))
+                using (NetworkManager network = new NetworkManager(docker))
                 {
-                    using (NetworkManager network = new NetworkManager(docker))
+                    network.Create(buildTag);
+
+                    using (ContainerManager container = new ContainerManager(docker))
                     {
-
-                        network.Create(buildTag);
-
-                        if (!isUnderContainer)
-                        {
-                            ContainerManager jenkinsTestContainer = ContainerManager.GetCurrent(docker);
-                            if (jenkinsTestContainer == null)
-                            {
-                                throw new InvalidOperationException("ContainerManager.GetCurrent result nothing");
-                            }
-                            network.Connect(jenkinsTestContainer);
-                        }
 
                         container.Create(createContainerParameters);
 
@@ -76,8 +68,8 @@ namespace Oragon.Context.Tests.Integrated
                             ContainerInspectResponse containerInfo = container.Inspect();
 
                             string portKey = createContainerParameters.ExposedPorts.Keys.Single();
-                            string dbPort;
-                            string dbHostname;
+                            string dbPort, dbHostname;
+
                             if (!isUnderContainer)
                             {
                                 dbPort = containerInfo.NetworkSettings.Ports[portKey].Single().HostPort;
@@ -85,13 +77,16 @@ namespace Oragon.Context.Tests.Integrated
                             }
                             else
                             {
+                                ContainerManager jenkinsTestContainer = ContainerManager.GetCurrent(docker) ?? throw new InvalidOperationException("ContainerManager.GetCurrent result nothing");
+
+                                network.Connect(jenkinsTestContainer);
+
                                 dbPort = portKey.Split('/', StringSplitOptions.RemoveEmptyEntries).First();
-                                dbHostname = containerInfo.Name.Substring(1);
+
+                                dbHostname = containerInfo.Name.Substring(1);//Every container has a dash (/) on start.
                             }
 
                             this.DatabaseIntegratedTestInternal(dbTechnology, dbHostname, dbPort);
-
-                            network.Disconnect(container);
 
                         }
                     }
