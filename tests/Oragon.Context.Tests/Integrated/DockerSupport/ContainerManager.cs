@@ -107,7 +107,6 @@ namespace Oragon.Context.Tests.Integrated.DockerSupport
 
                 Console.WriteLine($"Container Removed {this.CreateResponse.ID}");
 
-                System.Threading.Thread.Sleep(TimeSpan.FromSeconds(30));
             }
 
             Console.WriteLine($"Container Disposed {this.CreateResponse.ID}");

@@ -70,6 +70,8 @@ namespace Oragon.Context.Tests.Integrated
                             string portKey = createContainerParameters.ExposedPorts.Keys.Single();
                             string dbPort, dbHostname;
 
+                            ContainerManager jenkinsTestContainer = null;
+
                             if (!isUnderContainer)
                             {
                                 dbPort = containerInfo.NetworkSettings.Ports[portKey].Single().HostPort;
@@ -77,7 +79,7 @@ namespace Oragon.Context.Tests.Integrated
                             }
                             else
                             {
-                                ContainerManager jenkinsTestContainer = ContainerManager.GetCurrent(docker) ?? throw new InvalidOperationException("ContainerManager.GetCurrent result nothing");
+                                jenkinsTestContainer = ContainerManager.GetCurrent(docker) ?? throw new InvalidOperationException("ContainerManager.GetCurrent result nothing");
 
                                 network.Connect(jenkinsTestContainer);
 
@@ -87,6 +89,11 @@ namespace Oragon.Context.Tests.Integrated
                             }
 
                             this.DatabaseIntegratedTestInternal(dbTechnology, dbHostname, dbPort);
+
+                            if (jenkinsTestContainer != null)
+                            {
+                                network.Disconnect(jenkinsTestContainer);
+                            }
 
                         }
                     }
@@ -133,7 +140,7 @@ namespace Oragon.Context.Tests.Integrated
 
             Console.WriteLine("Start functional tests ITestService.Test()");
 
-            context.GetObject<AppSym.Services.ITestService>().Test();
+            context.GetObject<AppSym.Services.ITestService>("TestService").Test();
 
             Console.WriteLine("End of functional tests ITestService.Test()");
 
