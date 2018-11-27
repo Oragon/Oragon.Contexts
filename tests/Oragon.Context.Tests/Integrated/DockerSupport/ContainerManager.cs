@@ -14,7 +14,7 @@ namespace Oragon.Context.Tests.Integrated.DockerSupport
         }
 
         private ContainerManager(DockerClient docker, string id) : this(docker)
-        {
+        {            
             this.CreateResponse = new CreateContainerResponse() { ID = id };
         }
 
@@ -31,11 +31,17 @@ namespace Oragon.Context.Tests.Integrated.DockerSupport
             {
                 throw new InvalidOperationException(string.Join(" | ", this.CreateResponse.Warnings));
             }
+
+            Console.WriteLine($"Container Created {this.CreateResponse.ID}");
         }
 
         public bool Start(ContainerStartParameters startRequest)
         {
-            return this.Docker.Containers.StartContainerAsync(this.CreateResponse.ID, startRequest).GetAwaiter().GetResult();
+            var returnValue = this.Docker.Containers.StartContainerAsync(this.CreateResponse.ID, startRequest).GetAwaiter().GetResult();
+
+            Console.WriteLine($"Container Started {this.CreateResponse.ID}");
+
+            return returnValue;
         }
 
         public ContainerInspectResponse Inspect()
@@ -46,6 +52,8 @@ namespace Oragon.Context.Tests.Integrated.DockerSupport
 
         public void WaitUntilTextFoundInLog(ContainerLogsParameters containerLogsParameters, string textToFind, int getLogsRetryCount, TimeSpan getLogsWaitTime)
         {
+            Console.WriteLine($"Waiting keyword on log of {this.CreateResponse.ID}");
+
             string logs = null;
             bool isOk = false;
             for (int i = 0; i < getLogsRetryCount; i++)
@@ -65,6 +73,7 @@ namespace Oragon.Context.Tests.Integrated.DockerSupport
                         {
                             break;
                         }
+                        Console.WriteLine($"Keyword not found yet...");
                     }
                 }
             }
@@ -72,17 +81,35 @@ namespace Oragon.Context.Tests.Integrated.DockerSupport
             {
                 throw new TimeoutException("Timeout waiting logs");
             }
+
+            Console.WriteLine($"Ok, keyword found on log of {this.CreateResponse.ID}");
         }
 
 
         public void Dispose()
         {
+            Console.WriteLine($"Disposing Container {this.CreateResponse.ID}");
+
             if (this.CreateResponse != null)
             {
+
+                Console.WriteLine($"Stopping Container {this.CreateResponse.ID}");
+                
                 this.Docker.Containers.StopContainerAsync(this.CreateResponse.ID, new ContainerStopParameters() { WaitBeforeKillSeconds = 30 }).GetAwaiter().GetResult();
+                
+                Console.WriteLine($"Container Stopped {this.CreateResponse.ID}");
+
                 System.Threading.Thread.Sleep(TimeSpan.FromSeconds(30));
+
+                Console.WriteLine($"Removing Container {this.CreateResponse.ID}");
+                
                 this.Docker.Containers.RemoveContainerAsync(this.CreateResponse.ID, new ContainerRemoveParameters() { Force = true, RemoveVolumes = true }).GetAwaiter().GetResult();
+                
+                Console.WriteLine($"Container Removed {this.CreateResponse.ID}");
+
             }
+
+            Console.WriteLine($"Container Disposed {this.CreateResponse.ID}");
         }
 
         public void Report(JSONMessage value)
@@ -93,12 +120,15 @@ namespace Oragon.Context.Tests.Integrated.DockerSupport
         internal static ContainerManager GetCurrent(DockerClient docker)
         {
             string machineName = System.Environment.MachineName;
+            
             System.Collections.Generic.IList<ContainerListResponse> containers = docker.Containers.ListContainersAsync(new ContainersListParameters() { All = true }).GetAwaiter().GetResult();
 
             ContainerListResponse container = containers.SingleOrDefault(it => it.ID.StartsWith(machineName) || it.ID.EndsWith(machineName));
 
             if (container != null)
             {
+                Console.WriteLine($"Current Container found - {container.ID}");
+
                 return new ContainerManager(docker, container.ID);
             }
 
@@ -107,15 +137,6 @@ namespace Oragon.Context.Tests.Integrated.DockerSupport
         }
 
 
-        public void Connect() 
-        {
-        
-        }
-
-        public void Disconnect() 
-        { 
-        
-        }
 
     }
 }

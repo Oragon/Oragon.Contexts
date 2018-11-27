@@ -114,6 +114,8 @@ namespace Oragon.Context.Tests.Integrated
 
             Console.WriteLine($"   TO: {constr.Configuration}");
 
+
+            Console.WriteLine("Start database object creation...");
             //Code First
             Contexts.NHibernate.FluentNHibernateSessionFactoryBuilder sfb = context.GetObject<Oragon.Contexts.NHibernate.FluentNHibernateSessionFactoryBuilder>("SessionFactoryBuilder");
 
@@ -127,8 +129,14 @@ namespace Oragon.Context.Tests.Integrated
             sfb.BuildSessionFactory();
             sfb.OnExposeConfiguration -= onExposeConfiguration;
 
+            Console.WriteLine("Objects created on database!");
+
+
+            Console.WriteLine("Start functional tests ITestService.Test()");
 
             context.GetObject<AppSym.Services.ITestService>().Test();
+
+            Console.WriteLine("End of functional tests ITestService.Test()");
 
         }
 
