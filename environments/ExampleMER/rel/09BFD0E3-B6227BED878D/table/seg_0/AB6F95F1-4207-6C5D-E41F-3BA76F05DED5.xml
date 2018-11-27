@@ -22,7 +22,7 @@
 <autoIncrementSequenceName>STUDENT_SEQ</autoIncrementSequenceName>
 <autoIncrementTriggerName>STUDENT_TRG</autoIncrementTriggerName>
 </Column>
-<Column name="LANGUAGE_LANGUAGE_ID" id="689776EF-35F7-3F69-F94D-A5FB82181AC0">
+<Column name="LANGUAGE_ID" id="689776EF-35F7-3F69-F94D-A5FB82181AC0">
 <createdBy>luizc</createdBy>
 <createdTime>2018-11-18 09:47:31 UTC</createdTime>
 <ownerDesignName>ExampleMER</ownerDesignName>

@@ -1,6 +1,8 @@
 ﻿using Docker.DotNet;
 using Docker.DotNet.Models;
+using Oragon.Context.Tests.Integrated.DockerSupport;
 using System;
+using System.Linq;
 using Xunit;
 
 namespace Oragon.Context.Tests.Integrated
@@ -8,102 +10,130 @@ namespace Oragon.Context.Tests.Integrated
     public class DatabaseIntegrationTests
     {
 
-        //[SkippableTheory]
+        [SkippableTheory]
         ////[InlineData("db2")]
         ////[InlineData("mysql")]
         ////[InlineData("oracle")]
         ////[InlineData("postgresql")]
         ////[InlineData("sqlite")]
-        //[InlineData("sqlserver")]
+        [InlineData("sqlserver")]
         public void DatabaseIntegratedTest(string dbTechnology)
         {
+            bool isUnderContainer = (System.Environment.OSVersion.Platform == PlatformID.Unix);
+            
+
+            //this.DatabaseIntegratedTestInternal(dbTechnology); return;
+
+            string buildTag = Environment.GetEnvironmentVariable("BUILD_TAG") ?? "jenkins-oragon-oragon-github-Oragon.Contexts-LOCAL-1";
+
             Oragon.Spring.Context.Support.XmlApplicationContext context = new Oragon.Spring.Context.Support.XmlApplicationContext("assembly://Oragon.Context.Tests/Oragon.Context.Tests.Integrated/DatabaseIntegrationTests.docker.xml");
 
             Skip.IfNot(context.ContainsObject($"{dbTechnology}.CreateContainerParameters"), "Has no configuration about " + dbTechnology);
 
+
+            TimeSpan dockerDefaultTimeout = context.GetObject<TimeSpan>("Docker.DefaultTimeout");
+
+            int getLogsRetryCount = context.GetObject<int>($"{dbTechnology}.GetLogsRetryCount");
+            string textTofound = context.GetObject<string>($"{dbTechnology}.ExpectedText");
+            TimeSpan getLogsWaitTime = context.GetObject<TimeSpan>($"{dbTechnology}.GetLogsWaitTime");
             CreateContainerParameters createContainerParameters = context.GetObject<CreateContainerParameters>($"{dbTechnology}.CreateContainerParameters");
+            createContainerParameters.HostConfig.PublishAllPorts = !isUnderContainer;
+
+            ContainerStartParameters containerStartParameters = context.GetObject<ContainerStartParameters>($"{dbTechnology}.ContainerStartParameters");
+            ContainerLogsParameters containerLogsParameters = context.GetObject<ContainerLogsParameters>($"{dbTechnology}.ContainerLogsParameters");
 
             using (DockerClient docker = new DockerClientConfiguration(this.GetEndpoint()).CreateClient())
             {
                 //testing connectivity
-                docker.DefaultTimeout = context.GetObject<TimeSpan>("Docker.DefaultTimeout");
+                docker.DefaultTimeout = dockerDefaultTimeout;
 
-                CreateContainerResponse containerId = docker.Containers.CreateContainerAsync(createContainerParameters).GetAwaiter().GetResult();
-
-                bool isOk = false;
-                if (docker.Containers.StartContainerAsync(containerId.ID, context.GetObject<ContainerStartParameters>()).GetAwaiter().GetResult())
+                using (ContainerManager container = new ContainerManager(docker))
                 {
-
-                    string textTofound = context.GetObject<string>("sqlserver.ExpectedText");
-
-                    int getLogsRetryCount = context.GetObject<int>("GetLogsRetryCount");
-
-                    string logs = null;
-
-                    for (int i = 0; i < getLogsRetryCount; i++)
+                    using (NetworkManager network = new NetworkManager(docker))
                     {
-                        System.Threading.Thread.Sleep(context.GetObject<TimeSpan>("GetLogsWaitTime"));
 
-                        using (System.IO.Stream logStream = docker.Containers.GetContainerLogsAsync(containerId.ID, context.GetObject<ContainerLogsParameters>()).GetAwaiter().GetResult())
+                        network.Create(buildTag);
+
+                        container.Create(createContainerParameters);
+
+                        if (container.Start(containerStartParameters))
                         {
 
-                            using (System.IO.StreamReader reader = new System.IO.StreamReader(logStream))
-                            {
-                                logs = reader.ReadToEnd();
-                            }
+                            network.Connect(container);
 
-                            if (!string.IsNullOrWhiteSpace(logs))
+                            container.WaitUntilTextFoundInLog(containerLogsParameters, textTofound, 10, getLogsWaitTime);
+
+                            ContainerInspectResponse containerInfo = container.Inspect();
+
+                            string portKey = createContainerParameters.ExposedPorts.Keys.Single();
+                            string dbPort;
+                            string dbHostname;
+                            if (!isUnderContainer)
                             {
-                                isOk = logs.Contains(textTofound);
-                                if (isOk)
+                                dbPort = containerInfo.NetworkSettings.Ports[portKey].Single().HostPort;
+                                dbHostname = "127.0.0.1";
+                            }
+                            else
+                            {
+                                ContainerManager jenkinsTestContainer = ContainerManager.GetCurrent(docker);
+                                if (jenkinsTestContainer == null)
                                 {
-                                    break;
+                                    throw new InvalidOperationException("ContainerManager.GetCurrent result nothing");
                                 }
+
+                                network.Connect(jenkinsTestContainer);
+
+                                dbPort = portKey.Split('/', StringSplitOptions.RemoveEmptyEntries).First();
+                                dbHostname = containerInfo.Name;
                             }
+
+                            this.DatabaseIntegratedTestInternal(dbTechnology, dbHostname, dbPort);
+
+                            network.Disconnect(container);
+
                         }
-
                     }
-
-                    if (!isOk)
-                    {
-
-                        docker.Containers.StopContainerAsync(containerId.ID, new ContainerStopParameters() { WaitBeforeKillSeconds=10 }).GetAwaiter().GetResult();
-                        System.Threading.Thread.Sleep(TimeSpan.FromSeconds(30));
-                        docker.Containers.RemoveContainerAsync(containerId.ID, new ContainerRemoveParameters() { Force = true, RemoveVolumes = true }).GetAwaiter().GetResult();
-
-                        Skip.IfNot(true, "TimeOut");
-
-                    }
-                    /*Begin Docker Test*/
-                    try
-                    {
-                        this.DatabaseIntegratedTestInternal(dbTechnology);
-                    }
-                    finally
-                    {
-                        /*End Docker Test*/
-                        docker.Containers.StopContainerAsync(containerId.ID, new ContainerStopParameters() { WaitBeforeKillSeconds = 10 }).GetAwaiter().GetResult();
-                        System.Threading.Thread.Sleep(TimeSpan.FromSeconds(30));
-                        docker.Containers.RemoveContainerAsync(containerId.ID, new ContainerRemoveParameters() { Force = true, RemoveVolumes = true }).GetAwaiter().GetResult();
-                    }
-
                 }
-
             }
-
         }
 
+        private void DatabaseIntegratedTestInternal(string dbTechnology, string dbHostname, string dbPort)
+        {
+            Oragon.Spring.Context.Support.XmlApplicationContext context = new Oragon.Spring.Context.Support.XmlApplicationContext(
+                $"assembly://Oragon.Context.Tests/Oragon.Context.Tests.Integrated.AppSym.Config/custom.db.{dbTechnology}.xml",
+                $"assembly://Oragon.Context.Tests/Oragon.Context.Tests.Integrated.AppSym.Config/general.xml"
+                );
+
+            Configuration.StaticConfigurationResolver constr = context.GetObject<Oragon.Configuration.StaticConfigurationResolver>("ConnectionString");
+
+            Console.WriteLine("Setting Up Connectionstring for Database Container");
+
+            Console.WriteLine($"   FROM: {constr.Configuration}");
+
+            //Replacing Configuration In Memory
+            constr.Configuration = constr.Configuration
+                .Replace("db_hostname", dbHostname)
+                .Replace("db_port", dbPort);
+
+            Console.WriteLine($"   TO: {constr.Configuration}");
+
+            //Code First
+            var sfb = context.GetObject<Oragon.Contexts.NHibernate.FluentNHibernateSessionFactoryBuilder>("SessionFactoryBuilder");
+
+            EventHandler<NHibernate.Cfg.Configuration> onExposeConfiguration = (sender, config) =>
+            {
+                var update = new NHibernate.Tool.hbm2ddl.SchemaUpdate(config);
+                update.Execute(true, true);
+
+            };
+            sfb.OnExposeConfiguration += onExposeConfiguration;
+            sfb.BuildSessionFactory();
+            sfb.OnExposeConfiguration -= onExposeConfiguration;
 
 
-        private void DatabaseIntegratedTestInternal(string dbTechnology)
-        { 
-        
-
-
-
+            context.GetObject<AppSym.Services.ITestService>().Test();
 
         }
-
 
         private Uri GetEndpoint()
         {

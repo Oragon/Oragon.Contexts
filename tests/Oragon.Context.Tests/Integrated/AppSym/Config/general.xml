@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<objects
+    xmlns="http://www.springframework.net"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.net/aop"
+>
+
+
+    <object name="AbstractSessionFactoryBuilder" abstract="true">
+        <property name="ObjectContextKey" value="OragonSamples" />
+        <property name="DefaultIsolationLevel" value="ReadUncommitted" />
+        <property name="TransactionIsolationLevel" value="ReadUncommitted" />
+        <property name="DefaultFlushMode" value="Never" />
+        <property name="TransactionFlushMode" value="Commit" />
+        <property name="MaxFetchDepth" value="3" />
+        <property name="EnabledDiagnostics" value="false" />
+        <property name="CommandTimeout" value="20000" />
+        <property name="BatchSize" value="50" />
+        <property name="TypeNames">
+            <list element-type="System.String">
+                <value>Oragon.Context.Tests.Integrated.AppSym.Domain.Classroom, Oragon.Context.Tests</value>
+                <value>Oragon.Context.Tests.Integrated.AppSym.Data.Mapping.ClassroomMapper, Oragon.Context.Tests</value>
+            </list>
+        </property>
+        <property name="ConnectionStringDiscoverer" ref="ConnectionString" />
+    </object>
+
+    
+    <object name="NHContextAroundAdvice" type="Oragon.Contexts.NHibernate.NHContextAroundAdvice, Oragon.Contexts.NHibernate" singleton="true">
+        <property name="ElevateToSystemTransactionsIfRequired" value="false" />
+        <property name="SessionFactoryBuilders">
+            <list element-type="Oragon.Contexts.NHibernate.ISessionFactoryBuilder, Oragon.Contexts.NHibernate">
+                <ref object="SessionFactoryBuilder" />
+            </list>
+        </property>
+    </object>
+
+    
+    <object name="AllServiceOperations" type="Oragon.Spring.Aop.Support.SdkRegularExpressionMethodPointcut, Oragon.Spring.Aop">
+        <property name="Patterns">
+            <list>
+                <value>Oragon.Context.Tests.Integrated.AppSym.Services.*Service</value>
+            </list>
+        </property>
+    </object>
+
+    
+    <aop:config>
+        <aop:advisor pointcut-ref="AllServiceOperations" advice-ref="NHContextAroundAdvice" />
+
+        <!-- Aspectos de tratamento de exceção devem ser os últimos-->
+        <!-- NÃO COMENTAR! SE COMENTAR, LEMBRE-SE DE VOLTAR ANTES DE COMITAR. -->
+        <!--<aop:advisor pointcut-ref="AllServiceOperations" advice-ref="ExceptionHandlerAroundAdvice" />-->
+    </aop:config>
+
+
+    <object name="TestService" type="Oragon.Context.Tests.Integrated.AppSym.Services.TestService, Oragon.Context.Tests">
+    
+    </object>
+
+</objects>
