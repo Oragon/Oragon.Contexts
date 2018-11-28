@@ -1,7 +1,0 @@
-<?xml version = '1.0' encoding = 'UTF-8'?>
-<UserOraclev10g class="oracle.dbtools.crest.model.design.storage.oracle.v10g.UserOraclev10g" name="OragonDemoUser" directorySegmentName="seg_0" id="F25F6FFB-BB95-CE37-586B-349AED6023C5">
-<createdBy>luizc</createdBy>
-<createdTime>2018-11-18 10:15:20 UTC</createdTime>
-<ownerDesignName>ExampleMER</ownerDesignName>
-<identifier>0575B99F2B3855BAEDFB8A6DE0BCD24314</identifier>
-</UserOraclev10g>

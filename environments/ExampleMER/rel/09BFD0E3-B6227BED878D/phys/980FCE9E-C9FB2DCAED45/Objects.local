@@ -1,9 +1,0 @@
-<?xml version = '1.0' encoding = 'UTF-8'?>
-<oracle.dbtools.crest.model.design.storage.sqlserver.v2k12.StorageDesignSqlServerv2k12>
-   <object objectType="Role" objectID="DB_NULLELEMENT_PUBLIC" name="PUBLIC" seqName="seg_0" propertyClassName="oracle.dbtools.crest.model.design.storage.sqlserver.v2k12.RoleSqlServerv2k12" propertyParentId="980FCE9E-C9FB2DCAED45"/>
-   <object objectType="User" objectID="DB_NULLELEMENT_dbo" name="dbo" seqName="seg_0" propertyClassName="oracle.dbtools.crest.model.design.storage.sqlserver.v2k12.UserSqlServerv2k12" propertyParentId="980FCE9E-C9FB2DCAED45"/>
-   <object objectType="Table" objectID="55ABD1AE-585A-A178-4CC1-A02DDC8F5FCB" name="LANGUAGE" seqName="seg_0" propertyClassName="oracle.dbtools.crest.model.design.storage.sqlserver.v2k5.TableProxySqlServerv2k5" propertyParentId="980FCE9E-C9FB2DCAED45"/>
-   <object objectType="Table" objectID="AACFEDA3-14A2-FD65-4491-C11F8FE0C375" name="CLASSROOM" seqName="seg_0" propertyClassName="oracle.dbtools.crest.model.design.storage.sqlserver.v2k5.TableProxySqlServerv2k5" propertyParentId="980FCE9E-C9FB2DCAED45"/>
-   <object objectType="Table" objectID="AB6F95F1-4207-6C5D-E41F-3BA76F05DED5" name="STUDENT" seqName="seg_0" propertyClassName="oracle.dbtools.crest.model.design.storage.sqlserver.v2k5.TableProxySqlServerv2k5" propertyParentId="980FCE9E-C9FB2DCAED45"/>
-   <object objectType="Table" objectID="F0E9640E-A75D-DE3E-4290-4D91F1281EF0" name="STUDENT_CLASSROOM" seqName="seg_0" propertyClassName="oracle.dbtools.crest.model.design.storage.sqlserver.v2k5.TableProxySqlServerv2k5" propertyParentId="980FCE9E-C9FB2DCAED45"/>
-</oracle.dbtools.crest.model.design.storage.sqlserver.v2k12.StorageDesignSqlServerv2k12>
