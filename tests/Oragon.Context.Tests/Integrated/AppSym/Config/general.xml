@@ -5,9 +5,12 @@
 	xmlns:aop="http://www.springframework.net/aop"
 >
 
-
-    <object name="AbstractSessionFactoryBuilder" abstract="true">
+    <object name="ObjectContextKey" abstract="true">
         <property name="ObjectContextKey" value="OragonSamples" />
+    </object>
+
+
+    <object name="AbstractSessionFactoryBuilder" abstract="true" parent="ObjectContextKey">
         <property name="DefaultIsolationLevel" value="ReadUncommitted" />
         <property name="TransactionIsolationLevel" value="ReadUncommitted" />
         <property name="DefaultFlushMode" value="Never" />
@@ -25,7 +28,7 @@
         <property name="ConnectionStringDiscoverer" ref="ConnectionString" />
     </object>
 
-    
+
     <object name="NHContextAroundAdvice" type="Oragon.Contexts.NHibernate.NHContextAroundAdvice, Oragon.Contexts.NHibernate" singleton="true">
         <property name="ElevateToSystemTransactionsIfRequired" value="false" />
         <property name="SessionFactoryBuilders">
@@ -35,7 +38,7 @@
         </property>
     </object>
 
-    
+
     <object name="AllServiceOperations" type="Oragon.Spring.Aop.Support.SdkRegularExpressionMethodPointcut, Oragon.Spring.Aop">
         <property name="Patterns">
             <list>
@@ -44,7 +47,7 @@
         </property>
     </object>
 
-    
+
     <aop:config>
         <aop:advisor pointcut-ref="AllServiceOperations" advice-ref="NHContextAroundAdvice" />
 
@@ -55,7 +58,15 @@
 
 
     <object name="TestService" type="Oragon.Context.Tests.Integrated.AppSym.Services.TestService, Oragon.Context.Tests">
-    
+        <property name="DomainEntityRepository">
+            <object type="Oragon.Context.Tests.Integrated.AppSym.Data.Repositories.DomainEntityRepository, Oragon.Context.Tests" parent="ObjectContextKey" />
+        </property>
+        <property name="StudentQueryRepository">
+            <object type="Oragon.Context.Tests.Integrated.AppSym.Data.Repositories.StudentQueryRepository, Oragon.Context.Tests" parent="ObjectContextKey" />
+        </property>
+        <property name="PermissiveRepository">
+            <object type="Oragon.Context.Tests.Integrated.AppSym.Data.Repositories.PermissiveRepository, Oragon.Context.Tests" parent="ObjectContextKey" />
+        </property>
     </object>
 
 </objects>

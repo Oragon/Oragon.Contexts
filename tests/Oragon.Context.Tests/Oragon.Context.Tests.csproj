@@ -65,8 +65,5 @@
         <ProjectReference Include="..\..\Oragon.Contexts.NHibernate\Oragon.Contexts.NHibernate.csproj" />
         <ProjectReference Include="..\..\Oragon.Contexts\Oragon.Contexts.csproj" />
     </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Integrated\AppSym\Data\Repositories\" />
-    </ItemGroup>
 
 </Project>
