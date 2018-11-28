@@ -5,6 +5,15 @@
 	xmlns:aop="http://www.springframework.net/aop"
 >
 
-   
+    <object name="SessionFactoryBuilder"
+             type="Oragon.Contexts.NHibernate.FluentNHibernateSessionFactoryBuilderForSQLite, Oragon.Contexts.FluentNHibernate" parent="AbstractSessionFactoryBuilder">
+        <!--<property name="DefaultSchema" value="OragonSamplesDB.dbo" />-->
+        <property name="DefaultIsolationLevel" value="Unspecified" />
+        <property name="TransactionIsolationLevel" value="Unspecified" />
+        <property name="FileName" value="./mydb.db" />
+    </object>
+
+
+
 
 </objects>

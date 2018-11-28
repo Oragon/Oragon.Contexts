@@ -5,6 +5,16 @@
 	xmlns:aop="http://www.springframework.net/aop"
 >
 
-   
+    <object name="SessionFactoryBuilder"
+             type="Oragon.Contexts.NHibernate.FluentNHibernateSessionFactoryBuilderForPostgreSQL, Oragon.Contexts.FluentNHibernate" parent="AbstractSessionFactoryBuilder">
+        <property name="DefaultSchema" value="" />
+        <property name="ConnectionStringDiscoverer" ref="ConnectionString" />
+    </object>
+
+
+    <object name="ConnectionString" type="Oragon.Configuration.StaticConfigurationResolver, Oragon.Common" singleton="true">
+        <property name="Configuration" value="Host=db_hostname;Port=db_port;User ID=OragonDemoUser;Password=OragonDemoPwd;Database=OragonSamplesDB;CommandTimeout=60;" />
+    </object>
+
 
 </objects>

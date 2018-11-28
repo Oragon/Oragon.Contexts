@@ -14,10 +14,11 @@ namespace Oragon.Context.Tests.Integrated
 
         [SkippableTheory]
         ////[InlineData("db2")]
-        ////[InlineData("mysql")]
         ////[InlineData("oracle")]
-        ////[InlineData("postgresql")]
-        ////[InlineData("sqlite")]
+
+        [InlineData("postgresql")]
+        [InlineData("mysql")]
+        [InlineData("sqlite")]
         [InlineData("sqlserver")]
         public void DatabaseIntegratedTest(string dbTechnology)
         {
@@ -29,7 +30,7 @@ namespace Oragon.Context.Tests.Integrated
 
             Skip.IfNot(context.ContainsObject($"{dbTechnology}.CreateContainerParameters"), "Has no configuration about " + dbTechnology);
 
-            TimeSpan dockerDefaultTimeout = context.GetObject<TimeSpan>("Docker.DefaultTimeout");
+            TimeSpan dockerDefaultTimeout = context.GetObject<TimeSpan>($"{dbTechnology}.DefaultTimeout");
 
             int getLogsRetryCount = context.GetObject<int>($"{dbTechnology}.GetLogsRetryCount");
 
@@ -116,52 +117,55 @@ namespace Oragon.Context.Tests.Integrated
                 $"assembly://Oragon.Context.Tests/Oragon.Context.Tests.Integrated.AppSym.Config/general.xml"
                 );
 
-            Configuration.StaticConfigurationResolver constr = context.GetObject<Oragon.Configuration.StaticConfigurationResolver>("ConnectionString");
 
-            System.Diagnostics.Debug.WriteLine("Setting Up Connectionstring for Database Container");
+            if (context.ContainsObject("ConnectionString"))
+            {
+                Configuration.StaticConfigurationResolver constr = context.GetObject<Oragon.Configuration.StaticConfigurationResolver>("ConnectionString");
 
-            System.Diagnostics.Debug.WriteLine($"   FROM: {constr.Configuration}");
+                Console.WriteLine("Setting Up Connectionstring for Database Container");
 
-            //Replacing Configuration In Memory
-            constr.Configuration = constr.Configuration
-                .Replace("db_hostname", dbHostname)
-                .Replace("db_port", dbPort);
+                Console.WriteLine($"   FROM: {constr.Configuration}");
 
-            System.Diagnostics.Debug.WriteLine($"   TO: {constr.Configuration}");
+                //Replacing Configuration In Memory
+                constr.Configuration = constr.Configuration
+                    .Replace("db_hostname", dbHostname)
+                    .Replace("db_port", dbPort);
 
+                Console.WriteLine($"   TO: {constr.Configuration}");
+            }
 
-            //System.Diagnostics.Debug.WriteLine("Sleep 10 minutes...");
+            //Console.WriteLine("Sleep 10 minutes...");
             //System.Threading.Thread.Sleep(TimeSpan.FromMinutes(10));
 
 
-            System.Diagnostics.Debug.WriteLine("Start database object creation...");
+            Console.WriteLine("Start database object creation...");
             //Code First
             Contexts.NHibernate.FluentNHibernateSessionFactoryBuilder sfb = context.GetObject<Oragon.Contexts.NHibernate.FluentNHibernateSessionFactoryBuilder>("SessionFactoryBuilder");
 
 
             sfb.OnExposeConfiguration = config =>
             {
-                System.Diagnostics.Debug.WriteLine("Updating schema");
+                Console.WriteLine("Updating schema");
 
                 NHibernate.Tool.hbm2ddl.SchemaUpdate update = new NHibernate.Tool.hbm2ddl.SchemaUpdate(config);
 
                 update.Execute(true, true);
 
-                System.Diagnostics.Debug.WriteLine("Updating finished!");
+                Console.WriteLine("Updating finished!");
             };
 
             NHibernate.ISessionFactory sf = sfb.BuildSessionFactory();
 
             sfb.OnExposeConfiguration = null;
 
-            System.Diagnostics.Debug.WriteLine($"NH Statistics ConnectCount {sf.Statistics.ConnectCount}!");
+            Console.WriteLine($"NH Statistics ConnectCount {sf.Statistics.ConnectCount}!");
 
-            System.Diagnostics.Debug.WriteLine("Objects created on database!");
+            Console.WriteLine("Objects created on database!");
 
-            System.Diagnostics.Debug.WriteLine("Start functional tests ITestService.Test()");
+            Console.WriteLine("Start functional tests ITestService.Test()");
 
             AppSym.Services.ITestService service = context.GetObject<AppSym.Services.ITestService>("TestService");
-            
+
             service.RetrieveAll().Should().BeEmpty("Expected none");
 
             // Create1
@@ -184,14 +188,14 @@ namespace Oragon.Context.Tests.Integrated
             all.Where(it => it is Language).Cast<Language>().Single(it => it.LanguageId == "EN").Should().NotBeNull("Expected EN language");
             all.Where(it => it is Language).Cast<Language>().Single(it => it.LanguageId == "ES").Should().NotBeNull("Expected ES language");
 
-            var studentLuiz = all.Where(it => it is Student).Cast<Student>().Single(it => it.FullName == "Luis Carlos Faria");
-            var studentTatiana = all.Where(it => it is Student).Cast<Student>().Single(it => it.FullName == "Tatiana");
+            Student studentLuiz = all.Where(it => it is Student).Cast<Student>().Single(it => it.FullName == "Luis Carlos Faria");
+            Student studentTatiana = all.Where(it => it is Student).Cast<Student>().Single(it => it.FullName == "Tatiana");
 
-            var classroom4 = all.Where(it => it is Classroom).Cast<Classroom>().Single(it => it.Name == "Class 4");
-            var classroom3 = all.Where(it => it is Classroom).Cast<Classroom>().Single(it => it.Name == "Class 3");
+            Classroom classroom4 = all.Where(it => it is Classroom).Cast<Classroom>().Single(it => it.Name == "Class 4");
+            Classroom classroom3 = all.Where(it => it is Classroom).Cast<Classroom>().Single(it => it.Name == "Class 3");
 
             studentLuiz.Classrooms.Should().Contain(it => it == classroom3, "Student Luiz must be in Class3");
-            
+
             classroom3.Students.Should().Contain(it => it == studentLuiz, "Student Luiz must be in Class3");
 
 
@@ -211,7 +215,7 @@ namespace Oragon.Context.Tests.Integrated
 
             all.Count().Should().Be(0, "After delete all itens must be deleted");
 
-            System.Diagnostics.Debug.WriteLine("End of functional tests ITestService.Test()");
+            Console.WriteLine("End of functional tests ITestService.Test()");
         }
 
 

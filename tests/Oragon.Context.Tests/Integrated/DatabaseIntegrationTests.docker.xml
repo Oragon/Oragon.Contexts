@@ -4,8 +4,78 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:aop="http://www.springframework.net/aop"
 >
+    <!--
+    ////////////////////////////////////////////////////////////////////////////////////
+    postgresql 
+    ////////////////////////////////////////////////////////////////////////////////////
+    -->
+    <object name="postgresql.CreateContainerParameters" type="Docker.DotNet.Models.CreateContainerParameters, Docker.DotNet" parent="default.CreateContainerParameters">
+        <property name="Image" value="postgres:11" />
+        <property name="Env">
+            <list element-type="String">                
+                <value><![CDATA[POSTGRES_DB=OragonSamplesDB]]></value>
+                <value><![CDATA[POSTGRES_USER=OragonDemoUser]]></value>
+                <value><![CDATA[POSTGRES_PASSWORD=OragonDemoPwd]]></value>
+            </list>
+        </property>
+        <property name="ExposedPorts">
+            <dictionary key-type="string" value-type="Docker.DotNet.Models.EmptyStruct, Docker.DotNet">
+                <entry key="5432/tcp">
+                    <object type="Oragon.Context.Tests.Integrated.DockerSupport.EmptyStructFactory, Oragon.Context.Tests" factory-method="BuildEmpty"></object>
+                </entry>
+            </dictionary>
+        </property>
+    </object>
+    <object name="postgresql.ExpectedText" type="string" factory-method="Copy">
+        <constructor-arg index="0" value="database system is ready to accept connections"/>
+    </object>
+    <alias alias="postgresql.ContainerStartParameters" name="default.ContainerStartParameters"/>
+    <alias alias="postgresql.ContainerLogsParameters" name="default.ContainerLogsParameters"/>
+    <alias alias="postgresql.GetLogsWaitTime" name="default.GetLogsWaitTime"/>
+    <alias alias="postgresql.GetLogsRetryCount" name="default.GetLogsRetryCount"/>
+    <alias alias="postgresql.DefaultTimeout" name="default.DefaultTimeout"/>
 
-    <object name="sqlserver.CreateContainerParameters" type="Docker.DotNet.Models.CreateContainerParameters, Docker.DotNet">
+
+    <!--
+    ////////////////////////////////////////////////////////////////////////////////////
+    mysql 
+    ////////////////////////////////////////////////////////////////////////////////////
+    -->
+    <object name="mysql.CreateContainerParameters" type="Docker.DotNet.Models.CreateContainerParameters, Docker.DotNet" parent="default.CreateContainerParameters">
+        <property name="Image" value="mysql:5" />
+        <property name="Env">
+            <list element-type="String">
+                <value><![CDATA[MYSQL_ROOT_PASSWORD=PbfSeBmdy34KvTGwWUTHdxht]]></value>
+                <value><![CDATA[MYSQL_DATABASE=OragonSamplesDB]]></value>
+                <value><![CDATA[MYSQL_USER=OragonDemoUser]]></value>
+                <value><![CDATA[MYSQL_PASSWORD=OragonDemoPwd]]></value>
+            </list>
+        </property>
+        <property name="ExposedPorts">
+            <dictionary key-type="string" value-type="Docker.DotNet.Models.EmptyStruct, Docker.DotNet">
+                <entry key="3306/tcp">
+                    <object type="Oragon.Context.Tests.Integrated.DockerSupport.EmptyStructFactory, Oragon.Context.Tests" factory-method="BuildEmpty"></object>
+                </entry>
+            </dictionary>
+        </property>
+    </object>
+    <object name="mysql.ExpectedText" type="string" factory-method="Copy">
+        <constructor-arg index="0" value="mysqld: ready for connections"/>
+    </object>
+    <alias alias="mysql.ContainerStartParameters" name="default.ContainerStartParameters"/>
+    <alias alias="mysql.ContainerLogsParameters" name="default.ContainerLogsParameters"/>
+    <alias alias="mysql.GetLogsWaitTime" name="default.GetLogsWaitTime"/>
+    <alias alias="mysql.GetLogsRetryCount" name="default.GetLogsRetryCount"/>
+    <alias alias="mysql.DefaultTimeout" name="default.DefaultTimeout"/>
+
+
+
+    <!--
+    ////////////////////////////////////////////////////////////////////////////////////
+    sqlserver 
+    ////////////////////////////////////////////////////////////////////////////////////
+    -->
+    <object name="sqlserver.CreateContainerParameters" type="Docker.DotNet.Models.CreateContainerParameters, Docker.DotNet" parent="default.CreateContainerParameters">
         <property name="Image" value="luizcarlosfaria/mssql-server-linux:latest" />
         <property name="Env">
             <list element-type="String">
@@ -24,66 +94,78 @@
                 </entry>
             </dictionary>
         </property>
-        <!--<property name="NetworkingConfig">
-            <object type="Docker.DotNet.Models.NetworkingConfig, Docker.DotNet">
-                <property name="EndpointsConfig">
-                    <dictionary key-type="string" value-type="Docker.DotNet.Models.EndpointSettings, Docker.DotNet">
-                        <entry key="app">
-                            <object type="Docker.DotNet.Models.EndpointSettings, Docker.DotNet">
-                                <property name="" value="sqlserver" />
-                            </object>
-                        </entry>
-                    </dictionary>
-                </property>
-            </object>
-        </property>-->
-        <property name="HostConfig">
-            <object type="Docker.DotNet.Models.HostConfig, Docker.DotNet">
-                <property name="PublishAllPorts" value="true" />
-                <!--<property name="PortBindings" >
-                    <dictionary key-type="string" value-type="System.Collections.Generic.IList&lt;Docker.DotNet.Models.PortBinding&gt;">
-                        <entry key="1433/tcp" expression="null">
-                            --><!--<list element-type="Docker.DotNet.Models.PortBinding, Docker.DotNet">
-                                <object type="Docker.DotNet.Models.PortBinding, Docker.DotNet">
-                                    <property name="HostPort" value="1433" />
-                                </object>
-                            </list>--><!--
-                        </entry>
-                    </dictionary>
-                </property>-->
-            </object>
-        </property>
     </object>
-
     <object name="sqlserver.ExpectedText" type="string" factory-method="Copy">
         <constructor-arg index="0" value="SQL Server Database ready"/>
     </object>
+    <alias alias="sqlserver.ContainerStartParameters" name="default.ContainerStartParameters"/>
+    <alias alias="sqlserver.ContainerLogsParameters" name="default.ContainerLogsParameters"/>
+    <alias alias="sqlserver.GetLogsWaitTime" name="default.GetLogsWaitTime"/>
+    <alias alias="sqlserver.GetLogsRetryCount" name="default.GetLogsRetryCount"/>
+    <alias alias="sqlserver.DefaultTimeout" name="default.DefaultTimeout"/>
 
-
-    
-    <object name="sqlserver.ContainerStartParameters" type="Docker.DotNet.Models.ContainerStartParameters, Docker.DotNet"></object>
-
-    <object name="sqlserver.ContainerLogsParameters" type="Docker.DotNet.Models.ContainerLogsParameters, Docker.DotNet">
-        <property name="Tail" value="50" />
-        <property name="ShowStdout" value="true" />
-        <property name="ShowStderr" value="true" />
+    <!--
+    ////////////////////////////////////////////////////////////////////////////////////
+    sqlite 
+    ////////////////////////////////////////////////////////////////////////////////////
+    -->
+    <object name="sqlite.CreateContainerParameters" type="Docker.DotNet.Models.CreateContainerParameters, Docker.DotNet" parent="default.CreateContainerParameters">
+        <property name="Image" value="nginx:latest" />
+        <property name="ExposedPorts">
+            <dictionary key-type="string" value-type="Docker.DotNet.Models.EmptyStruct, Docker.DotNet">
+                <entry key="22/tcp">
+                    <object type="Oragon.Context.Tests.Integrated.DockerSupport.EmptyStructFactory, Oragon.Context.Tests" factory-method="BuildEmpty"></object>
+                </entry>
+            </dictionary>
+        </property>
     </object>
-
-    <object name="sqlserver.GetLogsWaitTime" type="System.TimeSpan">
-        <constructor-arg name="hours" value="0" />
-        <constructor-arg name="minutes" value="0" />
-        <constructor-arg name="seconds" value="10" />
+    <object name="sqlite.ExpectedText" type="string" factory-method="Copy">
+        <constructor-arg index="0" value=""/>
     </object>
+    <alias alias="sqlite.ContainerStartParameters" name="default.ContainerStartParameters"/>
+    <alias alias="sqlite.ContainerLogsParameters" name="default.ContainerLogsParameters"/>
+    <alias alias="sqlite.GetLogsWaitTime" name="default.GetLogsWaitTime"/>
+    <alias alias="sqlite.GetLogsRetryCount" name="default.GetLogsRetryCount"/>
+    <alias alias="sqlite.DefaultTimeout" name="default.DefaultTimeout"/>
 
-    <object name="sqlserver.GetLogsRetryCount" type="System.Int32" factory-method="Parse">
-        <constructor-arg index="0" value="20" />
-    </object>
 
-    <object name="Docker.DefaultTimeout" type="System.TimeSpan">
+
+    <!--
+    ////////////////////////////////////////////////////////////////////////////////////
+    Default 
+    ////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+    <object name="default.DefaultTimeout" type="System.TimeSpan">
         <constructor-arg name="hours" value="0" />
         <constructor-arg name="minutes" value="3" />
         <constructor-arg name="seconds" value="0" />
     </object>
+    <object name="default.CreateContainerParameters" abstract="true">
+        <property name="HostConfig">
+            <object type="Docker.DotNet.Models.HostConfig, Docker.DotNet">
+                <property name="PublishAllPorts" value="true" />
+            </object>
+        </property>
+    </object>
+    <object name="default.ExpectedText" type="string" factory-method="Copy">
+        <constructor-arg index="0" value="SQL Server Database ready"/>
+    </object>
+    <object name="default.ContainerStartParameters" type="Docker.DotNet.Models.ContainerStartParameters, Docker.DotNet"></object>
+    <object name="default.ContainerLogsParameters" type="Docker.DotNet.Models.ContainerLogsParameters, Docker.DotNet">
+        <property name="Tail" value="50" />
+        <property name="ShowStdout" value="true" />
+        <property name="ShowStderr" value="true" />
+    </object>
+    <object name="default.GetLogsWaitTime" type="System.TimeSpan">
+        <constructor-arg name="hours" value="0" />
+        <constructor-arg name="minutes" value="0" />
+        <constructor-arg name="seconds" value="10" />
+    </object>
+    <object name="default.GetLogsRetryCount" type="System.Int32" factory-method="Parse">
+        <constructor-arg index="0" value="20" />
+    </object>
+
 
 </objects>
 

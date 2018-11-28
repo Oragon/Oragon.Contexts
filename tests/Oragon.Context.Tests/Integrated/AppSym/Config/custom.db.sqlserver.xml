@@ -9,6 +9,7 @@
     <object name="SessionFactoryBuilder"
              type="Oragon.Contexts.NHibernate.FluentNHibernateSessionFactoryBuilderForSQLServer, Oragon.Contexts.FluentNHibernate" parent="AbstractSessionFactoryBuilder">
         <property name="DefaultSchema" value="OragonSamplesDB.dbo" />
+        <property name="ConnectionStringDiscoverer" ref="ConnectionString" />
     </object>
 
 

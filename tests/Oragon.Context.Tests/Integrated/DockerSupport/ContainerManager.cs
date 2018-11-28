@@ -32,14 +32,14 @@ namespace Oragon.Context.Tests.Integrated.DockerSupport
                 throw new InvalidOperationException(string.Join(" | ", this.CreateResponse.Warnings));
             }
 
-            System.Diagnostics.Debug.WriteLine($"Container Created {this.CreateResponse.ID}");
+            Console.WriteLine($"Container Created {this.CreateResponse.ID}");
         }
 
         public bool Start(ContainerStartParameters startRequest)
         {
             bool returnValue = this.Docker.Containers.StartContainerAsync(this.CreateResponse.ID, startRequest).GetAwaiter().GetResult();
 
-            System.Diagnostics.Debug.WriteLine($"Container Started {this.CreateResponse.ID}");
+            Console.WriteLine($"Container Started {this.CreateResponse.ID}");
 
             return returnValue;
         }
@@ -52,69 +52,72 @@ namespace Oragon.Context.Tests.Integrated.DockerSupport
 
         public void WaitUntilTextFoundInLog(ContainerLogsParameters containerLogsParameters, string textToFind, int getLogsRetryCount, TimeSpan getLogsWaitTime)
         {
-            System.Diagnostics.Debug.WriteLine($"Waiting keyword on log of {this.CreateResponse.ID}");
+            Console.WriteLine($"Waiting keyword on log of {this.CreateResponse.ID}");
 
-            string logs = null;
-            bool isOk = false;
-            for (int i = 0; i < getLogsRetryCount; i++)
+            if (!string.IsNullOrWhiteSpace(textToFind))
             {
-                System.Threading.Thread.Sleep(getLogsWaitTime);
-
-                using (System.IO.Stream logStream = this.Docker.Containers.GetContainerLogsAsync(this.CreateResponse.ID, containerLogsParameters).GetAwaiter().GetResult())
+                string logs = null;
+                bool isOk = false;
+                for (int i = 0; i < getLogsRetryCount; i++)
                 {
-                    using (System.IO.StreamReader reader = new System.IO.StreamReader(logStream))
+                    System.Threading.Thread.Sleep(getLogsWaitTime);
+
+                    using (System.IO.Stream logStream = this.Docker.Containers.GetContainerLogsAsync(this.CreateResponse.ID, containerLogsParameters).GetAwaiter().GetResult())
                     {
-                        logs = reader.ReadToEnd();
-                    }
-                    if (!string.IsNullOrWhiteSpace(logs))
-                    {
-                        isOk = logs.Contains(textToFind);
-                        if (isOk)
+                        using (System.IO.StreamReader reader = new System.IO.StreamReader(logStream))
                         {
-                            break;
+                            logs = reader.ReadToEnd();
                         }
-                        System.Diagnostics.Debug.WriteLine($"Keyword not found yet...");
+                        if (!string.IsNullOrWhiteSpace(logs))
+                        {
+                            isOk = logs.Contains(textToFind);
+                            if (isOk)
+                            {
+                                break;
+                            }
+                            Console.WriteLine($"Keyword not found yet...");
+                        }
                     }
                 }
-            }
-            if (!isOk)
-            {
-                throw new TimeoutException("Timeout waiting logs");
-            }
+                if (!isOk)
+                {
+                    throw new TimeoutException("Timeout waiting logs");
+                }
 
-            System.Diagnostics.Debug.WriteLine($"Ok, keyword found on log of {this.CreateResponse.ID}");
+            }
+            Console.WriteLine($"Ok, keyword found on log of {this.CreateResponse.ID}");
         }
 
 
         public void Dispose()
         {
-            System.Diagnostics.Debug.WriteLine($"Disposing Container {this.CreateResponse.ID}");
+            Console.WriteLine($"Disposing Container {this.CreateResponse.ID}");
 
             if (this.CreateResponse != null)
             {
 
-                System.Diagnostics.Debug.WriteLine($"Stopping Container {this.CreateResponse.ID}");
+                Console.WriteLine($"Stopping Container {this.CreateResponse.ID}");
 
                 this.Docker.Containers.StopContainerAsync(this.CreateResponse.ID, new ContainerStopParameters() { WaitBeforeKillSeconds = 30 }).GetAwaiter().GetResult();
 
-                System.Diagnostics.Debug.WriteLine($"Container Stopped {this.CreateResponse.ID}");
+                Console.WriteLine($"Container Stopped {this.CreateResponse.ID}");
 
                 System.Threading.Thread.Sleep(TimeSpan.FromSeconds(30));
 
-                System.Diagnostics.Debug.WriteLine($"Removing Container {this.CreateResponse.ID}");
+                Console.WriteLine($"Removing Container {this.CreateResponse.ID}");
 
                 this.Docker.Containers.RemoveContainerAsync(this.CreateResponse.ID, new ContainerRemoveParameters() { Force = true, RemoveVolumes = true }).GetAwaiter().GetResult();
 
-                System.Diagnostics.Debug.WriteLine($"Container Removed {this.CreateResponse.ID}");
+                Console.WriteLine($"Container Removed {this.CreateResponse.ID}");
 
             }
 
-            System.Diagnostics.Debug.WriteLine($"Container Disposed {this.CreateResponse.ID}");
+            Console.WriteLine($"Container Disposed {this.CreateResponse.ID}");
         }
 
         public void Report(JSONMessage value)
         {
-            System.Diagnostics.Debug.WriteLine($"{value.Status} | {value.ProgressMessage}");
+            Console.WriteLine($"{value.Status} | {value.ProgressMessage}");
         }
 
         internal static ContainerManager GetCurrent(DockerClient docker)
@@ -127,7 +130,7 @@ namespace Oragon.Context.Tests.Integrated.DockerSupport
 
             if (container != null)
             {
-                System.Diagnostics.Debug.WriteLine($"Current Container found - {container.ID}");
+                Console.WriteLine($"Current Container found - {container.ID}");
 
                 return new ContainerManager(docker, container.ID);
             }

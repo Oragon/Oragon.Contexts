@@ -24,8 +24,7 @@
                 <value>Oragon.Context.Tests.Integrated.AppSym.Domain.Classroom, Oragon.Context.Tests</value>
                 <value>Oragon.Context.Tests.Integrated.AppSym.Data.Mapping.ClassroomMapper, Oragon.Context.Tests</value>
             </list>
-        </property>
-        <property name="ConnectionStringDiscoverer" ref="ConnectionString" />
+        </property>        
     </object>
 
 
