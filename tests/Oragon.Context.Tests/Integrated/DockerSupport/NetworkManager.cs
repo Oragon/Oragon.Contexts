@@ -20,7 +20,7 @@ namespace Oragon.Context.Tests.Integrated.DockerSupport
         {
             this.CreateNetworkResponse = this.Docker.Networks.CreateNetworkAsync(new NetworksCreateParameters(new NetworkCreate() { Driver = "bridge", CheckDuplicate = false }) { Name = name }).GetAwaiter().GetResult();
 
-            Console.WriteLine($"Network {name} created as {this.CreateNetworkResponse.ID}");
+            System.Diagnostics.Debug.WriteLine($"Network {name} created as {this.CreateNetworkResponse.ID}");
         }
 
         public void Connect(ContainerManager container, string alias)
@@ -42,7 +42,7 @@ namespace Oragon.Context.Tests.Integrated.DockerSupport
 
             //this.ConnectedContainers.Insert(0, container);
 
-            Console.WriteLine($"Container {container.CreateResponse.ID} was connected to {this.CreateNetworkResponse.ID}");
+            System.Diagnostics.Debug.WriteLine($"Container {container.CreateResponse.ID} was connected to {this.CreateNetworkResponse.ID}");
         }
 
         //private List<ContainerManager> ConnectedContainers { get; set; } = new List<ContainerManager>();
@@ -53,14 +53,14 @@ namespace Oragon.Context.Tests.Integrated.DockerSupport
 
             //this.ConnectedContainers.Remove(container);
 
-            Console.WriteLine($"Container {container.CreateResponse.ID} was disconected from {this.CreateNetworkResponse.ID}");
+            System.Diagnostics.Debug.WriteLine($"Container {container.CreateResponse.ID} was disconected from {this.CreateNetworkResponse.ID}");
         }
 
 
 
         public void Dispose()
         {
-            Console.WriteLine($"Disposing Network {this.CreateNetworkResponse.ID}");
+            System.Diagnostics.Debug.WriteLine($"Disposing Network {this.CreateNetworkResponse.ID}");
 
             if (this.CreateNetworkResponse != null)
             {
@@ -70,14 +70,14 @@ namespace Oragon.Context.Tests.Integrated.DockerSupport
                 //    this.Disconnect(this.ConnectedContainers[0]);
                 //}
 
-                Console.WriteLine($"Removing Network {this.CreateNetworkResponse.ID}");
+                System.Diagnostics.Debug.WriteLine($"Removing Network {this.CreateNetworkResponse.ID}");
 
                 this.Docker.Networks.DeleteNetworkAsync(this.CreateNetworkResponse.ID).GetAwaiter().GetResult();
 
-                Console.WriteLine($"Network Removed {this.CreateNetworkResponse.ID}");
+                System.Diagnostics.Debug.WriteLine($"Network Removed {this.CreateNetworkResponse.ID}");
             }
 
-            Console.WriteLine($"Network Disposed {this.CreateNetworkResponse.ID}");
+            System.Diagnostics.Debug.WriteLine($"Network Disposed {this.CreateNetworkResponse.ID}");
         }
 
 

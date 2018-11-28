@@ -31,7 +31,7 @@ namespace Oragon.Context.Tests.Integrated.AppSym.Services
         [NHContext("OragonSamples", true)]
         public void Create1()
         {
-            Console.WriteLine("TestService.Create() Init");
+            System.Diagnostics.Debug.WriteLine("TestService.Create() Init");
 
             Language languageEN = new Language() { LanguageId = "EN", Name = "English" };
             Language languageES = new Language() { LanguageId = "ES", Name = "Spanish" };
@@ -41,7 +41,7 @@ namespace Oragon.Context.Tests.Integrated.AppSym.Services
 
             this.Do(this.DomainEntityRepository.Save, languageEN, languageES, classroom1, classroom2);
 
-            Console.WriteLine("TestService.Create() End");
+            System.Diagnostics.Debug.WriteLine("TestService.Create() End");
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace Oragon.Context.Tests.Integrated.AppSym.Services
         public List<DomainEntity> RetrieveAll()
         {
             List<DomainEntity> returnValue = new List<DomainEntity>();
-            Console.WriteLine("TestService.Retrieve2() Init");
+            System.Diagnostics.Debug.WriteLine("TestService.Retrieve2() Init");
 
             var session = this.PermissiveRepository.GetSession();
 
@@ -106,32 +106,31 @@ namespace Oragon.Context.Tests.Integrated.AppSym.Services
             returnValue.AddRange(session.Query<Language>().ToArray());
             returnValue.AddRange(session.Query<Classroom>().ToArray());
 
-
             this.Do(session.Evict, returnValue.ToArray());
 
-            Console.WriteLine("TestService.Retrieve2() End");
+            System.Diagnostics.Debug.WriteLine("TestService.Retrieve2() End");
             
             return returnValue;
         }
 
         [NHContext("OragonSamples", true)]
-        public void Update()
+        public void Update(Student student)
         {
-            Console.WriteLine("TestService.Update() Init");
+            System.Diagnostics.Debug.WriteLine("TestService.Update() Init");
 
+            this.DomainEntityRepository.Update(student);
 
-
-
-            Console.WriteLine("TestService.Update() End");
+            System.Diagnostics.Debug.WriteLine("TestService.Update() End");
         }
 
         [NHContext("OragonSamples", true)]
-        public void Delete()
+        public void Delete(DomainEntity domainEntity)
         {
-            Console.WriteLine("TestService.Delete() Init");
+            System.Diagnostics.Debug.WriteLine("TestService.Delete() Init");
 
+            this.DomainEntityRepository.Delete(domainEntity);
 
-            Console.WriteLine("TestService.Delete() End");
+            System.Diagnostics.Debug.WriteLine("TestService.Delete() End");
         }
     }
 }

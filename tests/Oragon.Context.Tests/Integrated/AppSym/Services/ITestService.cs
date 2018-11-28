@@ -10,5 +10,9 @@ namespace Oragon.Context.Tests.Integrated.AppSym.Services
         void Create2();
 
         List<DomainEntity> RetrieveAll();
+
+        void Update(Student student);
+
+        void Delete(DomainEntity domainEntity);
     }
 }

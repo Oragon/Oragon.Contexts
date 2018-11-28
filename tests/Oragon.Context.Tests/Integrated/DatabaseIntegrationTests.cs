@@ -118,46 +118,47 @@ namespace Oragon.Context.Tests.Integrated
 
             Configuration.StaticConfigurationResolver constr = context.GetObject<Oragon.Configuration.StaticConfigurationResolver>("ConnectionString");
 
-            Console.WriteLine("Setting Up Connectionstring for Database Container");
+            System.Diagnostics.Debug.WriteLine("Setting Up Connectionstring for Database Container");
 
-            Console.WriteLine($"   FROM: {constr.Configuration}");
+            System.Diagnostics.Debug.WriteLine($"   FROM: {constr.Configuration}");
 
             //Replacing Configuration In Memory
             constr.Configuration = constr.Configuration
                 .Replace("db_hostname", dbHostname)
                 .Replace("db_port", dbPort);
 
-            Console.WriteLine($"   TO: {constr.Configuration}");
+            System.Diagnostics.Debug.WriteLine($"   TO: {constr.Configuration}");
 
 
-            //Console.WriteLine("Sleep 10 minutes...");
+            //System.Diagnostics.Debug.WriteLine("Sleep 10 minutes...");
             //System.Threading.Thread.Sleep(TimeSpan.FromMinutes(10));
 
 
-            Console.WriteLine("Start database object creation...");
+            System.Diagnostics.Debug.WriteLine("Start database object creation...");
             //Code First
             Contexts.NHibernate.FluentNHibernateSessionFactoryBuilder sfb = context.GetObject<Oragon.Contexts.NHibernate.FluentNHibernateSessionFactoryBuilder>("SessionFactoryBuilder");
 
 
             sfb.OnExposeConfiguration = config =>
             {
-                Console.WriteLine("Updating schema");
+                System.Diagnostics.Debug.WriteLine("Updating schema");
 
                 NHibernate.Tool.hbm2ddl.SchemaUpdate update = new NHibernate.Tool.hbm2ddl.SchemaUpdate(config);
+
                 update.Execute(true, true);
 
-                Console.WriteLine("Updating finished!");
+                System.Diagnostics.Debug.WriteLine("Updating finished!");
             };
 
             NHibernate.ISessionFactory sf = sfb.BuildSessionFactory();
 
             sfb.OnExposeConfiguration = null;
 
-            Console.WriteLine($"NH Statistics ConnectCount {sf.Statistics.ConnectCount}!");
+            System.Diagnostics.Debug.WriteLine($"NH Statistics ConnectCount {sf.Statistics.ConnectCount}!");
 
-            Console.WriteLine("Objects created on database!");
+            System.Diagnostics.Debug.WriteLine("Objects created on database!");
 
-            Console.WriteLine("Start functional tests ITestService.Test()");
+            System.Diagnostics.Debug.WriteLine("Start functional tests ITestService.Test()");
 
             AppSym.Services.ITestService service = context.GetObject<AppSym.Services.ITestService>("TestService");
             
@@ -185,6 +186,7 @@ namespace Oragon.Context.Tests.Integrated
 
             var studentLuiz = all.Where(it => it is Student).Cast<Student>().Single(it => it.FullName == "Luis Carlos Faria");
             var studentTatiana = all.Where(it => it is Student).Cast<Student>().Single(it => it.FullName == "Tatiana");
+
             var classroom4 = all.Where(it => it is Classroom).Cast<Classroom>().Single(it => it.Name == "Class 4");
             var classroom3 = all.Where(it => it is Classroom).Cast<Classroom>().Single(it => it.Name == "Class 3");
 
@@ -192,7 +194,24 @@ namespace Oragon.Context.Tests.Integrated
             
             classroom3.Students.Should().Contain(it => it == studentLuiz, "Student Luiz must be in Class3");
 
-            Console.WriteLine("End of functional tests ITestService.Test()");
+
+            studentLuiz.FullName = "Luiz Carlos de Azevedo Faria";
+
+            service.Update(studentLuiz);
+
+            all = service.RetrieveAll();
+
+            all.Where(it => it is Student)
+                .Cast<Student>()
+                .SingleOrDefault(it => it.FullName == studentLuiz.FullName).Should().NotBeNull("Update does not ok");
+
+            all.ForEach(service.Delete);
+
+            all = service.RetrieveAll();
+
+            all.Count().Should().Be(0, "After delete all itens must be deleted");
+
+            System.Diagnostics.Debug.WriteLine("End of functional tests ITestService.Test()");
         }
 
 
