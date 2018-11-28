@@ -116,6 +116,7 @@ pipeline {
                         './Oragon.Contexts/Oragon.Contexts.csproj',
 						'./Oragon.Contexts.ExceptionHandling/Oragon.Contexts.ExceptionHandling.csproj',
                         './Oragon.Contexts.FluentNHibernate/Oragon.Contexts.FluentNHibernate.csproj',
+						'./Oragon.Contexts.FluentNHibernate.ForOracleDataAccess/Oragon.Contexts.FluentNHibernate.ForOracleDataAccess.csproj',
                         './Oragon.Contexts.NHibernate/Oragon.Contexts.NHibernate.csproj'
                     ]
 

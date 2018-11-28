@@ -6,6 +6,43 @@
 >
     <!--
     ////////////////////////////////////////////////////////////////////////////////////
+    oracle 
+    ////////////////////////////////////////////////////////////////////////////////////
+    -->
+    <object name="oracle.CreateContainerParameters" type="Docker.DotNet.Models.CreateContainerParameters, Docker.DotNet" parent="default.CreateContainerParameters">
+        <property name="Image" value="oragon/oragon-contexts-oracle:11.2.0.2-xe" />
+        <property name="Env">
+            <list element-type="String">
+                <value><![CDATA[ORACLE_PDB=ORCLPDB1]]></value>
+                <value><![CDATA[ORACLE_PWD=szwg2uXkeCJh8rG8mEZ9]]></value>
+            </list>
+        </property>
+        <property name="ExposedPorts">
+            <dictionary key-type="string" value-type="Docker.DotNet.Models.EmptyStruct, Docker.DotNet">
+                <entry key="1521/tcp">
+                    <object type="Oragon.Context.Tests.Integrated.DockerSupport.EmptyStructFactory, Oragon.Context.Tests" factory-method="BuildEmpty"></object>
+                </entry>
+            </dictionary>
+        </property>
+        <property name="HostConfig">
+            <object type="Docker.DotNet.Models.HostConfig, Docker.DotNet">
+                <property name="PublishAllPorts" value="true" />
+                <property name="ShmSize" expression="6442450944" />                                                
+            </object>
+        </property>
+    </object>
+    <object name="oracle.ExpectedText" type="string" factory-method="Copy">
+        <constructor-arg index="0" value="DATABASE IS READY TO USE!"/>
+    </object>
+    <alias alias="oracle.ContainerStartParameters" name="default.ContainerStartParameters"/>
+    <alias alias="oracle.ContainerLogsParameters" name="default.ContainerLogsParameters"/>
+    <alias alias="oracle.GetLogsWaitTime" name="default.GetLogsWaitTime"/>
+    <alias alias="oracle.GetLogsRetryCount" name="default.GetLogsRetryCount"/>
+    <alias alias="oracle.DefaultTimeout" name="default.DefaultTimeout"/>
+
+
+    <!--
+    ////////////////////////////////////////////////////////////////////////////////////
     postgresql 
     ////////////////////////////////////////////////////////////////////////////////////
     -->

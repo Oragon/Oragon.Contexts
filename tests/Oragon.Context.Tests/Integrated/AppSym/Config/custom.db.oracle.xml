@@ -5,6 +5,22 @@
 	xmlns:aop="http://www.springframework.net/aop"
 >
 
-   
+    <object name="SessionFactoryBuilder"
+             type="Oragon.Contexts.FluentNHibernate.ForOracleDataAccess.FluentNHibernateSessionFactoryBuilderForOracleDataAccess, Oragon.Contexts.FluentNHibernate.ForOracleDataAccess" parent="AbstractSessionFactoryBuilder">
+        <property name="DefaultSchema" value="OragonDemoUser" />
+        <property name="ConnectionStringDiscoverer" ref="ConnectionString" />
+        <property name="DefaultIsolationLevel" value="ReadCommitted" />
+        <property name="TransactionIsolationLevel" value="ReadCommitted" />
+        <property name="NHibernateRawConfigurationValues">
+            <dictionary key-type="string" value-type="string">
+                <entry key="hbm2ddl.keywords" value="none" />
+            </dictionary>
+        </property>
+    </object>
+
+
+    <object name="ConnectionString" type="Oragon.Configuration.StaticConfigurationResolver, Oragon.Common" singleton="true">
+        <property name="Configuration" value="Data Source=db_hostname:db_port/XE;User Id=OragonDemoUser;Password=OragonDemoPwd;" />
+    </object>
 
 </objects>

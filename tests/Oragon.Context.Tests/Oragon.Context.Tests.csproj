@@ -59,9 +59,15 @@
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\Oragon.Contexts.ExceptionHandling\Oragon.Contexts.ExceptionHandling.csproj" />
+        <ProjectReference Include="..\..\Oragon.Contexts.FluentNHibernate.ForOracleDataAccess\Oragon.Contexts.FluentNHibernate.ForOracleDataAccess.csproj" />
         <ProjectReference Include="..\..\Oragon.Contexts.FluentNHibernate\Oragon.Contexts.FluentNHibernate.csproj" />
         <ProjectReference Include="..\..\Oragon.Contexts.NHibernate\Oragon.Contexts.NHibernate.csproj" />
         <ProjectReference Include="..\..\Oragon.Contexts\Oragon.Contexts.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+      <Reference Include="Oracle.ManagedDataAccess">
+        <HintPath>..\non-nuget-references\Oracle.ManagedDataAccess.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>

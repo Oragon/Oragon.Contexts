@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+ 
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <AssemblyName>Oragon.Contexts.FluentNHibernate.ForOracleDataAccess</AssemblyName>
+        <PackageId>Oragon.Contexts.FluentNHibernate.ForOracleDataAccess</PackageId>
+        <RootNamespace>Oragon</RootNamespace>
+
+        <PackageProjectUrl>https://github.com/Oragon/Oragon.Contexts</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/Oragon/Oragon.Contexts</RepositoryUrl>
+
+        <Authors>LuizCarlosFaria</Authors>
+        <Company>oragon.io</Company>
+        <Product>Oragon</Product>
+        <Description>Reinventing log strategy with complex and intuitive types</Description>
+
+        <PackageIconUrl>http://gago.io/wp-content/uploads/2014/03/Oragon-Architecture-Penknife.export.png</PackageIconUrl>
+
+        <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+        <Version>1.0.0-alpha</Version>
+        <Copyright>Copyright 2018</Copyright>
+        <PackageTags>Oragon Architecture,  Oragon, Architecture, luiz, carlos, faria, luizcarlosfaria, oragonarchitect</PackageTags>
+    </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NHibernate" Version="5.1.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Oragon.Contexts.FluentNHibernate\Oragon.Contexts.FluentNHibernate.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Oracle.ManagedDataAccess">
+      <HintPath>..\tests\non-nuget-references\Oracle.ManagedDataAccess.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

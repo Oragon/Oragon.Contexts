@@ -14,8 +14,7 @@ namespace Oragon.Context.Tests.Integrated
 
         [SkippableTheory]
         ////[InlineData("db2")]
-        ////[InlineData("oracle")]
-
+        [InlineData("oracle")]
         [InlineData("postgresql")]
         [InlineData("mysql")]
         [InlineData("sqlite")]
