@@ -12,7 +12,7 @@ pipeline {
             agent {
                 dockerfile {
                     // alwaysPull false
-                    // image 'microsoft/dotnet:2.1-sdk'
+                    // image 'microsoft/dotnet:2.2-sdk'
                     // reuseNode false
                     args '-u root:root'
                 }
@@ -51,7 +51,7 @@ pipeline {
             agent {
                 dockerfile {
                     // alwaysPull false
-                    // image 'microsoft/dotnet:2.1-sdk'
+                    // image 'microsoft/dotnet:2.2-sdk'
                     // reuseNode false
                     args '-u root:root -v /var/run/docker.sock:/var/run/docker.sock'
                 }
@@ -100,7 +100,7 @@ pipeline {
             agent {
                 dockerfile {
                     // alwaysPull false
-                    // image 'microsoft/dotnet:2.1-sdk'
+                    // image 'microsoft/dotnet:2.2-sdk'
                     // reuseNode false
                     args '-u root:root'
                 }
@@ -151,7 +151,7 @@ pipeline {
             agent {
                 dockerfile {
                     // alwaysPull false
-                    // image 'microsoft/dotnet:2.1-sdk'
+                    // image 'microsoft/dotnet:2.2-sdk'
                     // reuseNode false
                     args '-u root:root'
                 }

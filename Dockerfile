@@ -1,4 +1,4 @@
-FROM microsoft/dotnet:2.1-sdk
+FROM microsoft/dotnet:2.2-sdk
 
 RUN export PATH="$PATH:/root/.dotnet/tools"
 RUN dotnet tool install --global dotnet-sonarscanner
