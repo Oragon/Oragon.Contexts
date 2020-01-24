@@ -197,7 +197,7 @@
     <object name="default.GetLogsWaitTime" type="System.TimeSpan">
         <constructor-arg name="hours" value="0" />
         <constructor-arg name="minutes" value="0" />
-        <constructor-arg name="seconds" value="10" />
+        <constructor-arg name="seconds" value="30" />
     </object>
     <object name="default.GetLogsRetryCount" type="System.Int32" factory-method="Parse">
         <constructor-arg index="0" value="20" />
