@@ -40,7 +40,7 @@
     <ItemGroup>
         <PackageReference Include="Oragon.Common" Version="2.2.0" />
         <PackageReference Include="Oragon.Logging" Version="1.0.4" />
-        <PackageReference Include="Oragon.Spring.Aop" Version="1.2.1" />
+        <PackageReference Include="Oragon.Spring.Aop" Version="2.0.3" />
     </ItemGroup>
 
     <ItemGroup>
