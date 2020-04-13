@@ -35,7 +35,7 @@
 
     <ItemGroup>
       <PackageReference Include="FluentNHibernate" Version="2.1.2" />
-      <PackageReference Include="Oragon.Spring.Aop" Version="1.2.1" />
+      <PackageReference Include="Oragon.Spring.Aop" Version="2.0.3" />
     </ItemGroup>
 
     <ItemGroup>
