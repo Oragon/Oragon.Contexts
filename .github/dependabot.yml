@@ -1,0 +1,30 @@
+version: 2
+updates:
+- package-ecosystem: nuget
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "08:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: NHibernate
+    versions:
+    - 5.3.5
+    - 5.3.6
+    - 5.3.7
+  - dependency-name: Microsoft.NET.Test.Sdk
+    versions:
+    - 16.8.3
+    - 16.9.1
+  - dependency-name: Npgsql
+    versions:
+    - 5.0.3
+  - dependency-name: coverlet.msbuild
+    versions:
+    - 3.0.2
+  - dependency-name: MySql.Data
+    versions:
+    - 8.0.23
+  - dependency-name: Moq
+    versions:
+    - 4.16.0
